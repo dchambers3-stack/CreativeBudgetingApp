@@ -1,0 +1,104 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="/dashboard" (click)="navigateToHome()">
+      <img
+        class="hero-img"
+        src="/assets/creative-budget.png"
+        alt="creative-budget"
+      />
+    </a>
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        @if(isLoggedIn) {
+
+        <li class="nav-item">
+          <a
+            class="nav-link active pointer"
+            aria-current="page"
+            (click)="navigateToHome()"
+          >
+            Home</a
+          >
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link pointer" (click)="navigateToExpenses()"
+            >Expenses</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link pointer" (click)="navigateToRecurringExpenses()"
+            >Recurring Expenses</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link pointer" (click)="navigateToPaycheck()"
+            >Paychecks</a
+          >
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link pointer" (click)="navigateToHowtoBudget()">
+            How to budget?</a
+          >
+        </li>
+        } @if(!isLoggedIn) {
+
+        <li class="nav-item">
+          <a class="nav-link pointer" (click)="navigateToRegister()"
+            >Register</a
+          >
+        </li>
+        <li class="nav-item">
+          <a class="nav-link pointer" (click)="navigateToLogin()">Login</a>
+        </li>
+        }
+      </ul>
+
+      <ul class="navbar-nav ms-auto">
+        <div class="form-check form-switch ms-2 mx-4">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            id="darkModeSwitch"
+            (change)="toggleDarkMode()"
+            [checked]="isDarkMode"
+          />
+          <label class="form-check-label mx-2 fw-bold" for="darkModeSwitch">
+            Dark Mode
+          </label>
+        </div>
+        @if(isLoggedIn){
+
+        <li class="nav-item">
+          <a class="btn btn-sm btn-outline-danger ms-2" (click)="logout()">
+            Logout</a
+          >
+        </li>
+        } @else {
+        <li class="nav-item">
+          <a class="btn btn-sm btn-success ms-2" href="/login"> Login</a>
+        </li>
+        }
+      </ul>
+      @if(isLoggedIn){
+      <div class="mx-4">
+
+        <app-user-profile></app-user-profile>
+      </div>}
+    </div>
+  </div>
+</nav>
+
+<router-outlet></router-outlet>

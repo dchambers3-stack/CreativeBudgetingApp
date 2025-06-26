@@ -1,0 +1,169 @@
+<div class="d-flex justify-content-center mt-4">
+  <div class="card shadow-sm" style="width: 100%; max-width: 500px">
+    <div class="card-body">
+      <h5 class="card-title text-success fw-bold mb-4">
+        Add Recurring Expense
+      </h5>
+
+      <form [formGroup]="form" (ngSubmit)="addRecurringExpense()">
+        <div class="mb-3">
+          <label for="recurringExpenseName" class="form-label fw-bold"
+            >Expense Name <span class="text-danger">*</span></label
+          >
+          
+          <input
+            type="text"
+            id="recurringExpenseName"
+            formControlName="recurringExpenseName"
+            class="form-control"
+            placeholder="Enter name of the recurring expense"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="paycheck" class="form-label fw-bold">
+            Select Paycheck: <span class="text-danger">*</span>
+          </label>
+          <select
+            formControlName="paycheckId"
+            name="paycheck"
+            id="paycheck"
+            class="form-select"
+            required
+          >
+            @for (paycheck of paychecksInfo.value(); track $index) {
+            <option [value]="paycheck.id">
+              {{ paycheck.payDate | date : "shortDate" }}
+            </option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="recurringAmount" class="form-label fw-bold">Amount <span class="text-danger">*</span></label>
+          <input
+            type="number"
+            id="recurringAmount"
+            formControlName="recurringAmount"
+            class="form-control"
+            placeholder="Enter amount"
+          />
+        </div>
+
+        
+
+        <div class="mb-3">
+          <label for="categoryId" class="form-label fw-bold">
+            Category: <span class="text-danger">*</span>
+          </label>
+          <select
+            formControlName="categoryId"
+            name="categoryId"
+            id="categoryId"
+            class="form-select"
+            (change)="selectCategory($any($event.target).value)"
+            required
+          >
+            <option value="" disabled selected>Select category</option>
+            @for (category of categories.value(); track $index) {
+            <option [value]="category.id">{{ category.name }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label for="subcategoryId" class="form-label fw-bold">
+            Subcategory: <span class="text-danger">*</span>
+          </label>
+          <select
+            formControlName="subcategoryId"
+            name="subcategoryId"
+            id="subcategoryId"
+            class="form-select"
+            required
+          >
+            <option value="" disabled selected>Select subcategory</option>
+            @for (subcategory of subcategories(); track $index) {
+            <option [value]="subcategory.id">{{ subcategory.name }}</option>
+            }
+          </select>
+        </div>
+
+        <button type="submit" class="btn btn-success fw-semibold w-100">
+          <div class="d-flex gap-2 justify-content-center">
+            <span><i class="fas fa-arrow-up-from-bracket"></i></span>
+            Submit Data
+          </div>
+        </button>
+        <!-- Menu toggle button directly below -->
+        <button
+          class="btn btn-outline-primary w-100 mt-3"
+          type="button"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#rightSidebar"
+          aria-controls="rightSidebar"
+        >
+          <div class="d-flex gap-2 justify-content-center">
+            <span><i class="fas fa-dollar"></i></span>
+            View Expenses
+          </div>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Right sidebar as Bootstrap Offcanvas -->
+<div
+  class="offcanvas offcanvas-end"
+  tabindex="-1"
+  id="rightSidebar"
+  aria-labelledby="rightSidebarLabel"
+>
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="rightSidebarLabel">My Sidebar</h5>
+    <button
+      type="button"
+      class="btn-close"
+      data-bs-dismiss="offcanvas"
+      aria-label="Close"
+    ></button>
+  </div>
+  <div class="offcanvas-body">
+    @if(recurringExpense.value()!.length > 0){
+
+      @for(expense of recurringExpense.value() ?? []; track $index){
+      <div class="py-2">
+        <div class="d-flex ">
+  
+          <h5>
+            {{ expense.recurringExpenseName | titlecase }}:
+            {{ expense.recurringAmount | currency }}
+          </h5>
+          @if(expense.id != null){
+  
+            <button (click)="removeExpense(expense.id)">Delete</button>
+          }
+        </div>
+        <div class="text-muted">
+          <small>
+            Frequency: <span class="fst-italic">{{
+              getFrequencyName(expense.frequencyId ?? 0)
+            }}</span>
+          </small>
+          @if(expense.categoryId && expense.subcategoryId) {
+          <br>
+          <small>
+            Category: <span class="fst-italic">{{ expense.categoryId }}</span> | 
+            Subcategory: <span class="fst-italic">{{ expense.subcategoryId }}</span>
+          </small>
+          }
+        </div>
+      </div>
+      }
+    }
+    @else {
+
+      <p class="fst-italic">There are no recurring expenses to show at this time.</p>
+    }
+  </div>
+</div>

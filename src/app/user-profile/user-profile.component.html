@@ -1,0 +1,27 @@
+<div class="profile-container">
+    @if(!profileImageUrl()){
+        
+    
+    
+    <div class="upload-section">
+        <input 
+            type="file" 
+            (change)="onFileSelected($event)" 
+            accept="image/*"
+            id="profile-picture-input"
+        />
+        <button 
+            (click)="uploadProfilePic()" 
+            [disabled]="!selectedFile"
+            class="upload-btn"
+        >
+            Upload Profile Picture
+        </button>
+    </div>} @else { 
+        <img
+          [src]="profileImageUrl()"
+          alt="Profile Picture"
+          class="profile-img"
+        />
+    }
+</div>

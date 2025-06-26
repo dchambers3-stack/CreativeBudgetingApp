@@ -1,0 +1,93 @@
+<!-- Add New Paycheck Form -->
+@let pcks = paychecksInfo.value(); @if(errorMessage()){
+<div class="alert alert-danger" role="alert">
+  {{ errorMessage() }}
+</div>
+} @else if(successMessage()){
+<div class="alert alert-success" role="alert">
+  {{ successMessage() }}
+</div>
+}
+
+<form (ngSubmit)="addPaycheck()" class="card shadow mb-4 border-0">
+  <div class="card-header bg-success text-white">
+    <h5 class="mb-0">Add New Paycheck</h5>
+  </div>
+  <div class="card-body">
+    <div class="row g-3 align-items-end">
+      <div class="col-md-6">
+        <label for="payDate" class="form-label"
+          >Pay Date <span class="text-danger">*</span></label
+        >
+        <input
+          type="date"
+          class="form-control"
+          id="payDate"
+          name="payDate"
+          required
+          [(ngModel)]="payDate"
+          ngModel
+        />
+      </div>
+      <div class="col-md-6">
+        <label for="amount" class="form-label"
+          >Amount <span class="text-danger">*</span></label
+        >
+        <div class="input-group">
+          <span class="input-group-text">$</span>
+          <input
+            type="number"
+            class="form-control"
+            id="amount"
+            name="amount"
+            step="0.01"
+            required
+            [(ngModel)]="amount"
+            ngModel
+          />
+        </div>
+      </div>
+    </div>
+    <div class="mt-4 text-end">
+      <button type="submit" class="btn btn-success">
+        <i class="bi bi-plus-circle me-1"></i> Add Paycheck
+      </button>
+    </div>
+  </div>
+</form>
+
+<!-- Paycheck List -->
+<div class="card shadow-sm border-0">
+  <div class="card-header bg-light">
+    <h5 class="mb-0">Paychecks</h5>
+  </div>
+  <div class="card-body p-0">
+    @if (pcks) {
+    <ul class="list-group list-group-flush">
+      @for (paycheck of pcks; track $index) {
+      <li
+        class="list-group-item d-flex justify-content-between align-items-center"
+      >
+        <div>
+          <strong>{{ paycheck.payDate | date : "longDate" }}</strong
+          ><br />
+          <span class="text-muted">{{ paycheck.amount | currency }}</span>
+        </div>
+        <button
+          (click)="deletePaycheck(paycheck.id)"
+          class="btn btn-sm btn-outline-danger"
+        >
+          <i class="bi bi-trash"></i> Delete
+        </button>
+      </li>
+      }
+    </ul>
+    } @else {
+    <div class="p-4">
+      <div class="alert alert-info mb-0" role="alert">
+        No paychecks added yet.
+      </div>
+    </div>
+    }
+  </div>
+</div>

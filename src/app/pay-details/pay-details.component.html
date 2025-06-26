@@ -1,0 +1,35 @@
+<div class="container mt-5">
+  <h1 class="mb-4 text-center">Enter your personal information.</h1>
+
+  <form novalidate (ngSubmit)="addPersonalInfo()">
+    <div class="mb-3">
+      <label class="form-label" for="first_name">First Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="first_name"
+        [(ngModel)]="personalInfo.firstName"
+        name="firstName"
+        required
+        placeholder="Enter your first name"
+      />
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label" for="last_name">Last Name</label>
+      <input
+        type="text"
+        class="form-control"
+        id="last_name"
+        [(ngModel)]="personalInfo.lastName"
+        name="lastName"
+        required
+        placeholder="Enter your last name"
+      />
+    </div>
+
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+    </div>
+  </form>
+</div>

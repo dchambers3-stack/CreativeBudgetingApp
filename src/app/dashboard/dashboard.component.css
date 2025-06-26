@@ -1,0 +1,12 @@
+.btn-disabled {
+    background-color: #d6d6d6 !important;
+    border-color: #d6d6d6 !important;
+    color: #a2a2a2 !important;
+    cursor: not-allowed;
+  }
+
+  .expenses-center {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 40px;
+  }

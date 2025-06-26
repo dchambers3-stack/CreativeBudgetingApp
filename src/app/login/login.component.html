@@ -29,6 +29,11 @@
       <div class="d-grid mb-3">
         <button class="btn btn-primary" type="submit">Login</button>
       </div>
+      <div>
+        @if(errorMessage()){
+          <p class="text-danger text-center">{{errorMessage()}}</p>
+        }
+      </div>
     </form>
     <p class="text-center mb-0">
       Don't have an account? <a href="/register">Register here</a>

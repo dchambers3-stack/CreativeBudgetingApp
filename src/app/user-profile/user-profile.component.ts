@@ -6,13 +6,13 @@ import { LoginService } from '../login.service';
   selector: 'app-user-profile',
   imports: [],
   templateUrl: './user-profile.component.html',
-  styleUrl: './user-profile.component.css'
+  styleUrl: './user-profile.component.css',
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
   private budgetService = inject(BudgetService);
   private userService = inject(LoginService);
   profileImageUrl = signal<string | null>(null);
-  
+
   currentUser = this.userService.userId();
   selectedFile: File | null = null;
   isLoading = signal<boolean>(false);
@@ -32,14 +32,16 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   async loadProfilePicture(): Promise<void> {
     try {
       this.isLoading.set(true);
-      
+
       // Clean up previous URL if it exists
       const currentUrl = this.profileImageUrl();
       if (currentUrl) {
         URL.revokeObjectURL(currentUrl);
       }
-      
-      const blob = await this.budgetService.getProfilePicture(this.currentUser ?? 0);
+
+      const blob = await this.budgetService.getProfilePicture(
+        this.currentUser ?? 0
+      );
       const imageUrl = URL.createObjectURL(blob);
       this.profileImageUrl.set(imageUrl);
     } catch (error) {
@@ -56,27 +58,95 @@ export class UserProfileComponent implements OnInit, OnDestroy {
       this.selectedFile = file;
     }
   }
+  openProfileModal(): void {
+    // Use Bootstrap's modal API to open the modal
+    const modal = document.getElementById('profilePictureModal');
+    if (modal) {
+      const bootstrapModal = new (window as any).bootstrap.Modal(modal);
+      bootstrapModal.show();
+    }
+  }
 
   async uploadProfilePic(): Promise<void> {
     if (this.selectedFile) {
       try {
         this.isLoading.set(true);
-        await this.budgetService.uploadProfilePicture(this.currentUser ?? 0, this.selectedFile);
-        
-        // Reload the profile picture after successful upload
+        await this.budgetService.uploadProfilePicture(
+          this.currentUser ?? 0,
+          this.selectedFile
+        );
+
+        // Wait for backend to finish saving
+        await new Promise((resolve) => setTimeout(resolve, 1500));
         await this.loadProfilePicture();
-        
+
         // Reset the file selection
         this.selectedFile = null;
-        
+
         // Reset the file input
-        const fileInput = document.getElementById('profile-picture-input') as HTMLInputElement;
+        const fileInput = document.getElementById(
+          'profile-picture-input'
+        ) as HTMLInputElement;
         if (fileInput) {
           fileInput.value = '';
+        }
+
+        // Close the modal
+        const modal = document.getElementById('profilePictureModal');
+        if (modal) {
+          const bootstrapModal = (window as any).bootstrap.Modal.getInstance(
+            modal
+          );
+          if (bootstrapModal) {
+            bootstrapModal.hide();
+          }
         }
       } catch (error) {
         console.error('Error uploading profile picture:', error);
         alert('Failed to upload profile picture. Please try again.');
+      } finally {
+        this.isLoading.set(false);
+      }
+    }
+  }
+  async updateProfilePic(): Promise<void> {
+    if (this.selectedFile) {
+      try {
+        this.isLoading.set(true);
+        console.log(this.selectedFile, this.currentUser);
+
+        await this.budgetService.updateProfilePicture(
+          this.currentUser ?? 0,
+          this.selectedFile
+        );
+        // Wait for backend to finish saving
+        await new Promise((resolve) => setTimeout(resolve, 1500));
+        await this.loadProfilePicture();
+
+        // Reset the file selection
+        this.selectedFile = null;
+
+        // Reset the file input
+        const fileInput = document.getElementById(
+          'profile-picture-input'
+        ) as HTMLInputElement;
+        if (fileInput) {
+          fileInput.value = '';
+        }
+
+        // Close the modal
+        const modal = document.getElementById('profilePictureModal');
+        if (modal) {
+          const bootstrapModal = (window as any).bootstrap.Modal.getInstance(
+            modal
+          );
+          if (bootstrapModal) {
+            bootstrapModal.hide();
+          }
+        }
+      } catch (error) {
+        console.error('Error updating profile picture:', error);
+        alert('Failed to update profile picture. Please try again.');
       } finally {
         this.isLoading.set(false);
       }

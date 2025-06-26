@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { LoginService } from '../login.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -12,13 +12,21 @@ import { FormsModule } from '@angular/forms';
 export class LoginComponent {
   username: string = '';
   password: string = '';
-  errorMessage: string = '';
+  errorMessage = signal<string>('');
 
   private loginService = inject(LoginService);
   private router = inject(Router);
 
-  async login() {
-    await this.loginService.login(this.username, this.password);
+  async login(): Promise<void> {
+    try {
+      await this.loginService.login(this.username, this.password);
     this.router.navigate(['/dashboard']);
+    } catch (error) {
+      this.errorMessage.set('Invalid username or password');
+      setTimeout(() => {
+        this.errorMessage.set('');
+      }, 5000);
+    }
+    
   }
 }

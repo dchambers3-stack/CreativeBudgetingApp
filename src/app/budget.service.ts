@@ -124,8 +124,16 @@ export class BudgetService {
     );
   }
   async getProfilePicture(userId: number): Promise<Blob> {
+    const timestamp = new Date().getTime();
     return await firstValueFrom(
-      this.http.get(`${this.apiUrl}/${userId}/profile-picture`, { responseType: 'blob' })
+      this.http.get(`${this.apiUrl}/${userId}/profile-picture?t=${timestamp}`, { responseType: 'blob' })
+    );
+  }
+  async updateProfilePicture(userId: number, file: File): Promise<void> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return await firstValueFrom(
+      this.http.put<void>(`${this.apiUrl}/profile-picture/${userId}`, formData)
     );
   }
 }

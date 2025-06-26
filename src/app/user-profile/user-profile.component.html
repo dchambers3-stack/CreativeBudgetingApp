@@ -1,27 +1,100 @@
 <div class="profile-container">
-    @if(!profileImageUrl()){
-        
-    
-    
-    <div class="upload-section">
-        <input 
-            type="file" 
-            (change)="onFileSelected($event)" 
-            accept="image/*"
-            id="profile-picture-input"
-        />
-        <button 
-            (click)="uploadProfilePic()" 
-            [disabled]="!selectedFile"
-            class="upload-btn"
-        >
-            Upload Profile Picture
-        </button>
-    </div>} @else { 
+    @if(profileImageUrl()){
         <img
           [src]="profileImageUrl()"
           alt="Profile Picture"
-          class="profile-img"
+          class="profile-img pointer"
+          (click)="openProfileModal()"
         />
+    } @else {
+        <div class="profile-placeholder pointer" (click)="openProfileModal()">
+            <i class="bi bi-person-circle"></i>
+        </div>
     }
+</div>
+
+<!-- Profile Picture Upload Modal -->
+<div
+  class="modal fade"
+  id="profilePictureModal"
+  tabindex="-1"
+  aria-labelledby="profilePictureModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header bg-success text-white">
+        <h5 class="modal-title" id="profilePictureModalLabel">
+          {{profileImageUrl() ? 'Update Profile Picture' : 'Upload Profile Picture'}}
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="text-center mb-3">
+          @if(profileImageUrl()){
+            <img
+              [src]="profileImageUrl()"
+              alt="Current Profile Picture"
+              class="profile-img-large mb-3"
+            />
+          } @else {
+            <div class="profile-placeholder-large mb-3">
+              <i class="bi bi-person-circle"></i>
+            </div>
+          }
+        </div>
+        
+        <form type="submit">
+          <div class="mb-3">
+            <label for="profile-picture-input" class="form-label">
+              Choose a new profile picture
+            </label>
+            <input 
+                type="file" 
+                (change)="onFileSelected($event)" 
+                accept="image/*"
+                id="profile-picture-input"
+                class="form-control"
+            />
+            <div class="form-text">
+              Supported formats: JPG, PNG, GIF. Maximum size: 5MB.
+            </div>
+          </div>
+          
+          @if(selectedFile){
+            <div class="alert alert-info">
+              <strong>Selected file:</strong> {{ selectedFile.name }}
+            </div>
+          }
+          
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-outline-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button (click)="profileImageUrl() ? updateProfilePic() : uploadProfilePic()"
+              type="submit"
+              class="btn btn-success"
+              [disabled]="!selectedFile || isLoading()"
+            >
+              @if(isLoading()){
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Uploading...
+              } @else {
+                {{profileImageUrl() ? 'Update Picture' : 'Upload Picture'}}
+              }
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

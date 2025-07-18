@@ -13,6 +13,9 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   errorMessage = signal<string>('');
+  get isLoggedIn(): boolean {
+    return this.loginService.userId() !== null;
+  }
 
   private loginService = inject(LoginService);
   private router = inject(Router);
@@ -20,13 +23,12 @@ export class LoginComponent {
   async login(): Promise<void> {
     try {
       await this.loginService.login(this.username, this.password);
-    this.router.navigate(['/dashboard']);
+      this.router.navigate(['/dashboard']);
     } catch (error) {
       this.errorMessage.set('Invalid username or password');
       setTimeout(() => {
         this.errorMessage.set('');
       }, 5000);
     }
-    
   }
 }

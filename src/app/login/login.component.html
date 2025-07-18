@@ -1,3 +1,4 @@
+@if(!isLoggedIn){
 <div class="d-flex justify-content-center align-items-center vh-100">
   <div
     class="card p-4 shadow"
@@ -31,7 +32,7 @@
       </div>
       <div>
         @if(errorMessage()){
-          <p class="text-danger text-center">{{errorMessage()}}</p>
+        <p class="text-danger text-center">{{ errorMessage() }}</p>
         }
       </div>
     </form>
@@ -40,3 +41,4 @@
     </p>
   </div>
 </div>
+}

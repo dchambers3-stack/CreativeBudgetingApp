@@ -103,6 +103,7 @@
 </nav>
 }
 <router-outlet></router-outlet>
+@if(!isLoggedIn){
 <div class="login-message">
   <p>
     You are already logged in. Please click the button below to go to your
@@ -112,3 +113,4 @@
     Go to Dashboard
   </button>
 </div>
+}

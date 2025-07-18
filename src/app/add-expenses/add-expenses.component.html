@@ -13,13 +13,13 @@
         Error adding expense. Please try again.
       </div>
       }
-      <form (ngSubmit)="addExpense()" #expenseForm="ngForm">
+      <form [formGroup]="expenseForm">
         <div class="mb-3">
           <label for="paycheck" class="form-label">
             Select Paycheck: <span class="text-danger">*</span>
           </label>
           <select
-            [(ngModel)]="selectedPaycheckId"
+            formControlName="paycheckDate"
             name="paycheck"
             id="paycheck"
             class="form-select"
@@ -32,32 +32,7 @@
             }
           </select>
         </div>
-        @if(paychecksInfo.value() && selectedPaycheckId){
-        <div class="d-flex gap-3 mb-3">
-          <div class="form-check">
-            <input
-              type="radio"
-              class="form-check-input"
-              name="expenseFrequency"
-              id="expenseFrequency1"
-            />
-            <label for="expenseFrequency1" class="form-check-label"
-              >One Time</label
-            >
-          </div>
-          <div class="form-check">
-            <input
-              type="radio"
-              class="form-check-input"
-              name="expenseFrequency"
-              id="expenseFrequency1"
-            />
-            <label for="expenseFrequency1" class="form-check-label"
-              >Recurring</label
-            >
-          </div>
-        </div>
-        }
+        
 
         <div class="mb-3">
           <label for="name" class="form-label">
@@ -65,7 +40,7 @@
           </label>
           <input
             type="text"
-            [(ngModel)]="expenses.name"
+            formControlName="name"
             name="name"
             id="name"
             class="form-control"
@@ -75,11 +50,24 @@
 
         <div class="mb-3">
           <label for="payment" class="form-label">
-            Amount: <span class="text-danger">*</span>
+            Monthly Payment: <span class="text-danger">*</span>
           </label>
           <input
             type="number"
-            [(ngModel)]="expenses.payment"
+            formControlName="payment"
+            name="payment"
+            id="payment"
+            class="form-control"
+            required
+          />
+        </div>
+        <div class="mb-3">
+          <label for="payment" class="form-label">
+            Total Balance: <span class="text-danger">*</span>
+          </label>
+          <input
+            type="number"
+            formControlName="totalBalance"
             name="payment"
             id="payment"
             class="form-control"
@@ -93,7 +81,7 @@
           </label>
           <input
             type="date"
-            [(ngModel)]="expenses.dueDate"
+            formControlName="dueDate"
             name="dueDate"
             id="dueDate"
             class="form-control"
@@ -106,11 +94,11 @@
             Category: <span class="text-danger">*</span>
           </label>
           <select
-            [(ngModel)]="expenses.categoryId"
+            formControlName="categoryId"
             name="categoryId"
             id="category"
             class="form-select"
-            (change)="selectCategory(expenses.categoryId)"
+            (change)="selectCategory(this.expenseForm.get('categoryId')?.value ?? 0)"
             required
           >
             @for (category of this.categories.value(); track $index) {
@@ -124,7 +112,7 @@
             Subcategory: <span class="text-danger">*</span>
           </label>
           <select
-            [(ngModel)]="expenses.subcategoryId"
+            formControlName="subcategoryId"
             name="subcategoryId"
             id="subcategory"
             class="form-select"
@@ -136,7 +124,7 @@
           </select>
         </div>
 
-        <button type="submit" class="btn btn-success w-100">Add Expense</button>
+        <button (click)="addExpense()" class="btn btn-success w-100">Add Expense</button>
       </form>
     </div>
   </div>

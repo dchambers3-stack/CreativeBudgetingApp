@@ -113,7 +113,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     if (this.selectedFile) {
       try {
         this.isLoading.set(true);
-        console.log(this.selectedFile, this.currentUser);
+    
 
         await this.budgetService.updateProfilePicture(
           this.currentUser ?? 0,

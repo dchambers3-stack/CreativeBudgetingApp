@@ -5,8 +5,7 @@ export interface AddExpenseDto {
   userId: number;
   dueDate: string;
   categoryId: number;
-  totalBalance: number;
+  totalBalance?: number;
   subcategoryId: number;
-  paycheckDate: string;
   isPaid: boolean;
 }

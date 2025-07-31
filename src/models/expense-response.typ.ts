@@ -3,11 +3,11 @@ export type ExpenseResponse = {
   userId: number;
   name: string;
   payment: number;
+  totalBalance?: number;
   dueDate: string;
   categoryId: number;
   categoryName: string;
   subcategoryId: number;
   subcategoryName: string;
-  paycheckId: number;
   isPaid: boolean;
 };

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom, Observable, throwError } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 import { Paycheck } from '../../models/paycheck.type';
 
 @Injectable({
@@ -16,6 +16,12 @@ export class PaycheckService {
       this.http.get<Paycheck[]>(`${this.apiUrl}/${userId}`)
     );
   }
+  async getPaychecksForBudget( userId: number): Promise<Paycheck[]> {
+    return await firstValueFrom(
+      this.http.get<Paycheck[]>(`${this.apiUrl}/${userId}/budget`)
+    );
+  }
+ 
 
   async createPaycheck(userId: number, paycheck: Paycheck): Promise<Paycheck> {
     const requestBody = {

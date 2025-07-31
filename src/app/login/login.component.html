@@ -42,3 +42,14 @@
   </div>
 </div>
 }
+@else {
+  <div class="login-message">
+    <p>
+      You are already logged in. Please click the button below to go to your
+      Dashboard.
+    </p>
+    <button class="btn btn-primary go-dashboard-btn" (click)="navigateToHome()">
+      Go to Dashboard
+    </button>
+  </div>
+}

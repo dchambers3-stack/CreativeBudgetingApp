@@ -6,7 +6,7 @@ import { AddExpensesComponent } from './add-expenses/add-expenses.component';
 import { HowToBudgetComponent } from './how-to-budget/how-to-budget.component';
 import { RegisterComponent } from './register/register.component';
 import { PaycheckComponent } from './paycheck/paycheck.component';
-import { RecurringExpensesComponent } from './recurring-expenses/recurring-expenses.component';
+import { CreateTicketComponent } from './create-ticket/create-ticket.component';
 
 export const routes: Routes = [
   {
@@ -20,8 +20,5 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
   { path: 'paychecks', component: PaycheckComponent },
-  {
-    path: 'recurring-expenses',
-    component: RecurringExpensesComponent,
-  },
+  { path: 'create-ticket', component: CreateTicketComponent },
 ];

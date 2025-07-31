@@ -14,24 +14,7 @@
       </div>
       }
       <form [formGroup]="expenseForm">
-        <div class="mb-3">
-          <label for="paycheck" class="form-label">
-            Select Paycheck: <span class="text-danger">*</span>
-          </label>
-          <select
-            formControlName="paycheckDate"
-            name="paycheck"
-            id="paycheck"
-            class="form-select"
-            required
-          >
-            @for (paycheck of paychecksInfo.value(); track $index) {
-            <option [value]="paycheck.id">
-              {{ paycheck.payDate | date : "shortDate" }}
-            </option>
-            }
-          </select>
-        </div>
+        
         
 
         <div class="mb-3">
@@ -63,7 +46,7 @@
         </div>
         <div class="mb-3">
           <label for="payment" class="form-label">
-            Total Balance: <span class="text-danger">*</span>
+            Total Balance: 
           </label>
           <input
             type="number"

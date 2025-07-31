@@ -36,7 +36,7 @@ body {
 /* Modal override for consistency */
 .modal-content {
   background-color: #fff;  /* White background */
-  color: #000;             /* Black text */
+  color: var(--text-color, #333); /* Adapts to light/dark mode */
 }
 
 /* Dark mode styles */
@@ -63,11 +63,11 @@ body {
 .dark-mode .card.bg-light,
 .dark-mode .card-header.bg-light {
   background-color: #e0e0e0 !important;
-  color: #000 !important;
+  color: var(--text-color, #333) !important; /* Adapts to light/dark mode */
 }
 
 .dark-mode .card.bg-light .card-body {
-  color: #000 !important;
+  color: var(--text-color, #333) !important; /* Adapts to light/dark mode */
 }
 
 /* Optional: consistent light gray card for both modes */

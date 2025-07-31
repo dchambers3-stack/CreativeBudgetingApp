@@ -1,30 +1,29 @@
-@let pcks = paychecksInfo.value(); @let data = dashboardInfo.value();
 <div class="container py-5">
+  @let data = dashboardInfo.value();
   <h2 class="mb-4 text-success fw-bold">
-    Hello, {{ data?.firstName ? data?.firstName : "Friend" }}! Welcome to Your
-    Budget Dashboard
+    Hello, {{ data?.firstName ? data?.firstName : "Friend" }}! Welcome to Your Budget Dashboard
   </h2>
 
   <div class="mb-5 d-flex gap-3">
     <button
-      (click)="
-        data?.firstName ? navigateToPaycheck() : navigateToPersonalInfo()
-      "
-      class="btn btn-outline-success"
+      (click)="data?.firstName ? navigateToPaycheck() : navigateToPersonalInfo()"
+      class="btn btn-gradient-green px-4 py-2"
     >
+      <i class="fas fa-user me-2"></i>
       {{ data?.firstName ? "Enter Pay Info" : "Enter Personal Info" }}
     </button>
-
-    <button (click)="navigateToAddExpenses()" class="btn btn-outline-secondary">
+    <button
+      (click)="navigateToAddExpenses()"
+      class="btn btn-gradient-gray px-4 py-2"
+    >
+      <i class="fas fa-plus me-2"></i>
       Enter Expenses
     </button>
   </div>
-  <div class="container py-2">
-    <!-- Use Angular's @if directive instead -->
-    @if(showAlert()) {
-    <div class="alert alert-warning alert-dismissible" role="alert">
-      <strong>Warning!</strong> Cannot delete paycheck with existing expenses.
-      Please delete expenses first.
+
+  @if (showAlert()) {
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+      <strong>Warning!</strong> Cannot delete paycheck with existing expenses. Please delete expenses first.
       <button
         type="button"
         class="btn-close"
@@ -32,62 +31,46 @@
         (click)="showAlert.set(false)"
       ></button>
     </div>
-    }
+  }
 
-    <!-- ...rest of your existing HTML... -->
-  </div>
-
+  @let pcks = paychecksInfo.value();
   <div class="row g-4">
     <div class="col-md-6">
       <div class="card border-success shadow">
         <div class="card-header bg-success text-white">Pay Information</div>
         <div class="card-body">
-          @if(pcks?.length) { @for (paycheck of pcks; track $index) {
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <div>
-              <strong>
-                Paycheck {{ $index + 1 }}: {{ paycheck.amount | currency }} ({{
-                  paycheck.payDate | date
-                }})
-              </strong>
-              <div class="text-muted small">
-                <span class="text-danger">
-                  Expenses: {{ paycheckExpenseTotals()[paycheck.id] | currency }}
-                </span>
-                @if(paycheckRemainingBudget()[paycheck.id] >= 0) {
-                <span class="text-success">
-                  | Remaining: {{ paycheckRemainingBudget()[paycheck.id] | currency }}
-                </span>
-                } @else {
-                <span class="text-danger">
-                  | Over Budget: {{ paycheckRemainingBudget()[paycheck.id] | currency }}
-                </span>
-                }
+          @if (pcks?.length) {
+            @for (paycheck of pcks; track $index) {
+              <div class="d-flex justify-content-between align-items-center mb-3 p-3 bg-light rounded">
+                <div>
+                  <strong>
+                    Paycheck {{ $index + 1 }}: {{ paycheck.amount | currency }} ({{ paycheck.payDate | date:'MMM d, yyyy' }})
+                  </strong>
+                </div>
+                <div class="d-flex gap-2">
+                  <button
+                    class="btn btn-sm btn-gradient-red"
+                    (click)="handleDeletePaycheck(paycheck)"
+                    aria-label="Delete Paycheck"
+                    title="Delete Paycheck"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                  <button
+                    class="btn btn-sm btn-outline-success"
+                    (click)="openEditModal(paycheck.id)"
+                    data-bs-toggle="modal"
+                    data-bs-target="#paycheckModal"
+                    aria-label="Edit Paycheck"
+                    title="Edit Paycheck"
+                  >
+                    <i class="fas fa-edit"></i>
+                  </button>
+                </div>
               </div>
-            </div>
-
-            <div class="d-flex gap-2">
-              <!-- Added gap to space out buttons -->
-              <button
-                class="btn btn-sm btn-danger"
-                (click)="handleDeletePaycheck(paycheck)"
-              >
-                Delete
-              </button>
-
-              <button
-                class="btn btn-sm btn-outline-success"
-                (click)="openEditModal(paycheck.id)"
-                data-bs-toggle="modal"
-                data-bs-target="#paycheckModal"
-              >
-                Edit
-              </button>
-            </div>
-          </div>
-
-          } } @else {
-          <p class="text-muted">No paycheck data available yet.</p>
+            }
+          } @else {
+            <p class="text-muted">No paycheck data available yet.</p>
           }
         </div>
       </div>
@@ -105,331 +88,218 @@
           </p>
           <div class="mb-2">
             <small class="text-muted">
-              <span class="text-success">Paid: {{ totalPaidExpenses() | currency }}</span> | 
+              <span class="text-success">Paid: {{ totalPaidExpenses() | currency }}</span>
+              |
               <span class="text-warning">Unpaid: {{ totalUnpaidExpenses() | currency }}</span>
             </small>
           </div>
-          @if(remainingBudget() >= 0) {
-          <p class="mb-0 text-success">
-            <strong>
-              Remaining Budget: {{ remainingBudget() | currency }}
-            </strong>
-          </p>
+          @if (remainingBudget() >= 0) {
+            <p class="mb-0 text-success">
+              <strong>Remaining Budget: {{ remainingBudget() | currency }}</strong>
+            </p>
           } @else {
-          <p class="mb-0 text-danger">
-            <strong> Over Budget: {{ remainingBudget() | currency }} </strong>
-          </p>
+            <p class="mb-0 text-danger">
+              <strong>Over Budget: {{ remainingBudget() | currency }}</strong>
+            </p>
           }
         </div>
       </div>
     </div>
   </div>
 
-  @if(pcks?.length) {
-  <div class="accordion mt-5" id="paycheckAccordion">
-    <h4 class="">Paychecks and Expenses:</h4>
-    @for (paycheck of pcks; track $index) {
-    <div class="accordion-item border-success">
-      <h2 class="accordion-header" id="heading{{ paycheck.id }}">
-        <button
-          class="accordion-button collapsed bg-success text-white"
-          type="button"
-          data-bs-toggle="collapse"
-          [attr.data-bs-target]="'#collapse' + paycheck.id"
-          aria-expanded="false"
-          [attr.aria-controls]="'collapse' + paycheck.id"
-        >
-          <div class="d-flex justify-content-between align-items-center w-100 me-3">
-            <span>{{ paycheck.payDate | date }} - {{ paycheck.amount | currency }}</span>
-            <div class="text-white small">
-              <span class="text-warning">
-                Expenses: {{ paycheckExpenseTotals()[paycheck.id] | currency }}
-              </span>
-              @if(paycheckRemainingBudget()[paycheck.id] >= 0) {
-              <span class="text-light">
-                | Remaining: {{ paycheckRemainingBudget()[paycheck.id] | currency }}
-              </span>
-              } @else {
-              <span class="text-danger">
-                | Over: {{ paycheckRemainingBudget()[paycheck.id] | currency }}
-              </span>
-              }
-            </div>
-          </div>
-        </button>
-      </h2>
-      <div
-        id="collapse{{ paycheck.id }}"
-        class="accordion-collapse collapse"
-        [class.show]="paycheck.id === pcks![0].id"
-        [attr.aria-labelledby]="'heading' + paycheck.id"
-        data-bs-parent="#paycheckAccordion"
-      >
-        <div class="accordion-body">
-          @if(!paycheck.expenses.length) {
-          <p class="text-muted">No expenses recorded for this paycheck.</p>
-          } @else {
-          <!-- Expense Summary -->
-          <div class="alert alert-info mb-3">
-            <div class="row text-center">
-              <div class="col-md-3">
-                <strong>Total Expenses</strong><br>
-                <span class="text-primary">{{ paycheckExpenseTotals()[paycheck.id] | currency }}</span>
-              </div>
-              <div class="col-md-3">
-                <strong>Expense Count</strong><br>
-                <span class="text-info">{{ paycheck.expenses.length }}</span>
-              </div>
-              <div class="col-md-3">
-                <strong>Paid Expenses</strong><br>
-                <span class="text-success">{{ getPaidExpensesCount(paycheck.id) }}</span>
-              </div>
-              <div class="col-md-3">
-                <strong>Remaining</strong><br>
-                @if(paycheckRemainingBudget()[paycheck.id] >= 0) {
-                <span class="text-success">{{ paycheckRemainingBudget()[paycheck.id] | currency }}</span>
-                } @else {
-                <span class="text-danger">{{ paycheckRemainingBudget()[paycheck.id] | currency }}</span>
-                }
-              </div>
-            </div>
-          </div>
-          
-          <div class="accordion" id="expenseAccordion{{ paycheck.id }}">
-            @for (expense of paycheck.expenses; track $index) {
-            <div class="accordion-item">
-              <h2 class="accordion-header" id="expenseHeading{{ expense.id }}">
-                <button
-                  class="accordion-button collapsed d-flex align-items-center w-100"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  [attr.data-bs-target]="'#expenseCollapse' + expense.id"
-                  aria-expanded="false"
-                  [attr.aria-controls]="'#expenseCollapse' + expense.id"
-                >
-                  <span class="flex-grow-1"
-                    >{{ expense.name }} - {{ expense.payment | currency }}</span
+  @let expenses = this.expenses.value();
+  @if (expenses?.length) {
+    <div class="accordion mt-5" id="expenseAccordion">
+      <h4 class="mb-3">Expenses:</h4>
+      @for (expense of expenses; track $index) {
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="expenseHeading{{ expense.id }}">
+            <button
+              class="accordion-button collapsed d-flex align-items-center w-100"
+              type="button"
+              data-bs-toggle="collapse"
+              [attr.data-bs-target]="'#expenseCollapse' + expense.id"
+              aria-expanded="false"
+              [attr.aria-controls]="'expenseCollapse' + expense.id"
+            >
+              <div class="d-flex justify-content-between align-items-center w-100">
+                <div class="d-flex flex-column">
+                  <span class="flex-grow-1">
+                    {{ expense.name }} - {{ expense.payment | currency }}
+                  </span>
+                  <span>Total Balance: {{ expense.totalBalance | currency }}</span>
+                </div>
+                <div class="d-flex gap-2 me-3">
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-gradient-green"
+                    [attr.aria-label]="expense.isPaid ? 'Expense Paid' : 'Mark Expense as Paid'"
+                    [title]="expense.isPaid ? 'Expense Paid' : 'Mark Expense as Paid'"
+                    (click)="markExpenseAsPaid(expense.id); $event.stopPropagation()"
+                    [disabled]="expense.isPaid"
                   >
-                  <div class="d-flex gap-2 me-3 button-container">
-                    <button
-                      type="button"
-                      class="btn btn-danger btn-sm"
-                      (click)="
-                        openDeleteExpenseModal(expense.id);
-                        $event.stopPropagation()
-                      "
-                    >
-                      Delete Expense
-                    </button>
-                    <button
-                      type="button"
-                      class="btn btn-success btn-sm"
-                      (click)="
-                        markExpenseAsPaid(expense.id); $event.stopPropagation()
-                      "
-                      [disabled]="expense.isPaid"
-                    >
-                      {{ expense.isPaid ? "Paid" : "Mark as Paid" }}
-                    </button>
-                  </div>
-                </button>
-              </h2>
-              <div
-                id="expenseCollapse{{ expense.id }}"
-                class="accordion-collapse collapse"
-                [attr.aria-labelledby]="'expenseHeading' + expense.id"
-                [attr.data-bs-parent]="'#expenseAccordion' + paycheck.id"
-              >
-                <div class="accordion-body">
-                  <!-- Placeholder for additional expense info -->
-                  <div>
-                    <!-- Add your additional expense info here -->
-                    <div class="expenses-center">
-                      <div>
-                        <h6>Expense Name</h6>
-                        {{ expense.name }}
-                      </div>
-                      <div>
-                        <h6>Expense Amount</h6>
-                        {{ expense.payment | currency }}
-                      </div>
-                      <div>
-                        <h6>Due Date</h6>
-                        {{ expense.dueDate | date : "shortDate" }}
-                      </div>
-                      <div>
-                        <h6>Paid Status</h6>
-                        {{ expense.isPaid ? "Paid" : "Unpaid" }}
-                      </div>
-                      <div>
-                        <h6>Category</h6>
-                        {{ expense.categoryName }}
-                      </div>
-                      <div>
-                        <h6>Subcategory</h6>
-                        {{ expense.subcategoryName }}
-                      </div>
-                    </div>
-                  </div>
+                    <i class="fas fa-dollar-sign me-2"></i>
+                    {{ expense.isPaid ? "Paid" : "Mark as Paid" }}
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="openDeleteExpenseModal(expense.id); $event.stopPropagation()"
+                    aria-label="Delete Expense"
+                    title="Delete Expense"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </button>
+          </h2>
+          <div
+            id="expenseCollapse{{ expense.id }}"
+            class="accordion-collapse collapse"
+            [attr.aria-labelledby]="'expenseHeading' + expense.id"
+            data-bs-parent="#expenseAccordion"
+          >
+            <div class="accordion-body">
+              <div class="expenses-center">
+                <div>
+                  <h6>Expense Name</h6>
+                  {{ expense.name }}
+                </div>
+                <div>
+                  <h6>Expense Amount</h6>
+                  {{ expense.payment | currency }}
+                </div>
+                <div>
+                  <h6>Due Date</h6>
+                  {{ expense.dueDate | date:'shortDate' }}
+                </div>
+                <div>
+                  <h6>Paid Status</h6>
+                  {{ expense.isPaid ? "Paid" : "Unpaid" }}
+                </div>
+                <div>
+                  <h6>Category</h6>
+                  {{ expense.categoryName }}
+                </div>
+                <div>
+                  <h6>Subcategory</h6>
+                  {{ expense.subcategoryName }}
                 </div>
               </div>
             </div>
-            }
           </div>
-          }
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="text-muted mt-5">No expenses for this budget period.</p>
+  }
+
+  <!-- Paycheck Edit Modal -->
+  <div class="modal fade" id="paycheckModal" tabindex="-1" aria-labelledby="paycheckModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="paycheckModalLabel">Edit Paycheck Amount</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form (ngSubmit)="editPay()">
+            <div class="mb-3">
+              <label for="paycheckAmount" class="form-label">New Paycheck Amount</label>
+              <input
+                type="number"
+                class="form-control"
+                id="paycheckAmount"
+                [(ngModel)]="modalPayAmount"
+                name="paycheckAmount"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                data-bs-dismiss="modal"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="btn btn-gradient-green"
+                data-bs-dismiss="modal"
+              >
+                Save Changes
+              </button>
+            </div>
+          </form>
         </div>
       </div>
     </div>
-    }
   </div>
-  }
-</div>
 
-<!-- Modal -->
-<div
-  class="modal fade"
-  id="paycheckModal"
-  tabindex="-1"
-  aria-labelledby="paycheckModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-success text-white">
-        <h5 class="modal-title" id="paycheckModalLabel">
-          Edit Paycheck Amount
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        <form (ngSubmit)="editPay()">
-          <div class="mb-3">
-            <label for="paycheckAmount" class="form-label"
-              >New Paycheck Amount</label
-            >
-            <input
-              type="number"
-              class="form-control"
-              id="paycheckAmount"
-              [(ngModel)]="modalPayAmount"
-              name="paycheckAmount"
-              step="0.01"
-              required
-            />
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-outline-secondary"
-              data-bs-dismiss="modal"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              class="btn btn-success"
-              data-bs-dismiss="modal"
-            >
-              Save Changes
-            </button>
-          </div>
-        </form>
+  <!-- Delete Paycheck Modal -->
+  <div class="modal fade" id="deletePaycheckModal" tabindex="-1" aria-labelledby="deletePaycheckModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="deletePaycheckModalLabel">Confirm Deletion</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this paycheck? This action cannot be undone.
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-gradient-red"
+            (click)="deletePaycheckConfirm()"
+            data-bs-dismiss="modal"
+          >
+            Confirm Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<!-- Modal for Deleting Paycheck -->
-<div
-  class="modal fade"
-  id="deletePaycheckModal"
-  tabindex="-1"
-  aria-labelledby="deletePaycheckModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="deletePaycheckModalLabel">
-          Confirm Deletion
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this paycheck? This action cannot be
-        undone.
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          data-bs-dismiss="modal"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          class="btn btn-danger"
-          (click)="deletePaycheckConfirm()"
-          data-bs-dismiss="modal"
-        >
-          Confirm Delete
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
 
-<!-- Modal for Deleting Expense -->
-<div
-  class="modal fade"
-  id="deleteExpenseModal"
-  tabindex="-1"
-  aria-labelledby="deleteExpenseModalLabel"
-  aria-hidden="true"
->
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header bg-danger text-white">
-        <h5 class="modal-title" id="deleteExpenseModalLabel">
-          Confirm Deletion
-        </h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
-      </div>
-      <div class="modal-body">
-        Are you sure you want to delete this expense? This action cannot be
-        undone.
-      </div>
-      <div class="modal-footer">
-        <button
-          type="button"
-          class="btn btn-outline-secondary"
-          data-bs-dismiss="modal"
-        >
-          Cancel
-        </button>
-        <button
-          type="button"
-          class="btn btn-danger"
-          (click)="deleteExpenseConfirm()"
-          data-bs-dismiss="modal"
-        >
-          Confirm Delete
-        </button>
+  <!-- Delete Expense Modal -->
+  <div class="modal fade" id="deleteExpenseModal" tabindex="-1" aria-labelledby="deleteExpenseModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title" id="deleteExpenseModalLabel">Confirm Deletion</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Are you sure you want to delete this expense? This action cannot be undone.
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            data-bs-dismiss="modal"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="btn btn-gradient-red"
+            (click)="deleteExpenseConfirm()"
+            data-bs-dismiss="modal"
+          >
+            Confirm Delete
+          </button>
+        </div>
       </div>
     </div>
   </div>

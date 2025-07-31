@@ -1,0 +1,66 @@
+<!-- This page does not work yet -->
+<form
+  [formGroup]="ticketForm"
+  class="card shadow p-4 bg-body-tertiary"
+  style="max-width: 500px; margin: 2rem auto"
+>
+  <h4 class="mb-3">Create Support Ticket</h4>
+  <div class="mb-3">
+    <label for="name" class="form-label fw-bold">Full Name</label>
+    <input
+      formControlName="name"
+      type="text"
+      id="name"
+      class="form-control"
+      placeholder="Enter your full name"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="email" class="form-label fw-bold">Email</label>
+    <input
+      formControlName="email"
+      type="email"
+      id="email"
+      class="form-control"
+      placeholder="Enter your email address"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="subject" class="form-label fw-bold">Subject</label>
+    <input
+      formControlName="subject"
+      type="text"
+      id="subject"
+      class="form-control"
+      placeholder="Enter the subject for your message"
+    />
+  </div>
+  <div class="mb-3">
+    <label for="ticketSeverity" class="form-label fw-bold">Severity</label>
+    <select
+      id="ticketSeverity"
+      class="form-select"
+      formControlName="ticketSeverityId"
+    >
+      <option value="">Select severity</option>
+      @for(severities of this.ticketSeverities.value(); track $index){
+
+      <option [value]="severities?.id">{{ severities?.value }}</option>
+
+      }
+    </select>
+  </div>
+  <div class="mb-3">
+    <label for="message" class="form-label fw-bold">Message</label>
+    <textarea
+      formControlName="message"
+      id="message"
+      class="form-control"
+      rows="4"
+      placeholder="Enter your message here"
+    ></textarea>
+  </div>
+  <button (click)="submitTicket()" class="btn btn-success w-100 mt-3">
+    Submit (Not implemented)
+  </button>
+</form>

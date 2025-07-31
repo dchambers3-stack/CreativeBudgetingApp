@@ -10,6 +10,7 @@ import { User } from '../models/user.type';
 import { Paycheck } from '../models/paycheck.type';
 import { MarkExpenseAsPaidDto } from '../models/mark-expense-as-paid.type';
 import { RecurringExpenseDto } from '../models/recurring-expense-dto';
+import { BudgetPeriod } from '../models/budget-period';
 
 @Injectable({
   providedIn: 'root',
@@ -37,8 +38,8 @@ export class BudgetService {
       personalInfo
     );
   }
-  addExpenses(paycheckId: number, expenses: AddExpenseDto) {
-    return this.http.post(`${this.apiUrl}/expenses/${paycheckId}`, expenses);
+  addExpenses(userId: number, expenses: AddExpenseDto) {
+    return this.http.post(`${this.apiUrl}/expenses/${userId}`, expenses);
   }
   editExpenses(userId: number, expenses: AddExpenseDto) {
     return this.http.put(`${this.apiUrl}/expenses/${userId}`, expenses);
@@ -93,17 +94,7 @@ export class BudgetService {
       this.http.get<AddExpenseDto>(`${this.apiUrl}/expense/${id}`)
     );
   }
-  async addRecurringExpense(
-    dto: RecurringExpenseDto,
-    userId: number
-  ): Promise<number> {
-    return await firstValueFrom(
-      this.http.post<number>(
-        `${this.apiUrl}/expenses/${userId}/recurring-expense`,
-        dto
-      )
-    );
-  }
+  
   async getRecurringExpenses(userId: number): Promise<RecurringExpenseDto[]> {
     return await firstValueFrom(
       this.http.get<RecurringExpenseDto[]>(
@@ -134,6 +125,24 @@ export class BudgetService {
     formData.append('file', file);
     return await firstValueFrom(
       this.http.put<void>(`${this.apiUrl}/profile-picture/${userId}`, formData)
+    );
+  }
+  async startNewBudgetPeriod(userId: number): Promise<{ message: string; budgetId: number }> {
+    return await firstValueFrom(
+      this.http.post<{ message: string; budgetId: number }>(
+        `${this.apiUrl}/${userId}/start-new-budget-period`,
+        null
+      )
+    );
+  }
+  async getBudgetPeriodByUserId(userId: number): Promise<BudgetPeriod> {
+    return await firstValueFrom(
+      this.http.get<BudgetPeriod>(`${this.apiUrl}/${userId}/budget-period`)
+    );
+  }
+  async getAllBudgetPeriods(userId: number): Promise<BudgetPeriod[]> {
+    return await firstValueFrom(
+      this.http.get<BudgetPeriod[]>(`${this.apiUrl}/${userId}/budget-periods`)
     );
   }
 }

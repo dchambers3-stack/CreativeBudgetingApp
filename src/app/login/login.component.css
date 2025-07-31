@@ -1,0 +1,33 @@
+.login-message {
+    background: #f9f9f9; /* subtle light background */
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 400px;
+    margin: 2rem auto;
+    text-align: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .login-message p {
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+  }
+  .dark-mode .login-message p {
+    color: #fff;
+  }
+  
+  .go-dashboard-btn {
+    background-color: #28a745; /* budget app green */
+    border: none;
+    border-radius: 50px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+  }
+  
+  .go-dashboard-btn:hover {
+    background-color: #218838;
+  }
+  

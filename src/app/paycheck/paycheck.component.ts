@@ -8,88 +8,70 @@ import {
 } from '@angular/core';
 import { PaycheckService } from '../services/paycheck.service';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Paycheck } from '../../models/paycheck.type';
 import { LoginService } from '../login.service';
+declare var bootstrap: any;
 
 @Component({
   selector: 'app-paycheck',
   templateUrl: './paycheck.component.html',
-  imports: [DatePipe, FormsModule, CurrencyPipe],
+  imports: [ FormsModule, ReactiveFormsModule, CurrencyPipe, DatePipe],
   styleUrls: ['./paycheck.component.css'],
 })
-export class PaycheckComponent implements OnInit {
-  paychecks = signal<Paycheck[]>([]);
-
-  payDate: string = '';
-  amount: number = 0;
+export class PaycheckComponent  {
+  private fb = inject(FormBuilder);
   paycheckService = inject(PaycheckService);
+  loginService = inject(LoginService);
+  paychecks = signal<Paycheck[]>([]);
   errorMessage = signal<string | null>(null);
   successMessage = signal<string | null>(null);
-  loginService = inject(LoginService);
-
   currentUserId = computed(() => this.loginService.userId());
+  private deletePaycheckIdTemp: number | null = null;
 
-  ngOnInit(): void {
-    console.log(this.paychecksInfo.value());
-  }
 
-  // loadPaychecks(): void {
-  //   this.paycheckService.getPaychecks(this.currentUserId() ?? 0).subscribe({
-  //     next: (data) => this.paychecks.set(data),
-
-  //     error: (err) => console.error('Error loading paychecks', err),
-  //   });
-  // }
+  paycheck = this.fb.group({
+    payDate: ['', Validators.required],
+    amount: [0, Validators.required],
+  });
 
   paychecksInfo = resource({
     loader: () => this.paycheckService.getPaychecks(this.currentUserId() ?? 0),
   });
 
   async addPaycheck(): Promise<void> {
+    const formValue = this.paycheck.value;
+    if (!formValue.payDate || isNaN(new Date(formValue.payDate).getTime())) {
+      this.errorMessage.set('Please enter a valid pay date.');
+      setTimeout(() => this.errorMessage.set(null), 4000);
+      return;
+    }
+    if (!formValue.amount || formValue.amount <= 0) {
+      this.errorMessage.set('Please enter a valid paycheck amount.');
+      setTimeout(() => this.errorMessage.set(null), 4000);
+      return;
+    }
+    const newPaycheck: Paycheck = {
+      id: 0,
+      userId: this.currentUserId() ?? 0,
+      payDate: formValue.payDate,
+      amount: formValue.amount,
+      paycheck1: 0,
+      paycheck2: 0,
+      totalBalance: 0,
+    };
     try {
-      if (!this.payDate || isNaN(new Date(this.payDate).getTime())) {
-        this.errorMessage.set('Please enter a valid pay date.');
-        setTimeout(() => {
-          this.errorMessage.set(null);
-        }, 4000);
-        return;
-      }
-
-      if (!this.amount || this.amount <= 0) {
-        this.errorMessage.set('Please enter a valid paycheck amount.');
-        setTimeout(() => {
-          this.errorMessage.set(null);
-        }, 4000);
-        return;
-      }
-      const newPaycheck: Paycheck = {
-        id: 0,
-        userId: this.currentUserId() ?? 0,
-        payDate: this.payDate,
-        amount: this.amount,
-        expenses: [],
-        paycheck1: 0,
-        paycheck2: 0,
-      };
-
-      await this.paycheckService.createPaycheck(
-        this.currentUserId() ?? 0,
-        newPaycheck
-      );
+      await this.paycheckService.createPaycheck(this.currentUserId() ?? 0, newPaycheck);
+      this.paychecksInfo.reload();
+      this.successMessage.set('Paycheck created successfully!');
+      setTimeout(() => this.successMessage.set(null), 4000);
+      this.paycheck.reset();
     } catch (error) {
       this.errorMessage.set('Error creating paycheck: ' + error);
       console.error('Error creating paycheck', error);
-    } finally {
-      this.paychecksInfo.reload();
-      this.successMessage.set('Paycheck created successfully!');
-      setTimeout(() => {
-        this.successMessage.set(null);
-      }, 4000);
-      this.payDate = '';
-      this.amount = 0;
     }
   }
+
   async deletePaycheck(id: number): Promise<void> {
     try {
       await this.paycheckService.deletePaycheck(id);
@@ -97,4 +79,41 @@ export class PaycheckComponent implements OnInit {
       console.error('Error deleting paycheck', error);
     }
   }
+ 
+
+
+
+
+  private deletePaycheckModal: any;
+
+  openDeletePaycheckModal(paycheckId: number) {
+    this.deletePaycheckIdTemp = paycheckId;
+
+    const modalElement = document.getElementById('deletePaycheckModal');
+    if (modalElement) {
+      this.deletePaycheckModal = new bootstrap.Modal(modalElement);
+      this.deletePaycheckModal.show();
+    }
+  }
+
+  async deletePaycheckConfirm(): Promise<void> {
+    if (this.deletePaycheckIdTemp !== null) {
+      try {
+        await this.paycheckService.deletePaycheck(this.deletePaycheckIdTemp);
+
+        // ✅ Close the modal AFTER success
+        if (this.deletePaycheckModal) {
+          this.deletePaycheckModal.hide();
+        }
+
+        // ✅ Also refresh your paychecks list if needed
+        // this.loadPaychecks();
+      } catch (err) {
+        console.error('Error deleting paycheck', err);
+      } finally { 
+        this.paychecksInfo.reload()
+      }
+    }
+  }
+
 }

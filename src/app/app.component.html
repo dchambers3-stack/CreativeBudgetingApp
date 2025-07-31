@@ -38,11 +38,7 @@
             >Expenses</a
           >
         </li>
-        <li class="nav-item">
-          <a class="nav-link pointer" (click)="navigateToRecurringExpenses()"
-            >Recurring Expenses</a
-          >
-        </li>
+
         <li class="nav-item">
           <a class="nav-link pointer" (click)="navigateToPaycheck()"
             >Paychecks</a
@@ -65,6 +61,11 @@
           <a class="nav-link pointer" (click)="navigateToLogin()">Login</a>
         </li>
         }
+        <li class="nav-item">
+          <a class="nav-link pointer" (click)="navigateToCreateTicket()">
+            Need assistance?</a
+          >
+        </li>
       </ul>
 
       <ul class="navbar-nav ms-auto">
@@ -101,16 +102,6 @@
     </div>
   </div>
 </nav>
+
 }
 <router-outlet></router-outlet>
-@if(!isLoggedIn){
-<div class="login-message">
-  <p>
-    You are already logged in. Please click the button below to go to your
-    Dashboard.
-  </p>
-  <button class="btn btn-primary go-dashboard-btn" (click)="navigateToHome()">
-    Go to Dashboard
-  </button>
-</div>
-}

@@ -54,4 +54,7 @@ export class AppComponent {
   navigateToRecurringExpenses(): void {
     this.router.navigate(['/recurring-expenses']);
   }
+  navigateToCreateTicket(): void {
+    this.router.navigate(['/create-ticket']);
+  }
 }

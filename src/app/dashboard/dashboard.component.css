@@ -1,12 +1,99 @@
-.btn-disabled {
-    background-color: #d6d6d6 !important;
-    border-color: #d6d6d6 !important;
-    color: #a2a2a2 !important;
-    cursor: not-allowed;
-  }
-
-  .expenses-center {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 40px;
-  }
+body {
+  background-color: #f5f5f5;
+  color: #333;
+  transition: background-color 0.3s ease;
+}
+.dark-mode body {
+  color: #fff;
+}
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+.card-header {
+  border-radius: 12px 12px 0 0;
+  font-weight: 600;
+}
+.btn-gradient-green {
+  background: linear-gradient(90deg, #28a745, #34c759);
+  color: white;
+  border: none;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.btn-gradient-green:hover {
+  background: linear-gradient(90deg, #218838, #2eb54f);
+  transform: translateY(-2px);
+}
+.btn-gradient-gray {
+  background: linear-gradient(90deg, #6c757d, #adb5bd);
+  color: white;
+  border: none;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.btn-gradient-gray:hover {
+  background: linear-gradient(90deg, #5c636a, #9ca3af);
+  transform: translateY(-2px);
+}
+.btn-gradient-red {
+  background: linear-gradient(90deg, #dc3545, #ff4d4d);
+  color: white;
+  border: none;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+.btn-gradient-red:hover {
+  background: linear-gradient(90deg, #c82333, #e63946);
+  transform: translateY(-2px);
+}
+.accordion-button {
+  border-radius: 8px !important;
+  transition: background-color 0.3s ease;
+}
+.accordion-button:not(.collapsed) {
+  background: linear-gradient(90deg, #e9ecef, #f8f9fa);
+  color: #333;
+}
+.dark-mode .accordion-button:not(.collapsed) {
+  color: #fff;
+}
+.accordion-item {
+  border: none;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.modal-content {
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+.modal-header {
+  border-radius: 12px 12px 0 0;
+}
+.alert {
+  border-radius: 8px;
+  animation: fadeIn 0.3s ease-out;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.expenses-center {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+.expenses-center div {
+  background: #f8f9fa;
+  padding: 12px;
+  border-radius: 8px;
+  transition: background 0.3s ease;
+}
+.expenses-center div:hover {
+  background: #e9ecef;
+}

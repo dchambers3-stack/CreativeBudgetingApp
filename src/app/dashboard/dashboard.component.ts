@@ -3,13 +3,11 @@ import {
   computed,
   effect,
   inject,
-  OnInit,
   resource,
   signal,
 } from '@angular/core';
 import { BudgetService } from '../budget.service';
 import { DashboardDto } from '../../models/dashboard-dto.type';
-
 import { LoginService } from '../login.service';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
@@ -19,7 +17,7 @@ import { PaycheckService } from '../services/paycheck.service';
 import { Paycheck } from '../../models/paycheck.type';
 import { ExpenseResponse } from '../../models/expense-response.typ';
 import { MarkExpenseAsPaidDto } from '../../models/mark-expense-as-paid.type';
-import { CategoryEnum } from '../../models/category-enum';
+import { BudgetPeriod } from '../../models/budget-period';
 declare var bootstrap: any;
 
 @Component({
@@ -36,18 +34,12 @@ export class DashboardComponent {
   private deleteExpenseId: number | null = null;
   private deletePaycheckIdTemp: number | null = null;
   dashboardData = signal<DashboardDto | null>(null);
-  paychecks = signal<Paycheck[]>([]);
-  deleteExpensePaycheckId: number | null = null;
   personalInfo = signal<AddPersonalInfoDto | null>(null);
-  categoryEnum = CategoryEnum;
-
-  modalPayType: number = 1;
   modalPayAmount: number | null = null;
-  editingPaycheck: 1 | 2 | null = null;
-  expensesByPaycheck: { [key: number]: ExpenseResponse[] } = {};
   modalPaycheckId: number | null = null;
-  pcks: Paycheck[] = [];
   showAlert = signal<boolean>(false);
+  private userId = this.loginService.userId();
+  
 
   openEditModal(paycheckId: number) {
     const paychecks = this.paychecksInfo.value();
@@ -57,6 +49,12 @@ export class DashboardComponent {
       this.modalPaycheckId = paycheckId;
     }
   }
+ 
+
+  budgetPeriod = resource({
+    request: () => this.userId ?? 0,
+    loader: async ({request}) => this.budgetService.getBudgetPeriodByUserId(request)
+  });
 
   dashboardInfo = resource({
     loader: () =>
@@ -64,99 +62,87 @@ export class DashboardComponent {
   });
 
   paychecksInfo = resource({
-    loader: () =>
-      this.paycheckService.getPaychecks(this.loginService.userId()!),
+    request: () => this.loginService.userId() ?? 0
+    ,
+    loader: ({ request }) => {
+      if (request) {
+        return this.paycheckService.getPaychecksForBudget(request);
+      } else {
+        return Promise.resolve([]);
+      }
+    }
   });
 
+
   constructor() {
-    effect(() => console.log(this.paychecksInfo.value()));
+    // Set initial selected budget period
+    effect(() => {
+      const currentPeriod = this.budgetPeriod.value();
+      const allPeriods = this.allBudgetPeriods.value();
+      
+      // If we have a current period and no selection, use it
+      if (currentPeriod && currentPeriod.id > 0 && (!this.selectedBudgetPeriodId() || this.selectedBudgetPeriodId() === 0)) {
+        this.selectedBudgetPeriodId.set(currentPeriod.id);
+      }
+      // If we have all periods but no current period and no selection, use the first one
+      else if (allPeriods && allPeriods.length > 0 && allPeriods[0].id > 0 && (!this.selectedBudgetPeriodId() || this.selectedBudgetPeriodId() === 0)) {
+        this.selectedBudgetPeriodId.set(allPeriods[0].id);
+      }
+    });
+
+    // Additional effect to handle when allBudgetPeriods loads
+    effect(() => {
+      const allPeriods = this.allBudgetPeriods.value();
+      if (allPeriods && allPeriods.length > 0 && (!this.selectedBudgetPeriodId() || this.selectedBudgetPeriodId() === 0)) {
+        this.selectedBudgetPeriodId.set(allPeriods[0].id);
+      }
+    });
+
+    // Call manual initialization
+    this.initializeBudgetPeriod();
   }
 
   readonly totalIncome = computed(() => {
     const paychecks = this.paychecksInfo.value();
     return paychecks?.reduce((sum, p) => sum + (p.amount || 0), 0);
   });
-  
+
+  expenses = resource({
+    request: () => this.userId ?? 0,
+    loader: ({request}) => this.budgetService.getExpenses(request)
+  });
+
   readonly totalExpenses = computed(() => {
-    const paychecks = this.paychecksInfo.value();
-    return (
-      paychecks?.reduce(
-        (sum, p) =>
-          sum +
-          (p.expenses?.reduce((eSum, e) => eSum + (e.payment || 0), 0) || 0),
-        0
-      ) || 0
-    );
+    const expenses = this.expenses.value();
+    return expenses?.reduce((sum, e) => sum + (e.payment || 0), 0) || 0;
   });
 
   readonly remainingBudget = computed(
     () => (this.totalIncome() || 0) - (this.totalExpenses() || 0)
   );
 
-  // Calculate total expenses for each paycheck
-  readonly paycheckExpenseTotals = computed(() => {
-    const paychecks = this.paychecksInfo.value();
-    if (!paychecks) return {};
-    
-    const totals: { [paycheckId: number]: number } = {};
-    
-    paychecks.forEach(paycheck => {
-      const total = paycheck.expenses?.reduce((sum, expense) => sum + (expense.payment || 0), 0) || 0;
-      totals[paycheck.id] = total;
-    });
-    
-    return totals;
-  });
-
-  // Calculate remaining budget for each paycheck
-  readonly paycheckRemainingBudget = computed(() => {
-    const paychecks = this.paychecksInfo.value();
-    const expenseTotals = this.paycheckExpenseTotals();
-    
-    if (!paychecks) return {};
-    
-    const remaining: { [paycheckId: number]: number } = {};
-    
-    paychecks.forEach(paycheck => {
-      const totalExpenses = expenseTotals[paycheck.id] || 0;
-      remaining[paycheck.id] = (paycheck.amount || 0) - totalExpenses;
-    });
-    
-    return remaining;
-  });
-
-  // Get total paid expenses
   readonly totalPaidExpenses = computed(() => {
-    const paychecks = this.paychecksInfo.value();
-    return (
-      paychecks?.reduce(
-        (sum, p) =>
-          sum +
-          (p.expenses?.reduce((eSum, e) => eSum + (e.isPaid ? (e.payment || 0) : 0), 0) || 0),
-        0
-      ) || 0
-    );
+    const expenses = this.expenses.value();
+    return expenses?.reduce((sum, e) => sum + (e.isPaid ? (e.payment || 0) : 0), 0) || 0;
   });
 
-  // Get total unpaid expenses
   readonly totalUnpaidExpenses = computed(() => {
-    const paychecks = this.paychecksInfo.value();
-    return (
-      paychecks?.reduce(
-        (sum, p) =>
-          sum +
-          (p.expenses?.reduce((eSum, e) => eSum + (!e.isPaid ? (e.payment || 0) : 0), 0) || 0),
-        0
-      ) || 0
-    );
+    const expenses = this.expenses.value();
+    return expenses?.reduce((sum, e) => sum + (!e.isPaid ? (e.payment || 0) : 0), 0) || 0;
   });
+  
+  
 
-  // Helper method to get paid expenses count for a paycheck
-  getPaidExpensesCount(paycheckId: number): number {
-    const paychecks = this.paychecksInfo.value();
-    const paycheck = paychecks?.find(p => p.id === paycheckId);
-    return paycheck?.expenses?.filter(e => e.isPaid).length || 0;
-  }
+ 
+
+ 
+
+  
+
+  
+ 
+
+  
 
   async editPay(): Promise<void> {
     try {
@@ -181,24 +167,7 @@ export class DashboardComponent {
     }
   }
 
-  updateRemainingBudget() {
-    const paychecks = this.paychecks();
-    const totalIncome = paychecks.reduce((sum, p) => sum + (p.amount || 0), 0);
-
-    const totalExpenses = paychecks.reduce((expenseSum, p) => {
-      const paycheckExpenses =
-        p.expenses?.reduce((eSum, e) => eSum + (e.payment || 0), 0) || 0;
-      return expenseSum + paycheckExpenses;
-    }, 0);
-
-    const remainingBudget = totalIncome - totalExpenses;
-
-    this.dashboardData.update((current) => ({
-      ...current!,
-      expenses: totalExpenses,
-      remainingBudget: remainingBudget,
-    }));
-  }
+  
 
   navigateToPersonalInfo() {
     this.router.navigate(['/pay-info']);
@@ -243,7 +212,7 @@ export class DashboardComponent {
     if (this.deleteExpenseId !== null) {
       this.budgetService.deleteExpenses(this.deleteExpenseId).subscribe({
         next: (data) => {
-          this.paychecksInfo.reload();
+          this.expenses.reload();
         },
         error: (error) => {
           console.error('Error deleting expense', error);
@@ -254,27 +223,73 @@ export class DashboardComponent {
   async markExpenseAsPaid(expenseId: number): Promise<void> {
     try {
       const dto: MarkExpenseAsPaidDto = { isPaid: true };
-
       await this.budgetService.markExpenseAsPaid(expenseId, dto);
     } catch (error) {
-      console.log('Expense marked as paid:', error);
+      console.error('Error marking expense as paid:', error);
     } finally {
-      // Also refresh from server
-      this.paychecksInfo.reload();
+      this.expenses.reload();
     }
   }
+
+
 
   handleDeletePaycheck(paycheck: any) {
     this.openDeletePaycheckModal(paycheck.id);
   }
 
   showExpenseWarningAlert() {
-    console.log('showExpenseWarningAlert called');
     this.showAlert.set(true);
-
-    // Hide after 3 seconds
     setTimeout(() => {
       this.showAlert.set(false);
     }, 8000);
+  }
+
+  async createNewBudgetPeriod(): Promise<void>{
+    try{
+      const result = await this.budgetService.startNewBudgetPeriod(this.userId ?? 0);
+      
+      // Set the newly created budget period as selected
+      if (result.budgetId) {
+        this.selectedBudgetPeriodId.set(result.budgetId);
+      }
+      
+    } catch(err){
+      console.error('Error creating new budget period:', err);
+    } finally {
+      this.budgetPeriod.reload();
+      this.allBudgetPeriods.reload();
+    }
+  }
+
+  allBudgetPeriods = resource({
+    request: () => this.userId ?? 0,
+    loader: ({ request }) => this.budgetService.getAllBudgetPeriods(request)
+  });
+  
+  // Selected budget period ID
+  selectedBudgetPeriodId = signal<number | null>(null);
+
+  onBudgetPeriodChange(newValue: number) {
+    if (newValue && newValue > 0) {
+      this.selectedBudgetPeriodId.set(newValue);
+      this.paychecksInfo.reload();
+    } else {
+      console.warn('Invalid budget period ID:', newValue);
+    }
+  }
+
+  private initializeBudgetPeriod() {
+    setTimeout(() => {
+      const currentPeriod = this.budgetPeriod.value();
+      const allPeriods = this.allBudgetPeriods.value();
+      
+      if (!this.selectedBudgetPeriodId() || this.selectedBudgetPeriodId() === 0) {
+        if (currentPeriod && currentPeriod.id > 0) {
+          this.selectedBudgetPeriodId.set(currentPeriod.id);
+        } else if (allPeriods && allPeriods.length > 0 && allPeriods[0].id > 0) {
+          this.selectedBudgetPeriodId.set(allPeriods[0].id);
+        }
+      }
+    }, 100);
   }
 }

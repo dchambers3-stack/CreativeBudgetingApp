@@ -1,40 +1,27 @@
-import {
-  Component,
-  computed,
-  effect,
-  inject,
-  OnInit,
-  resource,
-  signal,
-} from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, inject, signal, resource } from '@angular/core';
+import { FormBuilder, Validators, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LoginService } from '../login.service';
 import { BudgetService } from '../budget.service';
 import { AddExpenseDto } from '../../models/add-expenses.type';
-import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Category, Subcategory } from '../../models/category.type';
 import { ExpenseResponse } from '../../models/expense-response.typ';
-import { PaycheckService } from '../services/paycheck.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-add-expenses',
-  imports: [FormsModule, DatePipe, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './add-expenses.component.html',
   styleUrls: ['./add-expenses.component.css'],
 })
 export class AddExpensesComponent {
   private loginService = inject(LoginService);
   private budgetService = inject(BudgetService);
-  private paycheckService = inject(PaycheckService);
+  private fb = inject(FormBuilder);
+
   isSuccess = signal(false);
   isError = signal(false);
-  categories = resource({
-    loader: () => this.budgetService.getCategories(),
-  });
+  categories = resource({ loader: () => this.budgetService.getCategories() });
   subcategories = signal<Subcategory[]>([]);
-  paychecks: any[] = [];
-  selectedPaycheckId?: number;
-  private fb = inject(FormBuilder);
 
   expenseForm = this.fb.group({
     id: [0],
@@ -45,29 +32,20 @@ export class AddExpensesComponent {
     dueDate: ['', Validators.required],
     categoryId: [0, Validators.required],
     subcategoryId: [0, Validators.required],
-    paycheckDate: ['', Validators.required],
     isPaid: [false, Validators.required],
   });
 
   expenseList: ExpenseResponse[] = [];
 
-  constructor() {
-    effect(() => console.log(this.categories.value()));
-  }
-
-  paychecksInfo = resource({
-    loader: () =>
-      this.paycheckService.getPaychecks(this.loginService.userId()!),
-  });
-
   addExpense() {
     if (this.expenseForm.invalid) {
-      console.error('Form is invalid');
+      this.isError.set(true);
+      setTimeout(() => this.isError.set(false), 2000);
       return;
     }
     const formValue = this.expenseForm.value;
     const expense: AddExpenseDto = {
-      id: 0, // New expense
+      id: 0,
       userId: formValue.userId ?? 0,
       name: formValue.name ?? '',
       payment: formValue.payment ?? 0,
@@ -75,27 +53,19 @@ export class AddExpensesComponent {
       dueDate: formValue.dueDate ?? '',
       categoryId: formValue.categoryId ?? 0,
       subcategoryId: formValue.subcategoryId ?? 0,
-      paycheckDate: formValue.paycheckDate ?? '',
       isPaid: formValue.isPaid ?? false,
     };
-    console.log('EXPENSES', expense);
-    
     this.budgetService
-      .addExpenses(Number(formValue.paycheckDate ?? 0), expense)
+      .addExpenses(this.loginService.userId() ?? 0, expense)
       .subscribe({
-        next: (data) => {
+        next: () => {
           this.expenseForm.reset();
           this.isSuccess.set(true);
-          setTimeout(() => {
-            this.isSuccess.set(false);
-          }, 2000);
+          setTimeout(() => this.isSuccess.set(false), 2000);
         },
-        error: (error: any) => {
-          console.error('Error adding expense', error);
+        error: () => {
           this.isError.set(true);
-          setTimeout(() => {
-            this.isError.set(false);
-          }, 2000);
+          setTimeout(() => this.isError.set(false), 2000);
         },
       });
   }
@@ -109,14 +79,14 @@ export class AddExpensesComponent {
       dueDate: expense.dueDate,
       categoryId: expense.categoryId,
       subcategoryId: expense.subcategoryId,
-      paycheckDate: expense.paycheckId.toString(),
       isPaid: expense.isPaid,
     });
   }
 
   saveEditedExpense() {
     if (this.expenseForm.invalid) {
-      console.error('Form is invalid');
+      this.isError.set(true);
+      setTimeout(() => this.isError.set(false), 2000);
       return;
     }
     const formValue = this.expenseForm.value;
@@ -129,41 +99,30 @@ export class AddExpensesComponent {
       dueDate: formValue.dueDate ?? '',
       categoryId: formValue.categoryId ?? 0,
       subcategoryId: formValue.subcategoryId ?? 0,
-      paycheckDate: formValue.paycheckDate ?? '',
       isPaid: formValue.isPaid ?? false,
     };
     this.budgetService.editExpenses(expense.userId, expense).subscribe({
-      next: (data) => {
+      next: () => {
         this.expenseForm.reset();
         this.isSuccess.set(true);
-        setTimeout(() => {
-          this.isSuccess.set(false);
-        }, 2000);
+        setTimeout(() => this.isSuccess.set(false), 2000);
       },
-      error: (error) => {
-        console.error('Error editing expense', error);
+      error: () => {
         this.isError.set(true);
-        setTimeout(() => {
-          this.isError.set(false);
-        }, 2000);
+        setTimeout(() => this.isError.set(false), 2000);
       },
     });
   }
 
   deleteExpense(id: number) {
     this.budgetService.deleteExpenses(id).subscribe({
-      next: (data) => {
+      next: () => {
         this.isSuccess.set(true);
-        setTimeout(() => {
-          this.isSuccess.set(false);
-        }, 2000);
+        setTimeout(() => this.isSuccess.set(false), 2000);
       },
-      error: (error) => {
-        console.error('Error deleting expense', error);
+      error: () => {
         this.isError.set(true);
-        setTimeout(() => {
-          this.isError.set(false);
-        }, 2000);
+        setTimeout(() => this.isError.set(false), 2000);
       },
     });
   }
@@ -172,8 +131,8 @@ export class AddExpensesComponent {
     try {
       const data = await this.budgetService.getSubcategoriesByCategory(categoryId);
       this.subcategories.set(data);
-    } catch (error) {
-      console.error('Error fetching subcategories', error);
+    } catch(error) {
+      throw new Error("An error has occurred.")
     }
   }
 

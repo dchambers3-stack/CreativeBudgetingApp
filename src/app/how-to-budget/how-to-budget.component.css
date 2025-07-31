@@ -1,3 +1,3 @@
-.strong-text{
-    color: black;
+.strong-text {
+    color: var(--text-color, #333); /* Adapts to light/dark mode */
 }

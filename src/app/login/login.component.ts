@@ -31,4 +31,7 @@ export class LoginComponent {
       }, 5000);
     }
   }
+  navigateToHome(): void {
+    this.router.navigate(['/dashboard']);
+  }
 }

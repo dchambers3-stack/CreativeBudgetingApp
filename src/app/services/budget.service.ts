@@ -1,16 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, OnInit } from '@angular/core';
-import type { DashboardDto } from '../models/dashboard-dto.type';
+import type { DashboardDto } from '../../models/dashboard-dto.type';
 import { firstValueFrom, lastValueFrom, map, Observable } from 'rxjs';
-import { AddPersonalInfoDto } from '../models/add-personal-info.type';
-import { AddExpenseDto } from '../models/add-expenses.type';
-import { Category, Subcategory } from '../models/category.type';
-import { ExpenseResponse } from '../models/expense-response.typ';
-import { User } from '../models/user.type';
-import { Paycheck } from '../models/paycheck.type';
-import { MarkExpenseAsPaidDto } from '../models/mark-expense-as-paid.type';
-import { RecurringExpenseDto } from '../models/recurring-expense-dto';
-import { BudgetPeriod } from '../models/budget-period';
+import { AddPersonalInfoDto } from '../../models/add-personal-info.type';
+import { AddExpenseDto } from '../../models/add-expenses.type';
+import { Category, Subcategory } from '../../models/category.type';
+import { ExpenseResponse } from '../../models/expense-response.typ';
+import { User } from '../../models/user.type';
+import { Paycheck } from '../../models/paycheck.type';
+import { MarkExpenseAsPaidDto } from '../../models/mark-expense-as-paid.type';
+import { RecurringExpenseDto } from '../../models/recurring-expense-dto';
+import { BudgetPeriod } from '../../models/budget-period';
+import { SavingsDto } from '../../models/savings-dto.type';
 
 @Injectable({
   providedIn: 'root',
@@ -94,7 +95,7 @@ export class BudgetService {
       this.http.get<AddExpenseDto>(`${this.apiUrl}/expense/${id}`)
     );
   }
-  
+
   async getRecurringExpenses(userId: number): Promise<RecurringExpenseDto[]> {
     return await firstValueFrom(
       this.http.get<RecurringExpenseDto[]>(
@@ -105,7 +106,7 @@ export class BudgetService {
   async deleteRecurringExpense(id: string): Promise<void> {
     return await firstValueFrom(
       this.http.delete<void>(`${this.apiUrl}/recurring-expense/${id}`)
-    )
+    );
   }
   async uploadProfilePicture(userId: number, file: File): Promise<void> {
     const formData = new FormData();
@@ -117,7 +118,9 @@ export class BudgetService {
   async getProfilePicture(userId: number): Promise<Blob> {
     const timestamp = new Date().getTime();
     return await firstValueFrom(
-      this.http.get(`${this.apiUrl}/${userId}/profile-picture?t=${timestamp}`, { responseType: 'blob' })
+      this.http.get(`${this.apiUrl}/${userId}/profile-picture?t=${timestamp}`, {
+        responseType: 'blob',
+      })
     );
   }
   async updateProfilePicture(userId: number, file: File): Promise<void> {
@@ -127,7 +130,9 @@ export class BudgetService {
       this.http.put<void>(`${this.apiUrl}/profile-picture/${userId}`, formData)
     );
   }
-  async startNewBudgetPeriod(userId: number): Promise<{ message: string; budgetId: number }> {
+  async startNewBudgetPeriod(
+    userId: number
+  ): Promise<{ message: string; budgetId: number }> {
     return await firstValueFrom(
       this.http.post<{ message: string; budgetId: number }>(
         `${this.apiUrl}/${userId}/start-new-budget-period`,
@@ -143,6 +148,31 @@ export class BudgetService {
   async getAllBudgetPeriods(userId: number): Promise<BudgetPeriod[]> {
     return await firstValueFrom(
       this.http.get<BudgetPeriod[]>(`${this.apiUrl}/${userId}/budget-periods`)
+    );
+  }
+  async getSavingsAmount(userId: number): Promise<SavingsDto> {
+    return await firstValueFrom(
+      this.http.get<SavingsDto>(`${this.apiUrl}/${userId}/savings`)
+    );
+  }
+  async addSavingsAmount(userId: number, amount: number): Promise<SavingsDto> {
+    const url = `${this.apiUrl}/savings/${userId}`;
+    const body = { amount }; // Send { "amount": number }
+
+    try {
+      return await firstValueFrom(this.http.post<SavingsDto>(url, body));
+    } catch (error) {
+      console.error('Error adding savings:', error);
+      throw error; // Rethrow for component to handle
+    }
+  }
+  async deductSavingsAmount(
+    userId: number,
+    amount: number
+  ): Promise<SavingsDto> {
+    const body = { amount };
+    return await firstValueFrom(
+      this.http.put<SavingsDto>(`${this.apiUrl}/savings/${userId}`, body)
     );
   }
 }

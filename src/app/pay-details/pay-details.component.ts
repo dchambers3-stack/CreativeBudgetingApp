@@ -1,6 +1,6 @@
 import { Component, computed, inject, output } from '@angular/core';
-import { LoginService } from '../login.service';
-import { BudgetService } from '../budget.service';
+import { LoginService } from '../services/login.service';
+import { BudgetService } from '../services/budget.service';
 import { AddPersonalInfoDto } from '../../models/add-personal-info.type';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';

@@ -7,6 +7,7 @@ import { HowToBudgetComponent } from './how-to-budget/how-to-budget.component';
 import { RegisterComponent } from './register/register.component';
 import { PaycheckComponent } from './paycheck/paycheck.component';
 import { CreateTicketComponent } from './create-ticket/create-ticket.component';
+import { MyTicketsComponent } from './my-tickets/my-tickets.component';
 
 export const routes: Routes = [
   {
@@ -21,4 +22,5 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'paychecks', component: PaycheckComponent },
   { path: 'create-ticket', component: CreateTicketComponent },
+  { path: 'tickets', component: MyTicketsComponent },
 ];

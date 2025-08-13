@@ -16,12 +16,11 @@ export class PaycheckService {
       this.http.get<Paycheck[]>(`${this.apiUrl}/${userId}`)
     );
   }
-  async getPaychecksForBudget( userId: number): Promise<Paycheck[]> {
+  async getPaychecksForBudget(userId: number): Promise<Paycheck[]> {
     return await firstValueFrom(
       this.http.get<Paycheck[]>(`${this.apiUrl}/${userId}/budget`)
     );
   }
- 
 
   async createPaycheck(userId: number, paycheck: Paycheck): Promise<Paycheck> {
     const requestBody = {

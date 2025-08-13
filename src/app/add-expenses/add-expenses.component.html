@@ -14,64 +14,6 @@
       </div>
       }
       <form [formGroup]="expenseForm">
-        
-        
-
-        <div class="mb-3">
-          <label for="name" class="form-label">
-            Expense Name: <span class="text-danger">*</span>
-          </label>
-          <input
-            type="text"
-            formControlName="name"
-            name="name"
-            id="name"
-            class="form-control"
-            required
-          />
-        </div>
-
-        <div class="mb-3">
-          <label for="payment" class="form-label">
-            Monthly Payment: <span class="text-danger">*</span>
-          </label>
-          <input
-            type="number"
-            formControlName="payment"
-            name="payment"
-            id="payment"
-            class="form-control"
-            required
-          />
-        </div>
-        <div class="mb-3">
-          <label for="payment" class="form-label">
-            Total Balance: 
-          </label>
-          <input
-            type="number"
-            formControlName="totalBalance"
-            name="payment"
-            id="payment"
-            class="form-control"
-            required
-          />
-        </div>
-
-        <div class="mb-3">
-          <label for="dueDate" class="form-label">
-            Due Date: <span class="text-danger">*</span>
-          </label>
-          <input
-            type="date"
-            formControlName="dueDate"
-            name="dueDate"
-            id="dueDate"
-            class="form-control"
-            required
-          />
-        </div>
-
         <div class="mb-3">
           <label for="category" class="form-label">
             Category: <span class="text-danger">*</span>
@@ -81,7 +23,9 @@
             name="categoryId"
             id="category"
             class="form-select"
-            (change)="selectCategory(this.expenseForm.get('categoryId')?.value ?? 0)"
+            (change)="
+              selectCategory(this.expenseForm.get('categoryId')?.value ?? 0)
+            "
             required
           >
             @for (category of this.categories.value(); track $index) {
@@ -89,6 +33,7 @@
             }
           </select>
         </div>
+        @if(expenseForm.controls.categoryId.value != 10) {
 
         <div class="mb-3">
           <label for="subcategory" class="form-label">
@@ -99,15 +44,74 @@
             name="subcategoryId"
             id="subcategory"
             class="form-select"
-            required
           >
             @for (subcategory of subcategories(); track $index) {
-            <option [value]="subcategory.id">{{ subcategory.name }}</option>
+            <option [value]="subcategory.id">
+              {{ subcategory.name }}
+            </option>
             }
           </select>
         </div>
+        <div class="mb-3">
+          <label for="name" class="form-label">
+            Expense Name: <span class="text-danger">*</span>
+          </label>
+          <input
+            type="text"
+            formControlName="name"
+            name="name"
+            id="name"
+            class="form-control"
+          />
+        </div>
+        }
 
-        <button (click)="addExpense()" class="btn btn-success w-100">Add Expense</button>
+        <div class="mb-3">
+          <label for="payment" class="form-label">
+            {{
+              expenseForm.controls.categoryId.value == 10
+                ? "Amount"
+                : "Payment"
+            }}: <span class="text-danger">*</span>
+          </label>
+          <input
+            type="number"
+            formControlName="payment"
+            name="payment"
+            id="payment"
+            class="form-control"
+            required
+          />
+        </div>
+        @if(expenseForm.controls.categoryId.value != 10) {
+
+        <div class="mb-3">
+          <label for="payment" class="form-label"> Total Balance: </label>
+          <input
+            type="number"
+            formControlName="totalBalance"
+            name="payment"
+            id="payment"
+            class="form-control"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="dueDate" class="form-label">
+            Due Date: <span class="text-danger">*</span>
+          </label>
+          <input
+            type="date"
+            formControlName="dueDate"
+            name="dueDate"
+            id="dueDate"
+            class="form-control"
+          />
+        </div>
+        }
+
+        <button (click)="addExpense()" class="btn btn-success w-100">
+          Add Expense
+        </button>
       </form>
     </div>
   </div>

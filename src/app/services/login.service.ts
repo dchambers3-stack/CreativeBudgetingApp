@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom, Observable, single, tap } from 'rxjs';
-import { DashboardDto } from '../models/dashboard-dto.type';
-import { User } from '../models/user.type';
+import { DashboardDto } from '../../models/dashboard-dto.type';
+import { User } from '../../models/user.type';
 
 @Injectable({
   providedIn: 'root',

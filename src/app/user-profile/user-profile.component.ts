@@ -1,6 +1,6 @@
 import { Component, inject, signal, OnInit, OnDestroy } from '@angular/core';
-import { BudgetService } from '../budget.service';
-import { LoginService } from '../login.service';
+import { BudgetService } from '../services/budget.service';
+import { LoginService } from '../services/login.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -113,7 +113,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     if (this.selectedFile) {
       try {
         this.isLoading.set(true);
-    
 
         await this.budgetService.updateProfilePicture(
           this.currentUser ?? 0,

@@ -1,0 +1,39 @@
+<table class="table table-bordered table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Ticket #</th>
+      <th>Subject</th>
+      <th>Customer Name</th>
+      <th>Customer Email</th>
+      <th>Message</th>
+      <th>Ticket Severity</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    @for(ticket of this.tickets.value(); track $index){
+
+    <tr>
+      <td>
+        <a href="#">{{ ticket.id }}</a>
+      </td>
+      <td>{{ ticket.subject }}</td>
+      <td>{{ ticket.name }}</td>
+      <td>{{ ticket.email }}</td>
+      <td>{{ ticket.message }}</td>
+      <td [style.color]="getSeverityColor(ticket.ticketSeverityId)">
+        {{ getSeverityName(ticket.ticketSeverityId) }}
+      </td>
+      <td>
+        <button
+          [disabled]="ticket.isResolved"
+          (click)="resolveTicket(ticket.id)"
+          class="btn btn-primary"
+        >
+          {{ ticket.isResolved ? "Resolved" : "Resolve" }}
+        </button>
+      </td>
+    </tr>
+    }
+  </tbody>
+</table>

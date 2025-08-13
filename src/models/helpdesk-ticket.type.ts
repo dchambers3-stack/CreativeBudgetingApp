@@ -5,4 +5,6 @@ export type HelpdeskTicket = {
   subject: string;
   ticketSeverityId: number;
   message: string;
+  ticketSeverityName?: string;
+  isResolved?: boolean;
 };

@@ -8,18 +8,23 @@ import {
 } from '@angular/core';
 import { PaycheckService } from '../services/paycheck.service';
 import { CurrencyPipe, DatePipe } from '@angular/common';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Paycheck } from '../../models/paycheck.type';
-import { LoginService } from '../login.service';
+import { LoginService } from '../services/login.service';
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-paycheck',
   templateUrl: './paycheck.component.html',
-  imports: [ FormsModule, ReactiveFormsModule, CurrencyPipe, DatePipe],
+  imports: [FormsModule, ReactiveFormsModule, CurrencyPipe, DatePipe],
   styleUrls: ['./paycheck.component.css'],
 })
-export class PaycheckComponent  {
+export class PaycheckComponent {
   private fb = inject(FormBuilder);
   paycheckService = inject(PaycheckService);
   loginService = inject(LoginService);
@@ -28,7 +33,6 @@ export class PaycheckComponent  {
   successMessage = signal<string | null>(null);
   currentUserId = computed(() => this.loginService.userId());
   private deletePaycheckIdTemp: number | null = null;
-
 
   paycheck = this.fb.group({
     payDate: ['', Validators.required],
@@ -61,7 +65,10 @@ export class PaycheckComponent  {
       totalBalance: 0,
     };
     try {
-      await this.paycheckService.createPaycheck(this.currentUserId() ?? 0, newPaycheck);
+      await this.paycheckService.createPaycheck(
+        this.currentUserId() ?? 0,
+        newPaycheck
+      );
       this.paychecksInfo.reload();
       this.successMessage.set('Paycheck created successfully!');
       setTimeout(() => this.successMessage.set(null), 4000);
@@ -79,10 +86,6 @@ export class PaycheckComponent  {
       console.error('Error deleting paycheck', error);
     }
   }
- 
-
-
-
 
   private deletePaycheckModal: any;
 
@@ -110,10 +113,9 @@ export class PaycheckComponent  {
         // this.loadPaychecks();
       } catch (err) {
         console.error('Error deleting paycheck', err);
-      } finally { 
-        this.paychecksInfo.reload()
+      } finally {
+        this.paychecksInfo.reload();
       }
     }
   }
-
 }

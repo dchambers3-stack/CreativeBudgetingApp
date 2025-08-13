@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { LoginService } from './login.service';
+import { LoginService } from './services/login.service';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 
@@ -56,5 +56,8 @@ export class AppComponent {
   }
   navigateToCreateTicket(): void {
     this.router.navigate(['/create-ticket']);
+  }
+  navigateToMyTickets(): void {
+    this.router.navigate(['/tickets']);
   }
 }

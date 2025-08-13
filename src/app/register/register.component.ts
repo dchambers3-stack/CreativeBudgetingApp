@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { LoginService } from '../login.service';
+import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { BudgetService } from '../budget.service';
+import { BudgetService } from '../services/budget.service';
 import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({

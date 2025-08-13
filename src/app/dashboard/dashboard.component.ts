@@ -6,40 +6,48 @@ import {
   resource,
   signal,
 } from '@angular/core';
-import { BudgetService } from '../budget.service';
+import { BudgetService } from '../services/budget.service';
 import { DashboardDto } from '../../models/dashboard-dto.type';
-import { LoginService } from '../login.service';
+import { LoginService } from '../services/login.service';
 import { Router } from '@angular/router';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { AddPersonalInfoDto } from '../../models/add-personal-info.type';
-import { FormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { PaycheckService } from '../services/paycheck.service';
 import { Paycheck } from '../../models/paycheck.type';
 import { ExpenseResponse } from '../../models/expense-response.typ';
 import { MarkExpenseAsPaidDto } from '../../models/mark-expense-as-paid.type';
-import { BudgetPeriod } from '../../models/budget-period';
+import { SavingsDto } from '../../models/savings-dto.type';
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CurrencyPipe, FormsModule, CommonModule],
+  imports: [CurrencyPipe, FormsModule, CommonModule, ReactiveFormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent {
+  private formBuilder = inject(FormBuilder);
   private paycheckService = inject(PaycheckService);
   private budgetService = inject(BudgetService);
   private loginService = inject(LoginService);
   private router = inject(Router);
   private deleteExpenseId: number | null = null;
   private deletePaycheckIdTemp: number | null = null;
+  selectedExpense: any = null;
   dashboardData = signal<DashboardDto | null>(null);
   personalInfo = signal<AddPersonalInfoDto | null>(null);
   modalPayAmount: number | null = null;
   modalPaycheckId: number | null = null;
   showAlert = signal<boolean>(false);
   private userId = this.loginService.userId();
-  
+  currentMonthName = signal<string | null>(null);
+  isLoading = signal<boolean>(false);
 
   openEditModal(paycheckId: number) {
     const paychecks = this.paychecksInfo.value();
@@ -49,12 +57,6 @@ export class DashboardComponent {
       this.modalPaycheckId = paycheckId;
     }
   }
- 
-
-  budgetPeriod = resource({
-    request: () => this.userId ?? 0,
-    loader: async ({request}) => this.budgetService.getBudgetPeriodByUserId(request)
-  });
 
   dashboardInfo = resource({
     loader: () =>
@@ -62,44 +64,34 @@ export class DashboardComponent {
   });
 
   paychecksInfo = resource({
-    request: () => this.loginService.userId() ?? 0
-    ,
+    request: () => this.loginService.userId() ?? 0,
     loader: ({ request }) => {
       if (request) {
         return this.paycheckService.getPaychecksForBudget(request);
       } else {
         return Promise.resolve([]);
       }
-    }
+    },
   });
 
-
   constructor() {
-    // Set initial selected budget period
-    effect(() => {
-      const currentPeriod = this.budgetPeriod.value();
-      const allPeriods = this.allBudgetPeriods.value();
-      
-      // If we have a current period and no selection, use it
-      if (currentPeriod && currentPeriod.id > 0 && (!this.selectedBudgetPeriodId() || this.selectedBudgetPeriodId() === 0)) {
-        this.selectedBudgetPeriodId.set(currentPeriod.id);
-      }
-      // If we have all periods but no current period and no selection, use the first one
-      else if (allPeriods && allPeriods.length > 0 && allPeriods[0].id > 0 && (!this.selectedBudgetPeriodId() || this.selectedBudgetPeriodId() === 0)) {
-        this.selectedBudgetPeriodId.set(allPeriods[0].id);
-      }
-    });
+    // Get current month name
+    const today = new Date();
+    this.currentMonthName.set(
+      today.toLocaleString('default', { month: 'long' })
+    );
 
     // Additional effect to handle when allBudgetPeriods loads
     effect(() => {
       const allPeriods = this.allBudgetPeriods.value();
-      if (allPeriods && allPeriods.length > 0 && (!this.selectedBudgetPeriodId() || this.selectedBudgetPeriodId() === 0)) {
+      if (
+        allPeriods &&
+        allPeriods.length > 0 &&
+        (!this.selectedBudgetPeriodId() || this.selectedBudgetPeriodId() === 0)
+      ) {
         this.selectedBudgetPeriodId.set(allPeriods[0].id);
       }
     });
-
-    // Call manual initialization
-    this.initializeBudgetPeriod();
   }
 
   readonly totalIncome = computed(() => {
@@ -109,7 +101,7 @@ export class DashboardComponent {
 
   expenses = resource({
     request: () => this.userId ?? 0,
-    loader: ({request}) => this.budgetService.getExpenses(request)
+    loader: ({ request }) => this.budgetService.getExpenses(request),
   });
 
   readonly totalExpenses = computed(() => {
@@ -123,26 +115,19 @@ export class DashboardComponent {
 
   readonly totalPaidExpenses = computed(() => {
     const expenses = this.expenses.value();
-    return expenses?.reduce((sum, e) => sum + (e.isPaid ? (e.payment || 0) : 0), 0) || 0;
+    return (
+      expenses?.reduce((sum, e) => sum + (e.isPaid ? e.payment || 0 : 0), 0) ||
+      0
+    );
   });
 
   readonly totalUnpaidExpenses = computed(() => {
     const expenses = this.expenses.value();
-    return expenses?.reduce((sum, e) => sum + (!e.isPaid ? (e.payment || 0) : 0), 0) || 0;
+    return (
+      expenses?.reduce((sum, e) => sum + (!e.isPaid ? e.payment || 0 : 0), 0) ||
+      0
+    );
   });
-  
-  
-
- 
-
- 
-
-  
-
-  
- 
-
-  
 
   async editPay(): Promise<void> {
     try {
@@ -167,8 +152,6 @@ export class DashboardComponent {
     }
   }
 
-  
-
   navigateToPersonalInfo() {
     this.router.navigate(['/pay-info']);
   }
@@ -189,6 +172,8 @@ export class DashboardComponent {
 
   openDeleteExpenseModal(expenseId: number) {
     this.deleteExpenseId = expenseId;
+    const expenses = this.expenses.value();
+    this.selectedExpense = expenses?.find((e) => e.id === expenseId);
 
     const deleteExpenseModal = new bootstrap.Modal(
       document.getElementById('deleteExpenseModal')!
@@ -213,6 +198,8 @@ export class DashboardComponent {
       this.budgetService.deleteExpenses(this.deleteExpenseId).subscribe({
         next: (data) => {
           this.expenses.reload();
+          this.selectedExpense = null;
+          this.deleteExpenseId = null;
         },
         error: (error) => {
           console.error('Error deleting expense', error);
@@ -231,8 +218,6 @@ export class DashboardComponent {
     }
   }
 
-
-
   handleDeletePaycheck(paycheck: any) {
     this.openDeletePaycheckModal(paycheck.id);
   }
@@ -244,28 +229,28 @@ export class DashboardComponent {
     }, 8000);
   }
 
-  async createNewBudgetPeriod(): Promise<void>{
-    try{
-      const result = await this.budgetService.startNewBudgetPeriod(this.userId ?? 0);
-      
+  async createNewBudgetPeriod(): Promise<void> {
+    try {
+      const result = await this.budgetService.startNewBudgetPeriod(
+        this.userId ?? 0
+      );
+
       // Set the newly created budget period as selected
       if (result.budgetId) {
         this.selectedBudgetPeriodId.set(result.budgetId);
       }
-      
-    } catch(err){
+    } catch (err) {
       console.error('Error creating new budget period:', err);
     } finally {
-      this.budgetPeriod.reload();
       this.allBudgetPeriods.reload();
     }
   }
 
   allBudgetPeriods = resource({
     request: () => this.userId ?? 0,
-    loader: ({ request }) => this.budgetService.getAllBudgetPeriods(request)
+    loader: ({ request }) => this.budgetService.getAllBudgetPeriods(request),
   });
-  
+
   // Selected budget period ID
   selectedBudgetPeriodId = signal<number | null>(null);
 
@@ -278,18 +263,59 @@ export class DashboardComponent {
     }
   }
 
-  private initializeBudgetPeriod() {
-    setTimeout(() => {
-      const currentPeriod = this.budgetPeriod.value();
-      const allPeriods = this.allBudgetPeriods.value();
-      
-      if (!this.selectedBudgetPeriodId() || this.selectedBudgetPeriodId() === 0) {
-        if (currentPeriod && currentPeriod.id > 0) {
-          this.selectedBudgetPeriodId.set(currentPeriod.id);
-        } else if (allPeriods && allPeriods.length > 0 && allPeriods[0].id > 0) {
-          this.selectedBudgetPeriodId.set(allPeriods[0].id);
-        }
+  savings = resource({
+    request: () => this.loginService.userId() ?? 0,
+    loader: ({ request }) => this.budgetService.getSavingsAmount(request),
+  });
+
+  savingsAmount = this.formBuilder.group({
+    amount: [null, Validators.required],
+  });
+
+  deductSavingsAmount = this.formBuilder.group({
+    amount: [null, Validators.required],
+  });
+
+  async onSubmit(): Promise<void> {
+    this.isLoading.set(true);
+    if (this.savingsAmount.valid) {
+      const amount = this.savingsAmount.get('amount')
+        ?.value as unknown as number;
+      const userId = this.loginService.userId() ?? 0; // Replace with actual user ID (e.g., from auth service)
+
+      try {
+        const result = await this.budgetService.addSavingsAmount(
+          userId,
+          amount
+        );
+        console.log('Savings added:', result);
+        this.savingsAmount.reset(); // Optional: Reset form after successful submission
+      } catch (error) {
+        console.error('Error adding savings:', error);
+        // Handle error (e.g., show error message to user)
+        this.isLoading.set(false);
+      } finally {
+        this.savings.reload();
+        this.expenses.reload();
+        this.isLoading.set(false);
       }
-    }, 100);
+    }
+  }
+  async deductSavings(): Promise<void> {
+    this.isLoading.set(true);
+    const amount = this.deductSavingsAmount.get('amount')
+      ?.value as unknown as number;
+    const userId = this.loginService.userId() ?? 0;
+    try {
+      await this.budgetService.deductSavingsAmount(userId, amount);
+    } catch (error) {
+      console.error('Error editing savings', error);
+      this.isLoading.set(false);
+    } finally {
+      this.isLoading.set(false);
+      this.savings.reload();
+
+      this.deductSavingsAmount.reset();
+    }
   }
 }

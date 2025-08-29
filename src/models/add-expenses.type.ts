@@ -8,4 +8,5 @@ export interface AddExpenseDto {
   totalBalance: number;
   subcategoryId?: number | null;
   isPaid: boolean;
+  paycheckId?: number;
 }

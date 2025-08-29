@@ -1,0 +1,67 @@
+/* Create Ticket Card Styling */
+.create-ticket-card {
+  border: 1px solid var(--primary-color) !important;
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.create-ticket-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+.create-ticket-card .card-header {
+  background: linear-gradient(135deg, var(--primary-color), #5b21b6) !important;
+  color: white !important;
+  border: none;
+  padding: 2rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.create-ticket-card .card-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(30px, -30px);
+}
+
+.create-ticket-card .card-body {
+  padding: 2rem;
+  background: var(--bg-card);
+}
+
+/* Dark mode form inputs */
+.dark-mode .create-ticket-card .form-control,
+.dark-mode .create-ticket-card .form-select {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.dark-mode .create-ticket-card .form-control:focus,
+.dark-mode .create-ticket-card .form-select:focus {
+  background-color: #1e293b !important;
+  border-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25) !important;
+}
+
+.dark-mode .create-ticket-card .form-control::placeholder {
+  color: #94a3b8 !important;
+  -webkit-text-fill-color: #94a3b8 !important;
+}
+
+.dark-mode .create-ticket-card label.form-label {
+  color: #ffffff !important;
+}

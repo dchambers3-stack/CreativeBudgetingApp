@@ -1,22 +1,53 @@
 <div class="container mt-4">
   <div class="card shadow-sm">
     <div class="card-header bg-primary text-white">
-      <h5 class="mb-0">Add New Expense</h5>
+      <h5 class="mb-0">{{ "addExpense.title" | translate }}</h5>
     </div>
     <div class="card-body">
       @if (isSuccess()) {
       <div class="alert alert-success" role="alert">
-        Expense added successfully!
+        {{ "addExpense.success" | translate }}
       </div>
       } @else if (isError()) {
       <div class="alert alert-danger" role="alert">
-        Error adding expense. Please try again.
+        {{ "addExpense.error" | translate }}
       </div>
       }
       <form [formGroup]="expenseForm">
         <div class="mb-3">
           <label for="category" class="form-label">
-            Category: <span class="text-danger">*</span>
+            {{ "addExpense.form.paycheck.label" | translate }}:
+            <span class="text-danger">{{
+              "addExpense.form.category.required" | translate
+            }}</span>
+          </label>
+          <select
+            formControlName="paycheckId"
+            name="paycheckId"
+            id="paycheck"
+            class="form-select"
+            (change)="
+              selectCategory(this.expenseForm.get('categoryId')?.value ?? 0)
+            "
+            required
+          >
+            <option value="" disabled selected>
+              {{ "addExpense.form.paycheck.placeholder" | translate }}
+            </option>
+            @for (paycheck of this.paycheckInfo.value(); track $index) {
+            <option [value]="paycheck.id">
+              {{ "addExpense.form.paycheck.option" | translate }}
+              {{ $index + 1 }} - {{ paycheck.payDate | date : "shortDate" }}
+            </option>
+            }
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="category" class="form-label">
+            {{ "addExpense.form.category.label" | translate }}:
+            <span class="text-danger">{{
+              "addExpense.form.category.required" | translate
+            }}</span>
           </label>
           <select
             formControlName="categoryId"
@@ -37,7 +68,10 @@
 
         <div class="mb-3">
           <label for="subcategory" class="form-label">
-            Subcategory: <span class="text-danger">*</span>
+            {{ "addExpense.form.subcategory.label" | translate }}:
+            <span class="text-danger">{{
+              "addExpense.form.subcategory.required" | translate
+            }}</span>
           </label>
           <select
             formControlName="subcategoryId"
@@ -54,7 +88,10 @@
         </div>
         <div class="mb-3">
           <label for="name" class="form-label">
-            Expense Name: <span class="text-danger">*</span>
+            {{ "addExpense.form.name.label" | translate }}:
+            <span class="text-danger">{{
+              "addExpense.form.name.required" | translate
+            }}</span>
           </label>
           <input
             type="text"
@@ -70,9 +107,12 @@
           <label for="payment" class="form-label">
             {{
               expenseForm.controls.categoryId.value == 10
-                ? "Amount"
-                : "Payment"
-            }}: <span class="text-danger">*</span>
+                ? ("addExpense.form.payment.labelAmount" | translate)
+                : ("addExpense.form.payment.label" | translate)
+            }}:
+            <span class="text-danger">{{
+              "addExpense.form.payment.required" | translate
+            }}</span>
           </label>
           <input
             type="number"
@@ -86,7 +126,9 @@
         @if(expenseForm.controls.categoryId.value != 10) {
 
         <div class="mb-3">
-          <label for="payment" class="form-label"> Total Balance: </label>
+          <label for="payment" class="form-label"
+            >{{ "addExpense.form.totalBalance.label" | translate }}:
+          </label>
           <input
             type="number"
             formControlName="totalBalance"
@@ -97,7 +139,10 @@
         </div>
         <div class="mb-3">
           <label for="dueDate" class="form-label">
-            Due Date: <span class="text-danger">*</span>
+            {{ "addExpense.form.dueDate.label" | translate }}:
+            <span class="text-danger">{{
+              "addExpense.form.dueDate.required" | translate
+            }}</span>
           </label>
           <input
             type="date"
@@ -110,7 +155,7 @@
         }
 
         <button (click)="addExpense()" class="btn btn-success w-100">
-          Add Expense
+          {{ "addExpense.form.submit" | translate }}
         </button>
       </form>
     </div>

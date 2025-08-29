@@ -4,7 +4,12 @@
     class="card p-4 shadow"
     style="min-width: 300px; max-width: 400px; width: 100%"
   >
-    <h2 class="text-center mb-4">Login</h2>
+    <!-- Language Selector -->
+    <div class="d-flex justify-content-end mb-3">
+      <app-language-selector></app-language-selector>
+    </div>
+
+    <h2 class="text-center mb-4">{{ "auth.login.title" | translate }}</h2>
     <form (ngSubmit)="login()" action="/login">
       <div class="mb-3">
         <input
@@ -12,7 +17,7 @@
           type="text"
           name="username"
           [(ngModel)]="username"
-          placeholder="Enter your username"
+          [placeholder]="'auth.login.username' | translate"
           autofocus
           required
         />
@@ -23,12 +28,14 @@
           type="password"
           name="password"
           [(ngModel)]="password"
-          placeholder="Enter your password"
+          [placeholder]="'auth.login.password' | translate"
           required
         />
       </div>
       <div class="d-grid mb-3">
-        <button class="btn btn-primary" type="submit">Login</button>
+        <button class="btn btn-primary" type="submit">
+          {{ "auth.login.loginButton" | translate }}
+        </button>
       </div>
       <div>
         @if(errorMessage()){
@@ -37,19 +44,19 @@
       </div>
     </form>
     <p class="text-center mb-0">
-      Don't have an account? <a href="/register">Register here</a>
+      {{ "auth.login.registerLink" | translate }}
+      <a href="/register">{{ "auth.register.title" | translate }}</a>
     </p>
   </div>
 </div>
-}
-@else {
-  <div class="login-message">
-    <p>
-      You are already logged in. Please click the button below to go to your
-      Dashboard.
-    </p>
-    <button class="btn btn-primary go-dashboard-btn" (click)="navigateToHome()">
-      Go to Dashboard
-    </button>
-  </div>
+} @else {
+<div class="login-message">
+  <p>
+    You are already logged in. Please click the button below to go to your
+    Dashboard.
+  </p>
+  <button class="btn btn-primary go-dashboard-btn" (click)="navigateToHome()">
+    Go to Dashboard
+  </button>
+</div>
 }

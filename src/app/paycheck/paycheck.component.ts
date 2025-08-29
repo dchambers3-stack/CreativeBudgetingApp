@@ -16,12 +16,19 @@ import {
 } from '@angular/forms';
 import { Paycheck } from '../../models/paycheck.type';
 import { LoginService } from '../services/login.service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-paycheck',
   templateUrl: './paycheck.component.html',
-  imports: [FormsModule, ReactiveFormsModule, CurrencyPipe, DatePipe],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    CurrencyPipe,
+    DatePipe,
+    TranslatePipe,
+  ],
   styleUrls: ['./paycheck.component.css'],
 })
 export class PaycheckComponent {

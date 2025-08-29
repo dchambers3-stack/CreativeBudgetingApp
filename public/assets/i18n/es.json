@@ -1,0 +1,296 @@
+{
+  "auth": {
+    "login": {
+      "title": "Iniciar Sesión",
+      "username": "Nombre de Usuario",
+      "password": "Contraseña",
+      "loginButton": "Iniciar Sesión",
+      "registerLink": "¿No tienes cuenta? Regístrate",
+      "error": "Usuario o contraseña inválidos"
+    },
+    "register": {
+      "title": "Crear Cuenta",
+      "username": "Nombre de Usuario",
+      "email": "Correo Electrónico",
+      "password": "Contraseña",
+      "confirmPassword": "Confirmar Contraseña",
+      "registerButton": "Crear Cuenta",
+      "loginLink": "¿Ya tienes cuenta? Inicia sesión"
+    }
+  },
+  "navigation": {
+    "dashboard": "Panel de Control",
+    "addExpenses": "Agregar Gastos",
+    "paychecks": "Nóminas",
+    "payInfo": "Información de Pago",
+    "howToBudget": "Cómo Hacer Presupuesto",
+    "tickets": "Mis Tickets",
+    "createTicket": "Crear Ticket",
+    "logout": "Cerrar Sesión"
+  },
+  "dashboard": {
+    "title": "Panel de Presupuesto",
+    "greeting": "Hola",
+    "welcomeMessage": "Bienvenido a Tu",
+    "budget": "Presupuesto",
+    "enterPayInfo": "Ingresar Info de Pago",
+    "enterPersonalInfo": "Ingresar Info Personal",
+    "enterExpenses": "Ingresar Gastos",
+    "cannotDeletePaycheck": "No se puede eliminar la nómina con gastos existentes. Por favor elimina los gastos primero.",
+    "payInformation": "Información de Pago",
+    "budgetSummary": "Resumen del Presupuesto",
+    "totalIncome": "Ingresos Totales",
+    "totalExpenses": "Gastos Totales",
+    "paid": "Pagado",
+    "unpaid": "No Pagado",
+    "remainingBudget": "Presupuesto Restante",
+    "overBudget": "Sobre Presupuesto",
+    "noPaycheckData": "No hay datos de nómina disponibles aún.",
+    "paycheck": "Nómina",
+    "editPaycheck": "Editar Nómina",
+    "deletePaycheck": "Eliminar Nómina",
+    "manageYourSavings": "Administra Tus Ahorros",
+    "amountToDeduct": "Cantidad a Deducir",
+    "enterAmount": "Ingresa cantidad",
+    "deduct": "Deducir",
+    "savingsBalance": "Balance de Ahorros",
+    "expenses": "Gastos",
+    "totalBalance": "Balance Total",
+    "expensePaid": "Gasto Pagado",
+    "markAsPaid": "Marcar como Pagado",
+    "deleteExpense": "Eliminar Gasto",
+    "expenseName": "Nombre del Gasto",
+    "expenseAmount": "Cantidad del Gasto",
+    "dueDate": "Fecha de Vencimiento",
+    "paidStatus": "Estado de Pago",
+    "category": "Categoría",
+    "subcategory": "Subcategoría",
+    "noExpensesForPeriod": "No hay gastos para este período de presupuesto.",
+    "editPaycheckAmount": "Editar Cantidad de Nómina",
+    "newPaycheckAmount": "Nueva Cantidad de Nómina",
+    "saveChanges": "Guardar Cambios",
+    "confirmDeletion": "Confirmar Eliminación",
+    "deletePaycheckConfirmation": "¿Estás seguro de que quieres eliminar esta nómina? Esta acción no se puede deshacer.",
+    "confirmDelete": "Confirmar Eliminación",
+    "deleteExpenseConfirmation": "¿Estás seguro de que quieres eliminar este gasto, \"{{expenseName}}\"? Esto eliminará este gasto de todos los presupuestos futuros. Esta acción no se puede deshacer.",
+    "deleteSavingsExpenseWarning": "Este es un gasto de ahorros. Esto no deducirá de tu balance de ahorros, por lo tanto si agregaste este gasto por error, necesitarás deducir manualmente la cantidad de tu balance de ahorros.",
+    "recentTransactions": "Transacciones Recientes",
+    "budgetCategories": "Categorías de Presupuesto",
+    "paycheckFor": "Nómina para",
+    "paycheckAmount": "Cantidad de Nómina",
+    "expenseCount": "Gastos",
+    "noExpensesTitle": "No Hay Gastos Aún",
+    "noExpensesMessage": "Aún no has agregado ningún gasto a tu presupuesto. Comienza agregando tu primer gasto para rastrear tus gastos.",
+    "addFirstExpense": "Agregar Tu Primer Gasto"
+  },
+  "expenses": {
+    "title": "Agregar Gastos",
+    "category": "Categoría",
+    "amount": "Cantidad",
+    "description": "Descripción",
+    "date": "Fecha",
+    "addButton": "Agregar Gasto",
+    "success": "Gasto agregado exitosamente",
+    "error": "Error al agregar gasto"
+  },
+  "paychecks": {
+    "title": "Gestión de Nóminas",
+    "grossPay": "Salario Bruto",
+    "netPay": "Salario Neto",
+    "payDate": "Fecha de Pago",
+    "addPaycheck": "Agregar Nómina"
+  },
+  "helpdesk": {
+    "tickets": {
+      "title": "Mis Tickets de Soporte",
+      "ticketId": "ID del Ticket",
+      "subject": "Asunto",
+      "status": "Estado",
+      "priority": "Prioridad",
+      "created": "Creado",
+      "noTickets": "No se encontraron tickets"
+    },
+    "createTicket": {
+      "title": "Crear Ticket de Soporte",
+      "subject": "Asunto",
+      "description": "Descripción",
+      "priority": "Prioridad",
+      "submitButton": "Enviar Ticket",
+      "success": "Ticket creado exitosamente"
+    }
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "success": "Operación completada exitosamente",
+    "required": "Este campo es obligatorio",
+    "invalidEmail": "Por favor ingrese un email válido",
+    "passwordMismatch": "Las contraseñas no coinciden",
+    "warning": "Advertencia",
+    "close": "Cerrar",
+    "friend": "Amigo"
+  },
+  "categories": {
+    "housing": "Vivienda",
+    "transportation": "Transporte",
+    "food": "Comida y Restaurantes",
+    "utilities": "Servicios Públicos",
+    "healthcare": "Salud",
+    "entertainment": "Entretenimiento",
+    "shopping": "Compras",
+    "other": "Otros"
+  },
+  "status": {
+    "open": "Abierto",
+    "inProgress": "En Progreso",
+    "resolved": "Resuelto",
+    "closed": "Cerrado"
+  },
+  "priority": {
+    "low": "Baja",
+    "medium": "Media",
+    "high": "Alta",
+    "urgent": "Urgente"
+  },
+  "addExpense": {
+    "title": "Agregar nuevo gasto",
+    "success": "¡Gasto agregado exitosamente!",
+    "error": "Error al agregar el gasto. Por favor, inténtalo de nuevo.",
+    "form": {
+      "paycheck": {
+        "label": "Seleccionar Nómina",
+        "placeholder": "Elegir una nómina",
+        "option": "Nómina"
+      },
+      "category": {
+        "label": "Categoría",
+        "required": "*"
+      },
+      "subcategory": {
+        "label": "Subcategoría",
+        "required": "*"
+      },
+      "name": {
+        "label": "Nombre del gasto",
+        "required": "*"
+      },
+      "payment": {
+        "label": "Pago",
+        "labelAmount": "Cantidad",
+        "required": "*"
+      },
+      "totalBalance": {
+        "label": "Saldo total"
+      },
+      "dueDate": {
+        "label": "Fecha de vencimiento",
+        "required": "*"
+      },
+      "submit": "Agregar gasto"
+    }
+  },
+  "paycheck": {
+    "form": {
+      "title": "Agregar nuevo sueldo",
+      "payDate": {
+        "label": "Fecha de pago",
+        "required": "*",
+        "validation": {
+          "required": "La fecha de pago es requerida."
+        }
+      },
+      "amount": {
+        "label": "Cantidad",
+        "required": "*",
+        "validation": {
+          "required": "La cantidad es requerida.",
+          "min": "La cantidad debe ser no negativa."
+        }
+      },
+      "submit": "Agregar sueldo"
+    },
+    "list": {
+      "empty": "No se han agregado sueldos aún.",
+      "delete": "Eliminar"
+    },
+    "modal": {
+      "title": "Confirmar eliminación",
+      "message": "¿Estás seguro de que quieres eliminar este sueldo?",
+      "cancel": "Cancelar",
+      "confirm": "Eliminar"
+    }
+  },
+  "howToBudget": {
+    "title": "Cómo hacer un presupuesto (Estilo Dave Ramsey)",
+    "subtitle": "El presupuesto no limita tu libertad — te da control.",
+    "zeroBased": {
+      "title": "Presupuesto de base cero",
+      "description": "significa que cada peso tiene un trabajo. Ingresos menos gastos debe igual",
+      "zero": "$0"
+    },
+    "steps": {
+      "step1": {
+        "title": "1. Lista tus ingresos",
+        "description": "Anota todas las fuentes de ingresos mensuales: sueldos, trabajos secundarios, o cualquier otro dinero que entre."
+      },
+      "step2": {
+        "title": "2. Lista todos los gastos",
+        "description": "Incluye todo — renta, comida, entretenimiento, deudas, ahorros. Organízalos en categorías para mantenerte claro."
+      },
+      "step3": {
+        "title": "3. Cubre las cuatro paredes",
+        "description": "Cuida primero lo esencial:",
+        "walls": {
+          "food": "Comida",
+          "utilities": "Servicios públicos",
+          "shelter": "Vivienda",
+          "shelterDetail": "(como renta/hipoteca)",
+          "transportation": "Transporte"
+        }
+      },
+      "step4": {
+        "title": "4. Asigna cada peso",
+        "description": "Resta cada gasto planificado de tus ingresos hasta llegar a cero. Eso incluye ahorros y pagos de deudas."
+      },
+      "step5": {
+        "title": "5. Rastrea y ajusta",
+        "description": "La vida no es perfecta — si algo cambia a mitad de mes, ajusta tu presupuesto. Mantente flexible y en control."
+      },
+      "step6": {
+        "title": "6. Repite mensualmente",
+        "description": "Haz un presupuesto fresco antes de cada nuevo mes. Cada uno es diferente, así que tu plan también debería serlo."
+      }
+    },
+    "quote": "\"Un presupuesto es decirle a tu dinero a dónde ir en lugar de preguntarte a dónde se fue.\" — Dave Ramsey"
+  },
+  "createTicket": {
+    "title": "Crear ticket de soporte",
+    "form": {
+      "name": {
+        "label": "Nombre completo",
+        "placeholder": "Ingresa tu nombre completo"
+      },
+      "email": {
+        "label": "Correo electrónico",
+        "placeholder": "Ingresa tu dirección de correo electrónico"
+      },
+      "subject": {
+        "label": "Asunto",
+        "placeholder": "Ingresa el asunto de tu mensaje"
+      },
+      "severity": {
+        "label": "Severidad",
+        "placeholder": "Selecciona la severidad"
+      },
+      "message": {
+        "label": "Mensaje",
+        "placeholder": "Ingresa tu mensaje aquí"
+      },
+      "submit": "Enviar"
+    }
+  }
+}

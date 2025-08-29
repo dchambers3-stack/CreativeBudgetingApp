@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { LoginService } from './services/login.service';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UserProfileComponent } from './user-profile/user-profile.component';
+import { LogoComponent } from './components/logo.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, UserProfileComponent],
+  imports: [RouterOutlet, UserProfileComponent, LogoComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
   standalone: true,
@@ -16,6 +16,8 @@ export class AppComponent {
   private service = inject(LoginService);
   private router = inject(Router);
   isDarkMode = false;
+
+  currentUserId = this.service.userId();
 
   toggleDarkMode() {
     this.isDarkMode = !this.isDarkMode;

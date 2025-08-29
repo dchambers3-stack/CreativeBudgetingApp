@@ -2,13 +2,16 @@
   <!-- FORM -->
   <form [formGroup]="paycheck" class="card shadow w-75 mb-4 border-0">
     <div class="card-header bg-success text-white">
-      <h5 class="mb-0">Add New Paycheck</h5>
+      <h5 class="mb-0">{{ "paycheck.form.title" | translate }}</h5>
     </div>
     <div class="card-body">
       <div class="row g-3 align-items-end">
         <div class="col-md-6">
           <label for="payDate" class="form-label">
-            Pay Date <span class="text-danger">*</span>
+            {{ "paycheck.form.payDate.label" | translate }}
+            <span class="text-danger">{{
+              "paycheck.form.payDate.required" | translate
+            }}</span>
           </label>
           <input
             type="date"
@@ -20,13 +23,17 @@
           />
           @if(paycheck.get('payDate')?.hasError('required') &&
           paycheck.get('payDate')?.touched){
-
-          <div class="invalid-feedback">Pay date is required.</div>
+          <div class="invalid-feedback">
+            {{ "paycheck.form.payDate.validation.required" | translate }}
+          </div>
           }
         </div>
         <div class="col-md-6">
           <label for="amount" class="form-label">
-            Amount <span class="text-danger">*</span>
+            {{ "paycheck.form.amount.label" | translate }}
+            <span class="text-danger">{{
+              "paycheck.form.amount.required" | translate
+            }}</span>
           </label>
           <div class="input-group">
             <span class="input-group-text">$</span>
@@ -41,12 +48,14 @@
             />
             @if(paycheck.get('amount')?.hasError('required') &&
             paycheck.get('amount')?.touched){
-
-            <div class="invalid-feedback">Amount is required.</div>
+            <div class="invalid-feedback">
+              {{ "paycheck.form.amount.validation.required" | translate }}
+            </div>
             } @if(paycheck.get('amount')?.hasError('min') &&
             paycheck.get('amount')?.touched){
-
-            <div class="invalid-feedback">Amount must be non-negative.</div>
+            <div class="invalid-feedback">
+              {{ "paycheck.form.amount.validation.min" | translate }}
+            </div>
             }
           </div>
         </div>
@@ -57,7 +66,8 @@
           class="btn btn-gradient-green"
           [disabled]="paycheck.invalid"
         >
-          <i class="fas fa-plus-circle me-1"></i> Add Paycheck
+          <i class="fas fa-plus-circle me-1"></i>
+          {{ "paycheck.form.submit" | translate }}
         </button>
       </div>
     </div>
@@ -81,22 +91,22 @@
             (click)="openDeletePaycheckModal(paycheck.id)"
             class="btn btn-sm btn-outline-danger"
           >
-            <i class="bi bi-trash"></i> Delete
+            <i class="bi bi-trash"></i> {{ "paycheck.list.delete" | translate }}
           </button>
         </li>
-
         }
       </ul>
       } @else {
       <div class="p-4">
         <div class="alert alert-info mb-0" role="alert">
-          No paychecks added yet.
+          {{ "paycheck.list.empty" | translate }}
         </div>
       </div>
       }
     </div>
   </div>
 </div>
+
 <!-- Delete Paycheck Modal -->
 <div
   class="modal fade"
@@ -109,7 +119,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="deletePaycheckModalLabel">
-          Confirm Delete
+          {{ "paycheck.modal.title" | translate }}
         </h5>
         <button
           type="button"
@@ -119,18 +129,18 @@
         ></button>
       </div>
       <div class="modal-body">
-        Are you sure you want to delete this paycheck?
+        {{ "paycheck.modal.message" | translate }}
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-          Cancel
+          {{ "paycheck.modal.cancel" | translate }}
         </button>
         <button
           type="button"
           class="btn btn-danger"
           (click)="deletePaycheckConfirm()"
         >
-          Delete
+          {{ "paycheck.modal.confirm" | translate }}
         </button>
       </div>
     </div>

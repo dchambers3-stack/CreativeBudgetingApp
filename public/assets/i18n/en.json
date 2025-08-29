@@ -1,0 +1,312 @@
+{
+  "auth": {
+    "login": {
+      "title": "Sign In",
+      "username": "Username",
+      "password": "Password",
+      "loginButton": "Sign In",
+      "registerLink": "Don't have an account? Sign up",
+      "error": "Invalid username or password"
+    },
+    "register": {
+      "title": "Create Account",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "registerButton": "Create Account",
+      "loginLink": "Already have an account? Sign in"
+    }
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "addExpenses": "Add Expenses",
+    "paychecks": "Paychecks",
+    "payInfo": "Pay Information",
+    "howToBudget": "How to Budget",
+    "tickets": "My Tickets",
+    "createTicket": "Create Ticket",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "title": "Budget Dashboard",
+    "greeting": "Hello",
+    "welcomeMessage": "Welcome to Your",
+    "budget": "Budget",
+    "enterPayInfo": "Enter Pay Info",
+    "enterPersonalInfo": "Enter Personal Info",
+    "enterExpenses": "Enter Expenses",
+    "cannotDeletePaycheck": "Cannot delete paycheck with existing expenses. Please delete expenses first.",
+    "payInformation": "Pay Information",
+    "budgetSummary": "Budget Summary",
+    "totalIncome": "Total Income",
+    "totalExpenses": "Total Expenses",
+    "paid": "Paid",
+    "unpaid": "Unpaid",
+    "remainingBudget": "Remaining Budget",
+    "overBudget": "Over Budget",
+    "noPaycheckData": "No paycheck data available yet.",
+    "paycheck": "Paycheck",
+    "editPaycheck": "Edit Paycheck",
+    "deletePaycheck": "Delete Paycheck",
+    "manageYourSavings": "Manage Your Savings",
+    "amountToDeduct": "Amount to Deduct",
+    "enterAmount": "Enter amount",
+    "deduct": "Deduct",
+    "savingsBalance": "Savings Balance",
+    "expenses": "Expenses",
+    "totalBalance": "Total Balance",
+    "expensePaid": "Expense Paid",
+    "markAsPaid": "Mark as Paid",
+    "deleteExpense": "Delete Expense",
+    "expenseName": "Expense Name",
+    "expenseAmount": "Expense Amount",
+    "dueDate": "Due Date",
+    "paidStatus": "Paid Status",
+    "category": "Category",
+    "subcategory": "Subcategory",
+    "noExpensesForPeriod": "No expenses for this budget period.",
+    "editPaycheckAmount": "Edit Paycheck Amount",
+    "newPaycheckAmount": "New Paycheck Amount",
+    "saveChanges": "Save Changes",
+    "confirmDeletion": "Confirm Deletion",
+    "deletePaycheckConfirmation": "Are you sure you want to delete this paycheck? This action cannot be undone.",
+    "confirmDelete": "Confirm Delete",
+    "deleteExpenseConfirmation": "Are you sure you want to delete this expense, \"{{expenseName}}\"? This will remove this expense from all future budgets. This action cannot be undone.",
+    "deleteSavingsExpenseWarning": "This is a savings expense. This will not deduct from your savings balance, therefore if you added this expense by mistake, you will need to manually deduct the amount from your savings balance.",
+    "recentTransactions": "Recent Transactions",
+    "budgetCategories": "Budget Categories",
+    "paycheckFor": "Paycheck for",
+    "paycheckAmount": "Paycheck Amount",
+    "expenseCount": "Expenses",
+    "noExpensesTitle": "No Expenses Yet",
+    "noExpensesMessage": "You haven't added any expenses to your budget yet. Start by adding your first expense to track your spending.",
+    "addFirstExpense": "Add Your First Expense"
+  },
+  "expenses": {
+    "title": "Add Expenses",
+    "category": "Category",
+    "amount": "Amount",
+    "description": "Description",
+    "date": "Date",
+    "addButton": "Add Expense",
+    "success": "Expense added successfully",
+    "error": "Failed to add expense"
+  },
+  "paychecks": {
+    "title": "Paycheck Management",
+    "grossPay": "Gross Pay",
+    "netPay": "Net Pay",
+    "payDate": "Pay Date",
+    "addPaycheck": "Add Paycheck"
+  },
+  "helpdesk": {
+    "tickets": {
+      "title": "My Support Tickets",
+      "ticketId": "Ticket ID",
+      "subject": "Subject",
+      "status": "Status",
+      "priority": "Priority",
+      "created": "Created",
+      "noTickets": "No tickets found"
+    },
+    "createTicket": {
+      "title": "Create Support Ticket",
+      "subject": "Subject",
+      "description": "Description",
+      "priority": "Priority",
+      "submitButton": "Submit Ticket",
+      "success": "Ticket created successfully"
+    }
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "success": "Operation completed successfully",
+    "required": "This field is required",
+    "invalidEmail": "Please enter a valid email address",
+    "passwordMismatch": "Passwords do not match",
+    "demo": "i18n Demonstration",
+    "selectLanguage": "Select Language",
+    "examples": "Translation Examples",
+    "actions": "Common Actions",
+    "currentLanguage": "Current Language",
+    "availableLanguages": "Available Languages",
+    "warning": "Warning",
+    "close": "Close",
+    "friend": "Friend"
+  },
+  "categories": {
+    "title": "Categories",
+    "housing": "Housing",
+    "transportation": "Transportation",
+    "food": "Food & Dining",
+    "utilities": "Utilities",
+    "healthcare": "Healthcare",
+    "entertainment": "Entertainment",
+    "shopping": "Shopping",
+    "other": "Other"
+  },
+  "status": {
+    "open": "Open",
+    "inProgress": "In Progress",
+    "resolved": "Resolved",
+    "closed": "Closed"
+  },
+  "priority": {
+    "low": "Low",
+    "medium": "Medium",
+    "high": "High",
+    "urgent": "Urgent"
+  },
+  "addExpense": {
+    "title": "Add New Expense",
+    "success": "Expense added successfully!",
+    "error": "Error adding expense. Please try again.",
+    "form": {
+      "paycheck": {
+        "label": "Select Paycheck",
+        "placeholder": "Choose a paycheck",
+        "option": "Paycheck"
+      },
+      "category": {
+        "label": "Category",
+        "required": "*"
+      },
+      "subcategory": {
+        "label": "Subcategory",
+        "required": "*"
+      },
+      "name": {
+        "label": "Expense Name",
+        "required": "*"
+      },
+      "payment": {
+        "label": "Payment",
+        "labelAmount": "Amount",
+        "required": "*"
+      },
+      "totalBalance": {
+        "label": "Total Balance"
+      },
+      "dueDate": {
+        "label": "Due Date",
+        "required": "*"
+      },
+      "submit": "Add Expense"
+    }
+  },
+   "paycheck": {
+    "form": {
+      "title": "Add New Paycheck",
+      "payDate": {
+        "label": "Pay Date",
+        "required": "*",
+        "validation": {
+          "required": "Pay date is required."
+        }
+      },
+      "amount": {
+        "label": "Amount",
+        "required": "*",
+        "validation": {
+          "required": "Amount is required.",
+          "min": "Amount must be non-negative."
+        }
+      },
+      "submit": "Add Paycheck"
+    },
+    "list": {
+      "empty": "No paychecks added yet.",
+      "delete": "Delete"
+    },
+    "modal": {
+      "title": "Confirm Delete",
+      "message": "Are you sure you want to delete this paycheck?",
+      "cancel": "Cancel",
+      "confirm": "Delete"
+    }
+  },
+  "howToBudget": {
+    "title": "How to Budget (Dave Ramsey Style)",
+    "subtitle": "Budgeting isn't about limiting your freedom — it's about gaining control.",
+    "zeroBased": {
+      "title": "Zero-Based Budgeting",
+      "description": "means every dollar has a job. Income minus expenses should equal",
+      "zero": "$0"
+    },
+    "steps": {
+      "step1": {
+        "title": "1. List Your Income",
+        "description": "Write down all sources of monthly income: paychecks, side hustles, or any other money coming in."
+      },
+      "step2": {
+        "title": "2. List All Expenses",
+        "description": "Include everything — rent, food, entertainment, debt, savings. Organize them into categories to stay clear."
+      },
+      "step3": {
+        "title": "3. Cover the Four Walls",
+        "description": "Take care of essentials first:",
+        "walls": {
+          "food": "Food",
+          "utilities": "Utilities",
+          "shelter": "Shelter",
+          "shelterDetail": "(like rent/mortgage)",
+          "transportation": "Transportation"
+        }
+      },
+      "step4": {
+        "title": "4. Assign Every Dollar",
+        "description": "Subtract each planned expense from your income until you hit zero. That includes saving and debt payments."
+      },
+      "step5": {
+        "title": "5. Track & Adjust",
+        "description": "Life isn't perfect — if something changes mid-month, adjust your budget. Stay flexible and in control."
+      },
+      "step6": {
+        "title": "6. Repeat Monthly",
+        "description": "Do a fresh budget before each new month. Each one is different, so your plan should be too."
+      }
+    },
+    "quote": "\"A budget is telling your money where to go instead of wondering where it went.\" — Dave Ramsey"
+  },
+  "createTicket": {
+    "title": "Create Support Ticket",
+    "form": {
+      "name": {
+        "label": "Full Name",
+        "placeholder": "Enter your full name"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email address"
+      },
+      "subject": {
+        "label": "Subject",
+        "placeholder": "Enter the subject for your message"
+      },
+      "severity": {
+        "label": "Severity",
+        "placeholder": "Select severity"
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Enter your message here"
+      },
+      "submit": "Submit"
+    }
+  },
+  "myTickets": {
+    "ticketNo": "Ticket #",
+    "subject": "Subject",
+    "customerName": "Customer Name",
+    "customerEmail": "Customer Email",
+    "message": "Message",
+    "ticketSeverity": "Ticket Severity"
+  }
+  
+}

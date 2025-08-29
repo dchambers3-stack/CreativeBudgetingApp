@@ -1,21 +1,40 @@
-import { Component, effect, inject, resource } from '@angular/core';
+import { Component, computed, effect, inject, resource } from '@angular/core';
 import { HelpdeskService } from '../services/helpdesk.service';
 import { TicketSeverity } from '../../enums/ticket-severity-enum';
 import { CommonModule } from '@angular/common';
+import { TranslatePipe } from '../pipes/translate.pipe';
+import { Router, RouterLink } from '@angular/router';
+import { ProfanityFilterService } from '../services/profanity-filter.service';
 
 @Component({
   selector: 'app-my-tickets',
-  imports: [CommonModule],
+  imports: [CommonModule, TranslatePipe, RouterLink],
   templateUrl: './my-tickets.component.html',
   styleUrl: './my-tickets.component.css',
 })
 export class MyTicketsComponent {
   private helpdeskService = inject(HelpdeskService);
+  private profanityFilter = inject(ProfanityFilterService);
+  private router = inject(Router);
+
   constructor() {
     effect(() => console.log('Tickets loaded:', this.tickets.value()));
   }
+
   tickets = resource({
     loader: () => this.helpdeskService.getHelpdeskTickets(),
+  });
+
+  // Add computed property to filter all ticket content
+  filteredTickets = computed(() => {
+    const tickets = this.tickets.value();
+    if (!tickets) return [];
+
+    return tickets.map((ticket) => ({
+      ...ticket,
+      subject: this.profanityFilter.clean(ticket.subject),
+      message: this.profanityFilter.clean(ticket.message),
+    }));
   });
 
   getSeverityName(severityId: number): string {
@@ -43,5 +62,8 @@ export class MyTicketsComponent {
     } finally {
       this.tickets.reload();
     }
+  }
+  async navigateToTicketDetails(ticketId: number): Promise<void> {
+    this.router.navigate(['/ticket-details', ticketId]);
   }
 }

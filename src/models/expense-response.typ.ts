@@ -10,4 +10,5 @@ export type ExpenseResponse = {
   subcategoryId: number;
   subcategoryName: string;
   isPaid: boolean;
+  paycheckId?: number;
 };

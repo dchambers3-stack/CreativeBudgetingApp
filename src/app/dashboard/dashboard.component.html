@@ -1,9 +1,10 @@
 <div class="container py-5">
   @let data = dashboardInfo.value();
-  <h2 class="mb-4 text-success fw-bold">
-    Hello, {{ data?.firstName ? data?.firstName : "Friend" }}! Welcome to Your
-    {{ currentMonthName() }}
-    Budget.
+  <h2 class="mb-4 fw-bold" style="color: var(--primary-color)">
+    {{ "dashboard.greeting" | translate }},
+    {{ data?.firstName ? data?.firstName : ("common.friend" | translate) }}!
+    {{ "dashboard.welcomeMessage" | translate }} {{ currentMonthName() }}
+    {{ "dashboard.budget" | translate }}.
   </h2>
 
   <div class="mb-5 d-flex gap-3">
@@ -14,33 +15,38 @@
       class="btn btn-gradient-green px-4 py-2"
     >
       <i class="fas fa-user me-2"></i>
-      {{ data?.firstName ? "Enter Pay Info" : "Enter Personal Info" }}
+      {{
+        data?.firstName
+          ? ("dashboard.enterPayInfo" | translate)
+          : ("dashboard.enterPersonalInfo" | translate)
+      }}
     </button>
     <button
       (click)="navigateToAddExpenses()"
       class="btn btn-gradient-gray px-4 py-2"
     >
       <i class="fas fa-plus me-2"></i>
-      Enter Expenses
+      {{ "dashboard.enterExpenses" | translate }}
     </button>
   </div>
 
   @if (showAlert()) {
   <div class="alert alert-warning alert-dismissible fade show" role="alert">
-    <strong>Warning!</strong> Cannot delete paycheck with existing expenses.
-    Please delete expenses first.
+    <strong>{{ "common.warning" | translate }}!</strong>
+    {{ "dashboard.cannotDeletePaycheck" | translate }}
     <button
       type="button"
       class="btn-close"
-      aria-label="Close"
       (click)="showAlert.set(false)"
     ></button>
   </div>
   } @let pcks = paychecksInfo.value();
   <div class="row g-4">
     <div class="col-md-6">
-      <div class="card border-success shadow">
-        <div class="card-header bg-success text-white">Pay Information</div>
+      <div class="card border-primary shadow pay-info-card">
+        <div class="card-header text-white">
+          {{ "dashboard.payInformation" | translate }}
+        </div>
         <div class="card-body">
           @if (pcks?.length) { @for (paycheck of pcks; track $index) {
           <div
@@ -48,7 +54,8 @@
           >
             <div>
               <strong>
-                Paycheck {{ $index + 1 }}: {{ paycheck.amount | currency }} ({{
+                {{ "dashboard.paycheck" | translate }} {{ $index + 1 }}:
+                {{ paycheck.amount | currency }} ({{
                   paycheck.payDate | date : "MMM d, yyyy"
                 }})
               </strong>
@@ -57,8 +64,7 @@
               <button
                 class="btn btn-sm btn-gradient-red"
                 (click)="handleDeletePaycheck(paycheck)"
-                aria-label="Delete Paycheck"
-                title="Delete Paycheck"
+                [title]="'dashboard.deletePaycheck' | translate"
               >
                 <i class="fas fa-trash"></i>
               </button>
@@ -67,15 +73,14 @@
                 (click)="openEditModal(paycheck.id)"
                 data-bs-toggle="modal"
                 data-bs-target="#paycheckModal"
-                aria-label="Edit Paycheck"
-                title="Edit Paycheck"
+                [title]="'dashboard.editPaycheck' | translate"
               >
                 <i class="fas fa-edit"></i>
               </button>
             </div>
           </div>
           } } @else {
-          <p class="text-muted">No paycheck data available yet.</p>
+          <p class="text-muted">{{ "dashboard.noPaycheckData" | translate }}</p>
           }
         </div>
       </div>
@@ -83,34 +88,48 @@
 
     <div class="col-md-6">
       <div class="card border-light shadow bg-body-tertiary">
-        <div class="card-header bg-light">Budget Summary</div>
+        <div class="card-header bg-light">
+          {{ "dashboard.budgetSummary" | translate }}
+        </div>
         <div class="card-body">
           <p class="mb-2">
-            <strong>Total Income: {{ totalIncome() | currency }}</strong>
+            <strong
+              >{{ "dashboard.totalIncome" | translate }}:
+              {{ totalIncome() | currency }}</strong
+            >
           </p>
           <p class="mb-2">
-            <strong>Total Expenses: {{ totalExpenses() | currency }}</strong>
+            <strong
+              >{{ "dashboard.totalExpenses" | translate }}:
+              {{ totalExpenses() | currency }}</strong
+            >
           </p>
           <div class="mb-2">
             <small class="text-muted">
               <span class="text-success"
-                >Paid: {{ totalPaidExpenses() | currency }}</span
+                >{{ "dashboard.paid" | translate }}:
+                {{ totalPaidExpenses() | currency }}</span
               >
               |
               <span class="text-warning"
-                >Unpaid: {{ totalUnpaidExpenses() | currency }}</span
+                >{{ "dashboard.unpaid" | translate }}:
+                {{ totalUnpaidExpenses() | currency }}</span
               >
             </small>
           </div>
           @if (remainingBudget() >= 0) {
           <p class="mb-0 text-success">
             <strong
-              >Remaining Budget: {{ remainingBudget() | currency }}</strong
+              >{{ "dashboard.remainingBudget" | translate }}:
+              {{ remainingBudget() | currency }}</strong
             >
           </p>
           } @else {
           <p class="mb-0 text-danger">
-            <strong>Over Budget: {{ remainingBudget() | currency }}</strong>
+            <strong
+              >{{ "dashboard.overBudget" | translate }}:
+              {{ remainingBudget() | currency }}</strong
+            >
           </p>
           }
         </div>
@@ -119,8 +138,10 @@
   </div>
   @let savings = this.savings.value();
   <!-- Savings Form Card -->
-  <div class="card border-success shadow mt-5">
-    <div class="card-header bg-success text-white">Manage Your Savings</div>
+  <div class="card border-primary shadow mt-5 savings-card">
+    <div class="card-header text-white">
+      {{ "dashboard.manageYourSavings" | translate }}
+    </div>
     <div class="card-body">
       <!-- Deduct Savings -->
       <form
@@ -130,14 +151,14 @@
       >
         <div class="col-sm-8">
           <label for="deductSavingsInput" class="form-label fw-bold">
-            Amount to Deduct
+            {{ "dashboard.amountToDeduct" | translate }}
           </label>
           <input
             type="number"
             id="deductSavingsInput"
             formControlName="amount"
             class="form-control"
-            placeholder="Enter amount"
+            [placeholder]="'dashboard.enterAmount' | translate"
             step="0.01"
           />
         </div>
@@ -148,14 +169,18 @@
             [disabled]="deductSavingsAmount.invalid || isLoading()"
           >
             <i class="fas fa-piggy-bank me-2"></i>
-            {{ isLoading() ? "Loading..." : "Deduct" }}
+            {{
+              isLoading()
+                ? ("common.loading" | translate)
+                : ("dashboard.deduct" | translate)
+            }}
           </button>
         </div>
       </form>
 
       <!-- Balance -->
       <h5 class="mt-4">
-        Savings Balance:
+        {{ "dashboard.savingsBalance" | translate }}:
         <span class="text-success">{{ savings?.amount ?? 0 | currency }}</span>
       </h5>
     </div>
@@ -163,103 +188,160 @@
 
   <!-- Set up back end for this.  Need to add a table -->
 
-  @let expenses = this.expenses.value(); @if (expenses?.length) {
+  @let expenseGroups = this.expensesSortedByPaycheck(); @if
+  (expenseGroups?.length) {
   <div class="accordion mt-5" id="expenseAccordion">
-    <h4 class="mb-3">Expenses:</h4>
-    @for (expense of expenses; track $index) {
+    <h4 class="mb-3">{{ "dashboard.expenses" | translate }}:</h4>
+    @for (group of expenseGroups; track group.paycheckId) {
     <div class="accordion-item">
-      <h2 class="accordion-header" id="expenseHeading{{ expense.id }}">
+      <h2
+        class="accordion-header"
+        id="paycheckHeading{{ group.paycheckId || 'none' }}"
+      >
         <button
           class="accordion-button collapsed d-flex align-items-center w-100"
           type="button"
           data-bs-toggle="collapse"
-          [attr.data-bs-target]="'#expenseCollapse' + expense.id"
+          [attr.data-bs-target]="
+            '#paycheckCollapse' + (group.paycheckId || 'none')
+          "
           aria-expanded="false"
-          [attr.aria-controls]="'expenseCollapse' + expense.id"
+          [attr.aria-controls]="
+            'paycheckCollapse' + (group.paycheckId || 'none')
+          "
         >
           <div class="d-flex justify-content-between align-items-center w-100">
             <div class="d-flex flex-column">
               <span class="flex-grow-1">
-                {{ expense.name }} - {{ expense.payment | currency }}
+                {{ group.paycheckLabel }}
               </span>
-              <span>Total Balance: {{ expense.totalBalance | currency }}</span>
+              <span>
+                {{ "dashboard.expenseCount" | translate }}:
+                {{ group.expenses.length }}
+              </span>
             </div>
-            <div class="d-flex gap-2 me-3">
-              @if(expense.categoryId != 10) {
-
-              <button
-                type="button"
-                class="btn btn-sm btn-gradient-green"
-                [attr.aria-label]="
-                  expense.isPaid ? 'Expense Paid' : 'Mark Expense as Paid'
-                "
-                [title]="
-                  expense.isPaid ? 'Expense Paid' : 'Mark Expense as Paid'
-                "
-                (click)="
-                  markExpenseAsPaid(expense.id); $event.stopPropagation()
-                "
-                [disabled]="expense.isPaid"
-              >
-                <i class="fas fa-dollar-sign me-2"></i>
-                {{ expense.isPaid ? "Paid" : "Mark as Paid" }}
-              </button>
-              }
-              <button
-                type="button"
-                class="btn btn-sm btn-outline-danger"
-                (click)="
-                  openDeleteExpenseModal(expense.id); $event.stopPropagation()
-                "
-                aria-label="Delete Expense"
-                title="Delete Expense"
-              >
-                <i class="fas fa-trash"></i>
-              </button>
+            @if (group.paycheckId !== null) {
+            <div class="d-flex flex-column text-end me-3">
+              <span class="fw-bold">
+                {{ "dashboard.remainingBudget" | translate }}:
+                <span
+                  [class]="
+                    group.remainingBudget >= 0 ? 'text-success' : 'text-danger'
+                  "
+                >
+                  {{ group.remainingBudget | currency }}
+                </span>
+              </span>
+              <small class="text-muted">
+                {{ group.paycheckAmount | currency }} -
+                {{ group.totalExpenses | currency }}
+              </small>
             </div>
+            }
           </div>
         </button>
       </h2>
       <div
-        id="expenseCollapse{{ expense.id }}"
+        id="paycheckCollapse{{ group.paycheckId || 'none' }}"
         class="accordion-collapse collapse"
-        [attr.aria-labelledby]="'expenseHeading' + expense.id"
+        [attr.aria-labelledby]="
+          'paycheckHeading' + (group.paycheckId || 'none')
+        "
         data-bs-parent="#expenseAccordion"
       >
         <div class="accordion-body">
-          <div class="expenses-center">
-            <div>
-              <h6>Expense Name</h6>
-              {{ expense.name }}
-            </div>
-            <div>
-              <h6>Expense Amount</h6>
-              {{ expense.payment | currency }}
-            </div>
-            <div>
-              <h6>Due Date</h6>
-              {{ expense.dueDate | date : "shortDate" }}
-            </div>
-            <div>
-              <h6>Paid Status</h6>
-              {{ expense.isPaid ? "Paid" : "Unpaid" }}
-            </div>
-            <div>
-              <h6>Category</h6>
-              {{ expense.categoryName }}
-            </div>
-            <div>
-              <h6>Subcategory</h6>
-              {{ expense.subcategoryName }}
+          @for (expense of group.expenses; track expense.id) {
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <div class="flex-grow-1">
+                  <h6 class="card-title">{{ expense.name }}</h6>
+                  <p class="card-text">
+                    <strong
+                      >{{ "dashboard.expenseAmount" | translate }}:</strong
+                    >
+                    {{ expense.payment | currency }}<br />
+                    <strong>{{ "dashboard.dueDate" | translate }}:</strong>
+                    {{ expense.dueDate | date : "shortDate" }}<br />
+                    <strong>{{ "dashboard.category" | translate }}:</strong>
+                    {{ expense.categoryName }}<br />
+                    <strong>{{ "dashboard.subcategory" | translate }}:</strong>
+                    {{ expense.subcategoryName }}<br />
+                    <strong>{{ "dashboard.paidStatus" | translate }}:</strong>
+                    <span
+                      [class]="expense.isPaid ? 'text-success' : 'text-danger'"
+                    >
+                      {{
+                        expense.isPaid
+                          ? ("dashboard.paid" | translate)
+                          : ("dashboard.unpaid" | translate)
+                      }}
+                    </span>
+                  </p>
+                </div>
+                <div class="d-flex gap-2">
+                  @if(expense.categoryId != 10) {
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-gradient-green"
+                    [title]="
+                      expense.isPaid
+                        ? ('dashboard.expensePaid' | translate)
+                        : ('dashboard.markAsPaid' | translate)
+                    "
+                    (click)="markExpenseAsPaid(expense.id)"
+                    [disabled]="expense.isPaid"
+                  >
+                    <i class="fas fa-dollar-sign me-1"></i>
+                    {{
+                      expense.isPaid
+                        ? ("dashboard.paid" | translate)
+                        : ("dashboard.markAsPaid" | translate)
+                    }}
+                  </button>
+                  }
+                  <button
+                    type="button"
+                    class="btn btn-sm btn-outline-danger"
+                    (click)="openDeleteExpenseModal(expense.id)"
+                    [title]="'dashboard.deleteExpense' | translate"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
+          }
         </div>
       </div>
     </div>
     }
   </div>
   } @else {
-  <p class="text-muted mt-5">No expenses for this budget period.</p>
+  <!-- No Expenses Placeholder -->
+  <div class="text-center py-5 mt-5">
+    <div class="card border-0 shadow-sm bg-light">
+      <div class="card-body py-5">
+        <div class="mb-4">
+          <i class="fas fa-receipt fa-4x text-muted opacity-50"></i>
+        </div>
+        <h4 class="text-muted mb-3">
+          {{ "dashboard.noExpensesTitle" | translate }}
+        </h4>
+        <p class="text-muted mb-4">
+          {{ "dashboard.noExpensesMessage" | translate }}
+        </p>
+        <button
+          (click)="navigateToAddExpenses()"
+          class="btn btn-gradient-green px-4 py-2"
+        >
+          <i class="fas fa-plus me-2"></i>
+          {{ "dashboard.addFirstExpense" | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
   }
 
   <!-- Paycheck Edit Modal -->
@@ -274,21 +356,20 @@
       <div class="modal-content">
         <div class="modal-header bg-success text-white">
           <h5 class="modal-title" id="paycheckModalLabel">
-            Edit Paycheck Amount
+            {{ "dashboard.editPaycheckAmount" | translate }}
           </h5>
           <button
             type="button"
             class="btn-close btn-close-white"
             data-bs-dismiss="modal"
-            aria-label="Close"
           ></button>
         </div>
         <div class="modal-body">
           <form (ngSubmit)="editPay()">
             <div class="mb-3">
-              <label for="paycheckAmount" class="form-label"
-                >New Paycheck Amount</label
-              >
+              <label for="paycheckAmount" class="form-label">{{
+                "dashboard.newPaycheckAmount" | translate
+              }}</label>
               <input
                 type="number"
                 class="form-control"
@@ -305,14 +386,14 @@
                 class="btn btn-outline-secondary"
                 data-bs-dismiss="modal"
               >
-                Cancel
+                {{ "common.cancel" | translate }}
               </button>
               <button
                 type="submit"
                 class="btn btn-gradient-green"
                 data-bs-dismiss="modal"
               >
-                Save Changes
+                {{ "dashboard.saveChanges" | translate }}
               </button>
             </div>
           </form>
@@ -333,18 +414,16 @@
       <div class="modal-content">
         <div class="modal-header bg-danger text-white">
           <h5 class="modal-title" id="deletePaycheckModalLabel">
-            Confirm Deletion
+            {{ "dashboard.confirmDeletion" | translate }}
           </h5>
           <button
             type="button"
             class="btn-close btn-close-white"
             data-bs-dismiss="modal"
-            aria-label="Close"
           ></button>
         </div>
         <div class="modal-body">
-          Are you sure you want to delete this paycheck? This action cannot be
-          undone.
+          {{ "dashboard.deletePaycheckConfirmation" | translate }}
         </div>
         <div class="modal-footer">
           <button
@@ -352,7 +431,7 @@
             class="btn btn-outline-secondary"
             data-bs-dismiss="modal"
           >
-            Cancel
+            {{ "common.cancel" | translate }}
           </button>
           <button
             type="button"
@@ -360,7 +439,7 @@
             (click)="deletePaycheckConfirm()"
             data-bs-dismiss="modal"
           >
-            Confirm Delete
+            {{ "dashboard.confirmDelete" | translate }}
           </button>
         </div>
       </div>
@@ -379,23 +458,23 @@
       <div class="modal-content">
         <div class="modal-header bg-danger text-white">
           <h5 class="modal-title" id="deleteExpenseModalLabel">
-            Confirm Deletion
+            {{ "dashboard.confirmDeletion" | translate }}
           </h5>
           <button
             type="button"
             class="btn-close btn-close-white"
             data-bs-dismiss="modal"
-            aria-label="Close"
           ></button>
         </div>
         <div class="modal-body">
+          @if (selectedExpense?.categoryId != 10) {
           {{
-            selectedExpense?.categoryId != 10
-              ? "Are you sure you want to delete this expense, '" +
-                selectedExpense?.name +
-                "'? This will remove this expense from all future budgets. This action cannot be undone."
-              : "This is a savings expense. This will not deduct from your savings balance, therefore if you added this expense by mistake, you will need to manually deduct the amount from your savings balance."
+            "dashboard.deleteExpenseConfirmation"
+              | translate : { expenseName: selectedExpense?.name }
           }}
+          } @else {
+          {{ "dashboard.deleteSavingsExpenseWarning" | translate }}
+          }
         </div>
         <div class="modal-footer">
           <button
@@ -403,7 +482,7 @@
             class="btn btn-outline-secondary"
             data-bs-dismiss="modal"
           >
-            Cancel
+            {{ "common.cancel" | translate }}
           </button>
           <button
             type="button"
@@ -411,7 +490,7 @@
             (click)="deleteExpenseConfirm()"
             data-bs-dismiss="modal"
           >
-            Confirm Delete
+            {{ "dashboard.confirmDelete" | translate }}
           </button>
         </div>
       </div>

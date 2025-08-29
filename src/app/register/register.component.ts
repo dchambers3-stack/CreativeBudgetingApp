@@ -4,16 +4,20 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { BudgetService } from '../services/budget.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { TranslatePipe } from '../pipes/translate.pipe';
+import { LanguageSelectorComponent } from '../components/language-selector.component';
+import { I18nService } from '../services/i18n.service';
 
 @Component({
   selector: 'app-register',
-  imports: [FormsModule],
+  imports: [FormsModule, TranslatePipe, LanguageSelectorComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
 export class RegisterComponent {
   private service = inject(BudgetService);
   private router = inject(Router);
+  private i18nService = inject(I18nService);
 
   username: string = '';
   email: string = '';

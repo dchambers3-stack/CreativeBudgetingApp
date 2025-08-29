@@ -1,3 +1,20 @@
 .strong-text {
     color: var(--text-color, #333); /* Adapts to light/dark mode */
 }
+
+/* Highlighted section styling */
+.highlight {
+    background-color: #ffffff;
+    color: #1f2937;
+    padding: 1.5rem;
+    border-radius: 12px;
+    border-left: 4px solid var(--secondary-color);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 2rem 0;
+}
+
+/* Ensure dark mode doesn't override the white background */
+.dark-mode .highlight {
+    background-color: #ffffff !important;
+    color: #1f2937 !important;
+}

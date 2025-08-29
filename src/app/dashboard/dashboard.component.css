@@ -1,99 +1,576 @@
-body {
-  background-color: #f5f5f5;
-  color: #333;
-  transition: background-color 0.3s ease;
+/* Dashboard specific modern styling */
+.dashboard-container {
+  background: var(--bg-primary);
+  min-height: 100vh;
+  padding: 2rem 0;
 }
-.dark-mode body {
-  color: #fff;
+
+.dashboard-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: white;
+  padding: 2rem 0;
+  margin-bottom: 2rem;
+  border-radius: 0 0 24px 24px;
+  box-shadow: var(--shadow-lg);
 }
+
+.dashboard-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.dashboard-subtitle {
+  font-size: 1.2rem;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+/* Enhanced card styling */
 .card {
   border: none;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: var(--bg-card);
+  overflow: hidden;
+  position: relative;
 }
+
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
 .card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: var(--shadow-xl);
 }
+
+.card:hover::before {
+  opacity: 1;
+}
+
 .card-header {
-  border-radius: 12px 12px 0 0;
-  font-weight: 600;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: white;
+  border-radius: 20px 20px 0 0;
+  font-weight: 700;
+  font-size: 1.25rem;
+  padding: 1.5rem 2rem;
+  border: none;
+  position: relative;
+  overflow: hidden;
 }
+
+.card-header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  height: 100px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  transform: translate(30px, -30px);
+}
+
+.card-body {
+  padding: 2rem;
+  background: var(--bg-card);
+}
+
+/* Success/Income cards */
+.card.border-success .card-header,
+.bg-success {
+  background: linear-gradient(135deg, var(--secondary-color), #059669) !important;
+}
+
+/* Warning/Expense cards */
+.card.border-warning .card-header,
+.bg-warning {
+  background: linear-gradient(135deg, var(--warning-color), #d97706) !important;
+}
+
+/* Info cards */
+.card.border-info .card-header,
+.bg-info {
+  background: linear-gradient(135deg, #06b6d4, #0891b2) !important;
+}
+
+/* Purple cards for Pay Information and Manage Savings */
+.card.border-primary .card-header,
+.bg-primary,
+.pay-info-card .card-header,
+.savings-card .card-header {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover)) !important;
+}
+
+/* Specific styling for pay information and savings cards */
+.pay-info-card,
+.savings-card {
+  border: 1px solid var(--primary-color) !important;
+}
+
+.pay-info-card .card-header,
+.savings-card .card-header {
+  background: linear-gradient(135deg, var(--primary-color), #5b21b6) !important;
+  color: white !important;
+}
+
+/* Modern button styling */
 .btn-gradient-green {
-  background: linear-gradient(90deg, #28a745, #34c759);
-  color: white;
+  background: linear-gradient(135deg, var(--secondary-color), #059669);
   border: none;
-  transition: background 0.3s ease, transform 0.2s ease;
+  color: white;
+  font-weight: 600;
+  padding: 14px 28px;
+  border-radius: 14px;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
+
+.btn-gradient-green::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
+}
+
 .btn-gradient-green:hover {
-  background: linear-gradient(90deg, #218838, #2eb54f);
+  background: linear-gradient(135deg, #059669, var(--secondary-color));
   transform: translateY(-2px);
-}
-.btn-gradient-gray {
-  background: linear-gradient(90deg, #6c757d, #adb5bd);
+  box-shadow: var(--shadow-lg);
   color: white;
-  border: none;
-  transition: background 0.3s ease, transform 0.2s ease;
 }
-.btn-gradient-gray:hover {
-  background: linear-gradient(90deg, #5c636a, #9ca3af);
-  transform: translateY(-2px);
+
+.btn-gradient-green:hover::before {
+  left: 100%;
 }
-.btn-gradient-red {
-  background: linear-gradient(90deg, #dc3545, #ff4d4d);
-  color: white;
-  border: none;
-  transition: background 0.3s ease, transform 0.2s ease;
+
+/* Statistics cards */
+.stat-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
 }
-.btn-gradient-red:hover {
-  background: linear-gradient(90deg, #c82333, #e63946);
-  transform: translateY(-2px);
+
+.stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
 }
-.accordion-button {
-  border-radius: 8px !important;
-  transition: background-color 0.3s ease;
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--primary-color);
+  line-height: 1;
+  margin-bottom: 0.5rem;
 }
-.accordion-button:not(.collapsed) {
-  background: linear-gradient(90deg, #e9ecef, #f8f9fa);
-  color: #333;
+
+.stat-label {
+  color: var(--text-secondary);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.875rem;
 }
-.dark-mode .accordion-button:not(.collapsed) {
-  color: #fff;
-}
-.accordion-item {
-  border: none;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-.modal-content {
+
+/* Enhanced expense item styling */
+.expense-item {
+  background: var(--bg-secondary);
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--border-color);
+  transition: all 0.3s ease;
+  position: relative;
 }
-.modal-header {
-  border-radius: 12px 12px 0 0;
+
+.expense-item:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+  transform: translateX(4px);
 }
-.alert {
+
+.expense-item.paid {
+  border-left: 4px solid var(--secondary-color);
+  background: rgba(16, 185, 129, 0.05);
+}
+
+.expense-item.unpaid {
+  border-left: 4px solid var(--warning-color);
+  background: rgba(245, 158, 11, 0.05);
+}
+
+/* Enhanced paycheck styling */
+.paycheck-item {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(99, 102, 241, 0.02));
+  border: 1px solid rgba(99, 102, 241, 0.2);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.paycheck-item:hover {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(99, 102, 241, 0.05));
+  border-color: var(--primary-color);
+  transform: scale(1.02);
+}
+
+/* Paycheck display in dashboard */
+.pay-info-card .bg-light {
+  background: rgba(255, 255, 255, 0.95) !important;
+  color: #1f2937 !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+}
+
+.pay-info-card .bg-light strong {
+  color: #1f2937 !important;
+  font-weight: 700 !important;
+}
+
+/* Dark mode: better contrast for paycheck items */
+.dark-mode .pay-info-card .bg-light {
+  background: rgba(31, 41, 55, 0.8) !important;
+  color: #f9fafb !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+.dark-mode .pay-info-card .bg-light strong {
+  color: #f9fafb !important;
+  font-weight: 700 !important;
+}
+
+/* Ensure all text in paycheck items is visible */
+.pay-info-card .d-flex {
+  color: inherit;
+}
+
+.pay-info-card .d-flex div {
+  color: inherit;
+}
+
+/* Additional text contrast fixes */
+.pay-info-card .bg-light * {
+  color: inherit !important;
+}
+
+/* Dark mode input styling for savings form */
+.dark-mode .savings-card input.form-control {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .savings-card input.form-control::placeholder {
+  color: #94a3b8 !important;
+}
+
+.dark-mode .savings-card input.form-control:focus {
+  background-color: #1e293b !important;
+  border-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25) !important;
+}
+
+.dark-mode .savings-card input.form-control:active {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+}
+
+.dark-mode .savings-card label.form-label {
+  color: #ffffff !important;
+}
+
+/* Also target the specific input by ID */
+.dark-mode #deductSavingsInput {
+  background-color: #1e293b !important;
+  border-color: #475569 !important;
+  color: #ffffff !important;
+}
+
+.dark-mode #deductSavingsInput::placeholder {
+  color: #94a3b8 !important;
+}
+
+.dark-mode #deductSavingsInput:focus {
+  background-color: #1e293b !important;
+  border-color: var(--primary-color) !important;
+  color: #ffffff !important;
+  box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.25) !important;
+}
+
+.dark-mode #deductSavingsInput:active {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+}
+
+/* Additional states to ensure text stays white */
+.dark-mode .savings-card input.form-control:focus-visible,
+.dark-mode .savings-card input.form-control:focus-within,
+.dark-mode #deductSavingsInput:focus-visible,
+.dark-mode #deductSavingsInput:focus-within {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+}
+
+.paycheck-amount {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  padding: 0.5rem 1rem;
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
-  animation: fadeIn 0.3s ease-out;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.expenses-center {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 16px;
-  padding: 16px;
-}
-.expenses-center div {
-  background: #f8f9fa;
-  padding: 12px;
-  border-radius: 8px;
+  display: inline-block;
   transition: background 0.3s ease;
 }
+
+/* Dark mode: make paycheck amount background transparent */
+.dark-mode .paycheck-amount {
+  background: transparent;
+  color: var(--primary-color);
+}
+
+.paycheck-date {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Loading states */
+.loading-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  border: 1px solid var(--border-color);
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid var(--border-color);
+  border-top: 4px solid var(--primary-color);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Empty state styling */
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  background: var(--bg-card);
+  border-radius: 20px;
+  border: 2px dashed var(--border-color);
+  margin: 2rem 0;
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  opacity: 0.6;
+}
+
+.empty-state-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.empty-state-description {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+/* Badge styling */
+.badge {
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge.bg-success {
+  background: linear-gradient(135deg, var(--secondary-color), #059669) !important;
+  color: white;
+}
+
+.badge.bg-warning {
+  background: linear-gradient(135deg, var(--warning-color), #d97706) !important;
+  color: white;
+}
+
+/* Responsive enhancements */
+@media (max-width: 768px) {
+  .dashboard-title {
+    font-size: 2rem;
+  }
+  
+  .dashboard-subtitle {
+    font-size: 1rem;
+  }
+  
+  .card {
+    margin-bottom: 1.5rem;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .stat-value {
+    font-size: 2rem;
+  }
+  
+  .btn-gradient-green {
+    padding: 12px 24px;
+    font-size: 0.9rem;
+  }
+}
+
+/* Additional gradient buttons */
+.btn-gradient-gray {
+  background: linear-gradient(135deg, #6c757d, #adb5bd);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-gradient-gray:hover {
+  background: linear-gradient(135deg, #5c636a, #9ca3af);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: white;
+}
+
+.btn-gradient-red {
+  background: linear-gradient(135deg, var(--danger-color), #dc2626);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 12px 24px;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-gradient-red:hover {
+  background: linear-gradient(135deg, #dc2626, var(--danger-color));
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: white;
+}
+
+/* Enhanced accordion styling */
+.accordion-button {
+  border-radius: 12px !important;
+  transition: all 0.3s ease;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-weight: 600;
+  border: 1px solid var(--border-color);
+}
+
+.accordion-button:not(.collapsed) {
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: white;
+  box-shadow: var(--shadow-sm);
+}
+
+.accordion-item {
+  border: none;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  background: var(--bg-card);
+}
+
+/* Enhanced modal styling */
+.modal-content {
+  border-radius: 20px;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border-color);
+}
+
+.modal-header {
+  border-radius: 20px 20px 0 0;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+}
+
+/* Enhanced alert styling */
+.alert {
+  border-radius: 12px;
+  animation: fadeIn 0.3s ease-out;
+  border: none;
+  font-weight: 500;
+}
+
+@keyframes fadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(-10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* Enhanced expenses center grid */
+.expenses-center {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.expenses-center div {
+  background: var(--bg-card);
+  padding: 1.5rem;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
 .expenses-center div:hover {
-  background: #e9ecef;
+  background: var(--bg-tertiary);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
 }

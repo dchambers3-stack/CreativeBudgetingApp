@@ -59,6 +59,13 @@ export class BudgetService {
       this.http.get<Category[]>(`${this.apiUrl}/categories`)
     );
   }
+  /*************  ✨ Windsurf Command ⭐  *************/
+  /**
+   * Fetches subcategories of a given category from the API
+   * @param categoryId Id of the category
+   * @returns A promise that resolves to an array of subcategories
+   */
+  /*******  fac9094c-d7b4-44c4-86e9-55626bf3a61b  *******/
   async getSubcategoriesByCategory(categoryId: number): Promise<Subcategory[]> {
     return await firstValueFrom(
       this.http.get<Subcategory[]>(`${this.apiUrl}/subcategories/${categoryId}`)
@@ -127,29 +134,10 @@ export class BudgetService {
     const formData = new FormData();
     formData.append('file', file);
     return await firstValueFrom(
-      this.http.put<void>(`${this.apiUrl}/profile-picture/${userId}`, formData)
+      this.http.put<void>(`${this.apiUrl}/${userId}/profile-picture`, formData)
     );
   }
-  async startNewBudgetPeriod(
-    userId: number
-  ): Promise<{ message: string; budgetId: number }> {
-    return await firstValueFrom(
-      this.http.post<{ message: string; budgetId: number }>(
-        `${this.apiUrl}/${userId}/start-new-budget-period`,
-        null
-      )
-    );
-  }
-  async getBudgetPeriodByUserId(userId: number): Promise<BudgetPeriod> {
-    return await firstValueFrom(
-      this.http.get<BudgetPeriod>(`${this.apiUrl}/${userId}/budget-period`)
-    );
-  }
-  async getAllBudgetPeriods(userId: number): Promise<BudgetPeriod[]> {
-    return await firstValueFrom(
-      this.http.get<BudgetPeriod[]>(`${this.apiUrl}/${userId}/budget-periods`)
-    );
-  }
+
   async getSavingsAmount(userId: number): Promise<SavingsDto> {
     return await firstValueFrom(
       this.http.get<SavingsDto>(`${this.apiUrl}/${userId}/savings`)
@@ -173,6 +161,13 @@ export class BudgetService {
     const body = { amount };
     return await firstValueFrom(
       this.http.put<SavingsDto>(`${this.apiUrl}/savings/${userId}`, body)
+    );
+  }
+  async getExpensesByPaycheck(paycheckId: number): Promise<AddExpenseDto[]> {
+    return await firstValueFrom(
+      this.http.get<AddExpenseDto[]>(
+        `${this.apiUrl}/expenses/paycheck/${paycheckId}`
+      )
     );
   }
 }

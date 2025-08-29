@@ -23,11 +23,18 @@ import { Paycheck } from '../../models/paycheck.type';
 import { ExpenseResponse } from '../../models/expense-response.typ';
 import { MarkExpenseAsPaidDto } from '../../models/mark-expense-as-paid.type';
 import { SavingsDto } from '../../models/savings-dto.type';
+import { TranslatePipe } from '../pipes/translate.pipe';
 declare var bootstrap: any;
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CurrencyPipe, FormsModule, CommonModule, ReactiveFormsModule],
+  imports: [
+    CurrencyPipe,
+    FormsModule,
+    CommonModule,
+    ReactiveFormsModule,
+    TranslatePipe,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
@@ -80,17 +87,8 @@ export class DashboardComponent {
     this.currentMonthName.set(
       today.toLocaleString('default', { month: 'long' })
     );
-
-    // Additional effect to handle when allBudgetPeriods loads
     effect(() => {
-      const allPeriods = this.allBudgetPeriods.value();
-      if (
-        allPeriods &&
-        allPeriods.length > 0 &&
-        (!this.selectedBudgetPeriodId() || this.selectedBudgetPeriodId() === 0)
-      ) {
-        this.selectedBudgetPeriodId.set(allPeriods[0].id);
-      }
+      console.log('Dashboard data:', this.expenses.value());
     });
   }
 
@@ -127,6 +125,77 @@ export class DashboardComponent {
       expenses?.reduce((sum, e) => sum + (!e.isPaid ? e.payment || 0 : 0), 0) ||
       0
     );
+  });
+
+  readonly expensesSortedByPaycheck = computed(() => {
+    const expenses = this.expenses.value();
+    const paychecks = this.paychecksInfo.value();
+
+    if (!expenses || expenses.length === 0) {
+      return [];
+    }
+
+    // Group expenses by paycheck ID
+    const grouped = expenses.reduce(
+      (groups: { [key: string]: any[] }, expense) => {
+        const paycheckKey = expense.paycheckId
+          ? `paycheck-${expense.paycheckId}`
+          : 'no-paycheck';
+        if (!groups[paycheckKey]) {
+          groups[paycheckKey] = [];
+        }
+        groups[paycheckKey].push(expense);
+        return groups;
+      },
+      {}
+    );
+
+    // Convert to array and sort by paycheck ID
+    const sortedGroups = Object.entries(grouped)
+      .map(([key, expenseList]) => {
+        const paycheckId = key.startsWith('paycheck-')
+          ? parseInt(key.replace('paycheck-', ''))
+          : null;
+
+        // Find the corresponding paycheck to get the amount
+        const paycheck = paychecks?.find((p) => p.id === paycheckId);
+        const paycheckAmount = paycheck?.amount || 0;
+
+        // Calculate total expenses for this paycheck
+        const totalExpenses = expenseList.reduce(
+          (sum, expense) => sum + (expense.payment || 0),
+          0
+        );
+        const remainingBudget = paycheckAmount - totalExpenses;
+
+        return {
+          paycheckId,
+          originalPaycheckId: paycheckId,
+          paycheckAmount,
+          totalExpenses,
+          remainingBudget,
+          expenses: expenseList.sort(
+            (a, b) =>
+              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+          ),
+        };
+      })
+      .sort((a, b) => {
+        // Sort by paycheck ID, with null values last
+        if (a.paycheckId === null) return 1;
+        if (b.paycheckId === null) return -1;
+        return a.paycheckId - b.paycheckId;
+      });
+
+    // Assign sequential paycheck numbers for display
+    let paycheckCounter = 1;
+    return sortedGroups.map((group) => ({
+      ...group,
+      paycheckLabel:
+        group.paycheckId !== null
+          ? `Paycheck ${paycheckCounter++}`
+          : 'No Paycheck',
+    }));
   });
 
   async editPay(): Promise<void> {
@@ -229,30 +298,89 @@ export class DashboardComponent {
     }, 8000);
   }
 
-  async createNewBudgetPeriod(): Promise<void> {
-    try {
-      const result = await this.budgetService.startNewBudgetPeriod(
-        this.userId ?? 0
-      );
-
-      // Set the newly created budget period as selected
-      if (result.budgetId) {
-        this.selectedBudgetPeriodId.set(result.budgetId);
-      }
-    } catch (err) {
-      console.error('Error creating new budget period:', err);
-    } finally {
-      this.allBudgetPeriods.reload();
-    }
-  }
-
-  allBudgetPeriods = resource({
-    request: () => this.userId ?? 0,
-    loader: ({ request }) => this.budgetService.getAllBudgetPeriods(request),
-  });
-
   // Selected budget period ID
   selectedBudgetPeriodId = signal<number | null>(null);
+
+  // Create expensesDetailed by grouping expenses from paychecks
+  expensesDetailed = computed(() => {
+    const paychecks = this.paychecksInfo.value();
+    console.log('🔍 Computing expensesDetailed from paychecks:', paychecks);
+
+    if (!paychecks || paychecks.length === 0) {
+      console.log('❌ No paychecks found');
+      return [];
+    }
+
+    // Transform paychecks into the expected format
+    const expenseGroups = paychecks
+      .map((paycheck) => {
+        console.log(`📋 Processing paycheck ${paycheck.id}:`, paycheck);
+        return {
+          paycheckId: paycheck.id,
+          paycheckDate: paycheck.payDate,
+          paycheckAmount: paycheck.amount,
+          expenses: paycheck.expenses || [],
+        };
+      })
+      .filter((group) => group.expenses.length > 0);
+
+    console.log('✅ Final expense groups:', expenseGroups);
+    return expenseGroups;
+  });
+
+  // Helper methods for expense icons and calculations
+  getExpenseIcon(categoryId: number): string {
+    const iconMap: { [key: number]: string } = {
+      1: 'fas fa-home', // Housing
+      2: 'fas fa-car', // Transportation
+      3: 'fas fa-utensils', // Food
+      4: 'fas fa-gamepad', // Entertainment
+      5: 'fas fa-heartbeat', // Healthcare
+      6: 'fas fa-shopping-bag', // Shopping
+      7: 'fas fa-graduation-cap', // Education
+      8: 'fas fa-users', // Personal
+      9: 'fas fa-chart-line', // Investment
+      10: 'fas fa-piggy-bank', // Savings
+    };
+    return iconMap[categoryId] || 'fas fa-receipt';
+  }
+
+  getPaycheckTotalExpenses(expenses: any[]): number {
+    if (!expenses) return 0;
+    return expenses.reduce(
+      (total, expense) => total + (expense.payment || 0),
+      0
+    );
+  }
+
+  getPaycheckRemaining(paycheckGroup: any): number {
+    const totalExpenses = this.getPaycheckTotalExpenses(paycheckGroup.expenses);
+    return paycheckGroup.paycheckAmount - totalExpenses;
+  }
+
+  // Helper method to get category name by ID
+  getCategoryName(categoryId: number): string {
+    const categoryMap: { [key: number]: string } = {
+      1: 'Housing',
+      2: 'Utilities',
+      3: 'Food',
+      4: 'Entertainment',
+      5: 'Healthcare',
+      6: 'Shopping',
+      7: 'Education',
+      8: 'Personal',
+      9: 'Investment',
+      10: 'Savings',
+    };
+    return categoryMap[categoryId] || 'Other';
+  }
+
+  // Helper method to get subcategory name by ID (simplified)
+  getSubcategoryName(subcategoryId: number | null | undefined): string {
+    if (!subcategoryId) return 'General';
+    // This would ideally come from a service, but for now return a default
+    return 'General';
+  }
 
   onBudgetPeriodChange(newValue: number) {
     if (newValue && newValue > 0) {

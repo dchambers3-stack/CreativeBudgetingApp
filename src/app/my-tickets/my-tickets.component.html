@@ -1,21 +1,25 @@
 <table class="table table-bordered table-striped table-hover">
   <thead>
     <tr>
-      <th>Ticket #</th>
-      <th>Subject</th>
-      <th>Customer Name</th>
-      <th>Customer Email</th>
-      <th>Message</th>
-      <th>Ticket Severity</th>
+      <th class="text-center">{{ "myTickets.ticketNo" | translate }}</th>
+      <th class="text-center">{{ "myTickets.subject" | translate }}</th>
+      <th class="text-center">{{ "myTickets.customerName" | translate }}</th>
+      <th class="text-center">{{ "myTickets.customerEmail" | translate }}</th>
+      <th class="text-center">{{ "myTickets.message" | translate }}</th>
+      <th class="text-center">{{ "myTickets.ticketSeverity" | translate }}</th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    @for(ticket of this.tickets.value(); track $index){
+    @for(ticket of this.filteredTickets(); track $index){
 
     <tr>
       <td>
-        <a href="#">{{ ticket.id }}</a>
+        <a
+          [routerLink]="['/helpdesk/ticket-details', ticket.id]"
+          routerLinkActive="router-link-active"
+          >{{ ticket.id }}</a
+        >
       </td>
       <td>{{ ticket.subject }}</td>
       <td>{{ ticket.name }}</td>

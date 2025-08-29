@@ -1,0 +1,332 @@
+{
+  "auth": {
+    "login": {
+      "title": "Se Connecter",
+      "username": "Nom d'Utilisateur",
+      "password": "Mot de Passe",
+      "loginButton": "Se Connecter",
+      "registerLink": "Pas de compte ? S'inscrire",
+      "error": "Nom d'utilisateur ou mot de passe invalide"
+    },
+    "register": {
+      "title": "Créer un Compte",
+      "username": "Nom d'Utilisateur",
+      "email": "Email",
+      "password": "Mot de Passe",
+      "confirmPassword": "Confirmer le Mot de Passe",
+      "registerButton": "Créer un Compte",
+      "loginLink": "Déjà un compte ? Se connecter"
+    }
+  },
+  "navigation": {
+    "dashboard": "Tableau de Bord",
+    "addExpenses": "Ajouter Dépenses",
+    "paychecks": "Fiches de Paie",
+    "payInfo": "Informations de Paie",
+    "howToBudget": "Comment Budgéter",
+    "tickets": "Mes Tickets",
+    "createTicket": "Créer Ticket",
+    "logout": "Déconnexion"
+  },
+  "dashboard": {
+    "title": "Tableau de Bord Budget",
+    "greeting": "Bonjour",
+    "welcomeMessage": "Bienvenue dans votre",
+    "budget": "Budget",
+    "enterPayInfo": "Saisir Info Paie",
+    "enterPersonalInfo": "Saisir Info Personnelle",
+    "enterExpenses": "Saisir Dépenses",
+    "cannotDeletePaycheck": "Impossible de supprimer la paie avec des dépenses existantes. Veuillez d'abord supprimer les dépenses.",
+    "payInformation": "Informations de Paie",
+    "budgetSummary": "Résumé du Budget",
+    "totalIncome": "Revenus Totaux",
+    "totalExpenses": "Dépenses Totales",
+    "paid": "Payé",
+    "unpaid": "Impayé",
+    "remainingBudget": "Budget Restant",
+    "overBudget": "Budget Dépassé",
+    "noPaycheckData": "Aucune donnée de paie disponible pour le moment.",
+    "paycheck": "Paie",
+    "editPaycheck": "Modifier Paie",
+    "deletePaycheck": "Supprimer Paie",
+    "manageYourSavings": "Gérer Votre Épargne",
+    "amountToDeduct": "Montant à Déduire",
+    "enterAmount": "Saisir montant",
+    "deduct": "Déduire",
+    "savingsBalance": "Solde d'Épargne",
+    "expenses": "Dépenses",
+    "totalBalance": "Solde Total",
+    "expensePaid": "Dépense Payée",
+    "markAsPaid": "Marquer comme Payé",
+    "deleteExpense": "Supprimer Dépense",
+    "expenseName": "Nom de la Dépense",
+    "expenseAmount": "Montant de la Dépense",
+    "dueDate": "Date d'Échéance",
+    "paidStatus": "Statut de Paiement",
+    "category": "Catégorie",
+    "subcategory": "Sous-catégorie",
+    "noExpensesForPeriod": "Aucune dépense pour cette période de budget.",
+    "editPaycheckAmount": "Modifier le Montant de la Paie",
+    "newPaycheckAmount": "Nouveau Montant de Paie",
+    "saveChanges": "Sauvegarder les Changements",
+    "confirmDeletion": "Confirmer la Suppression",
+    "deletePaycheckConfirmation": "Êtes-vous sûr de vouloir supprimer cette paie ?",
+    "confirmDelete": "Confirmer la Suppression",
+    "deleteExpenseConfirmation": "Êtes-vous sûr de vouloir supprimer la dépense '{{expenseName}}' ?",
+    "deleteSavingsExpenseWarning": "Attention : Supprimer cette dépense d'épargne affectera votre solde d'épargne.",
+    "recentTransactions": "Transactions Récentes",
+    "budgetCategories": "Catégories de Budget",
+    "paycheckFor": "Paie pour",
+    "paycheckAmount": "Montant de la Paie",
+    "expenseCount": "Dépenses",
+    "noExpensesTitle": "Aucune Dépense Encore",
+    "noExpensesMessage": "Vous n'avez pas encore ajouté de dépenses à votre budget. Commencez par ajouter votre première dépense pour suivre vos dépenses.",
+    "addFirstExpense": "Ajouter Votre Première Dépense",
+    "quickActions": "Actions Rapides",
+    "addExpense": "Ajouter Dépense",
+    "addPaycheck": "Ajouter Fiche de Paie",
+    "viewReports": "Voir Rapports",
+    "manageCategories": "Gérer Catégories",
+    "budgetOverview": "Aperçu du Budget",
+    "spent": "Dépensé",
+    "remaining": "Restant",
+    "viewExpenses": "Voir Dépenses",
+    "addMoreExpenses": "Ajouter Plus de Dépenses",
+    "noExpenses": "Aucune dépense pour cette période",
+    "expenseHistory": "Historique des Dépenses",
+    "viewAll": "Voir Tout",
+    "thisMonth": "Ce Mois",
+    "savings": "Épargne",
+    "savingsGoal": "Objectif d'Épargne",
+    "currentSavings": "Épargne Actuelle",
+    "goalProgress": "Progrès de l'Objectif",
+    "setSavingsGoal": "Définir Objectif d'Épargne",
+    "updateSavingsGoal": "Mettre à Jour l'Objectif d'Épargne",
+    "addToSavings": "Ajouter à l'Épargne",
+    "goalAmount": "Montant de l'Objectif",
+    "targetDate": "Date Cible",
+    "monthlyContribution": "Contribution Mensuelle",
+    "weeklyContribution": "Contribution Hebdomadaire",
+    "savingsProgress": "Progrès de l'Épargne",
+    "onTrack": "Sur la Bonne Voie",
+    "behindSchedule": "En Retard",
+    "goalReached": "Objectif Atteint !",
+    "congratulations": "Félicitations !",
+    "newGoalPrompt": "Définir un Nouvel Objectif",
+    "budgetAlerts": "Alertes Budget",
+    "overspending": "Dépassement de Budget",
+    "categoryBudget": "Budget par Catégorie",
+    "monthlyBudget": "Budget Mensuel",
+    "weeklyBudget": "Budget Hebdomadaire",
+    "dailyBudget": "Budget Quotidien",
+    "budgetPeriod": "Période de Budget",
+    "financialSummary": "Résumé Financier"
+  },
+  "expenses": {
+    "title": "Ajouter Dépenses",
+    "category": "Catégorie",
+    "amount": "Montant",
+    "description": "Description",
+    "date": "Date",
+    "addButton": "Ajouter Dépense",
+    "success": "Dépense ajoutée avec succès",
+    "error": "Échec de l'ajout de la dépense"
+  },
+  "paychecks": {
+    "title": "Gestion des Fiches de Paie",
+    "grossPay": "Salaire Brut",
+    "netPay": "Salaire Net",
+    "payDate": "Date de Paie",
+    "addPaycheck": "Ajouter Fiche de Paie"
+  },
+  "helpdesk": {
+    "tickets": {
+      "title": "Mes Tickets de Support",
+      "ticketId": "ID du Ticket",
+      "subject": "Sujet",
+      "status": "Statut",
+      "priority": "Priorité",
+      "created": "Créé",
+      "noTickets": "Aucun ticket trouvé"
+    },
+    "createTicket": {
+      "title": "Créer Ticket de Support",
+      "subject": "Sujet",
+      "description": "Description",
+      "priority": "Priorité",
+      "submitButton": "Soumettre Ticket",
+      "success": "Ticket créé avec succès"
+    }
+  },
+  "common": {
+    "save": "Sauvegarder",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "loading": "Chargement...",
+    "error": "Une erreur s'est produite",
+    "success": "Opération terminée avec succès",
+    "required": "Ce champ est obligatoire",
+    "invalidEmail": "Veuillez entrer un email valide",
+    "passwordMismatch": "Les mots de passe ne correspondent pas"
+  },
+  "categories": {
+    "housing": "Logement",
+    "transportation": "Transport",
+    "food": "Nourriture et Restaurants",
+    "utilities": "Services Publics",
+    "healthcare": "Santé",
+    "entertainment": "Divertissement",
+    "shopping": "Shopping",
+    "other": "Autres"
+  },
+  "status": {
+    "open": "Ouvert",
+    "inProgress": "En Cours",
+    "resolved": "Résolu",
+    "closed": "Fermé"
+  },
+  "priority": {
+    "low": "Faible",
+    "medium": "Moyenne",
+    "high": "Élevée",
+    "urgent": "Urgente"
+  },
+  "addExpense": {
+    "title": "Ajouter une nouvelle dépense",
+    "success": "Dépense ajoutée avec succès !",
+    "error": "Erreur lors de l'ajout de la dépense. Veuillez réessayer.",
+    "form": {
+      "paycheck": {
+        "label": "Sélectionner une Paie",
+        "placeholder": "Choisir une paie",
+        "option": "Paie"
+      },
+      "category": {
+        "label": "Catégorie",
+        "required": "*"
+      },
+      "subcategory": {
+        "label": "Sous-catégorie",
+        "required": "*"
+      },
+      "name": {
+        "label": "Nom de la dépense",
+        "required": "*"
+      },
+      "payment": {
+        "label": "Paiement",
+        "labelAmount": "Montant",
+        "required": "*"
+      },
+      "totalBalance": {
+        "label": "Solde total"
+      },
+      "dueDate": {
+        "label": "Date d'échéance",
+        "required": "*"
+      },
+      "submit": "Ajouter la dépense"
+    }
+  },
+  "paycheck": {
+    "form": {
+      "title": "Ajouter un nouveau salaire",
+      "payDate": {
+        "label": "Date de paie",
+        "required": "*",
+        "validation": {
+          "required": "La date de paie est requise."
+        }
+      },
+      "amount": {
+        "label": "Montant",
+        "required": "*",
+        "validation": {
+          "required": "Le montant est requis.",
+          "min": "Le montant doit être non négatif."
+        }
+      },
+      "submit": "Ajouter le salaire"
+    },
+    "list": {
+      "empty": "Aucun salaire ajouté pour le moment.",
+      "delete": "Supprimer"
+    },
+    "modal": {
+      "title": "Confirmer la suppression",
+      "message": "Êtes-vous sûr de vouloir supprimer ce salaire ?",
+      "cancel": "Annuler",
+      "confirm": "Supprimer"
+    }
+  },
+  "howToBudget": {
+    "title": "Comment faire un budget (Style Dave Ramsey)",
+    "subtitle": "Le budget ne limite pas votre liberté — il vous donne le contrôle.",
+    "zeroBased": {
+      "title": "Budget à base zéro",
+      "description": "signifie que chaque euro a un rôle. Revenus moins dépenses doivent égaler",
+      "zero": "0€"
+    },
+    "steps": {
+      "step1": {
+        "title": "1. Listez vos revenus",
+        "description": "Notez toutes les sources de revenus mensuels : salaires, activités annexes, ou tout autre argent qui rentre."
+      },
+      "step2": {
+        "title": "2. Listez toutes les dépenses",
+        "description": "Incluez tout — loyer, nourriture, loisirs, dettes, épargne. Organisez-les par catégories pour rester clair."
+      },
+      "step3": {
+        "title": "3. Couvrez les quatre murs",
+        "description": "Occupez-vous d'abord de l'essentiel :",
+        "walls": {
+          "food": "Nourriture",
+          "utilities": "Services publics",
+          "shelter": "Logement",
+          "shelterDetail": "(comme loyer/hypothèque)",
+          "transportation": "Transport"
+        }
+      },
+      "step4": {
+        "title": "4. Assignez chaque euro",
+        "description": "Soustrayez chaque dépense prévue de vos revenus jusqu'à atteindre zéro. Cela inclut l'épargne et les paiements de dettes."
+      },
+      "step5": {
+        "title": "5. Suivez et ajustez",
+        "description": "La vie n'est pas parfaite — si quelque chose change en cours de mois, ajustez votre budget. Restez flexible et en contrôle."
+      },
+      "step6": {
+        "title": "6. Répétez chaque mois",
+        "description": "Faites un nouveau budget avant chaque nouveau mois. Chacun est différent, donc votre plan devrait l'être aussi."
+      }
+    },
+    "quote": "\"Un budget, c'est dire à votre argent où aller au lieu de vous demander où il est parti.\" — Dave Ramsey"
+  },
+  "createTicket": {
+    "title": "Créer un ticket de support",
+    "form": {
+      "name": {
+        "label": "Nom complet",
+        "placeholder": "Entrez votre nom complet"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Entrez votre adresse email"
+      },
+      "subject": {
+        "label": "Sujet",
+        "placeholder": "Entrez le sujet de votre message"
+      },
+      "severity": {
+        "label": "Gravité",
+        "placeholder": "Sélectionnez la gravité"
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "Entrez votre message ici"
+      },
+      "submit": "Soumettre"
+    }
+  }
+}

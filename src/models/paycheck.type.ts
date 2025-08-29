@@ -1,3 +1,5 @@
+import { AddExpenseDto } from './add-expenses.type';
+
 export type Paycheck = {
   paycheck1: number;
   paycheck2: number;
@@ -6,5 +8,5 @@ export type Paycheck = {
   payDate: string; // ISO format
   amount: number;
   totalBalance: number;
-  expenses?: any[];
+  expenses?: AddExpenseDto[];
 };

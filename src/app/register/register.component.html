@@ -3,7 +3,12 @@
     class="card p-4 shadow"
     style="min-width: 300px; max-width: 400px; width: 100%"
   >
-    <h2 class="text-center mb-4">Register</h2>
+    <!-- Language Selector -->
+    <div class="d-flex justify-content-end mb-3">
+      <app-language-selector></app-language-selector>
+    </div>
+
+    <h2 class="text-center mb-4">{{ "auth.register.title" | translate }}</h2>
     @if(error()){
 
     <div class="alert alert-danger" role="alert">
@@ -17,7 +22,7 @@
           type="text"
           class="form-control"
           name="username"
-          placeholder="Enter your username"
+          [placeholder]="'auth.register.username' | translate"
           required
           [(ngModel)]="username"
         />
@@ -27,7 +32,7 @@
           type="email"
           class="form-control"
           name="email"
-          placeholder="Enter your email"
+          [placeholder]="'auth.register.email' | translate"
           required
           [(ngModel)]="email"
         />
@@ -37,7 +42,7 @@
           type="password"
           class="form-control"
           name="password"
-          placeholder="Enter your password"
+          [placeholder]="'auth.register.password' | translate"
           required
           [(ngModel)]="password"
         />
@@ -47,21 +52,20 @@
           type="password"
           class="form-control"
           name="confirmation"
-          placeholder="Confirm your password"
+          [placeholder]="'auth.register.confirmPassword' | translate"
           required
           [(ngModel)]="confirmation"
         />
       </div>
       <div class="d-grid mb-3">
         <button type="submit" class="btn btn-success" [disabled]="form.invalid">
-          Register
+          {{ "auth.register.registerButton" | translate }}
         </button>
       </div>
     </form>
 
     <p class="text-center mb-0">
-      Already have an account?
-      <a href="/login">Login here</a>
+      <a href="/login">{{ "auth.register.loginLink" | translate }}</a>
     </p>
   </div>
 </div>

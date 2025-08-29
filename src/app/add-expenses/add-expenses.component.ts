@@ -19,16 +19,19 @@ import { Category, Subcategory } from '../../models/category.type';
 import { ExpenseResponse } from '../../models/expense-response.typ';
 import { DatePipe } from '@angular/common';
 import { CategoryEnum } from '../../enums/category-enum';
+import { TranslatePipe } from '../pipes/translate.pipe';
+import { PaycheckService } from '../services/paycheck.service';
 
 @Component({
   selector: 'app-add-expenses',
-  imports: [FormsModule, ReactiveFormsModule],
+  imports: [FormsModule, ReactiveFormsModule, TranslatePipe, DatePipe],
   templateUrl: './add-expenses.component.html',
   styleUrls: ['./add-expenses.component.css'],
 })
 export class AddExpensesComponent {
   private loginService = inject(LoginService);
   private budgetService = inject(BudgetService);
+  paycheckService = inject(PaycheckService);
   private fb = inject(FormBuilder);
 
   isSuccess = signal(false);
@@ -47,6 +50,7 @@ export class AddExpensesComponent {
     categoryId: [0, Validators.required],
     subcategoryId: [0],
     isPaid: [false],
+    paycheckId: [null, Validators.required],
   });
 
   expenseList: ExpenseResponse[] = [];
@@ -59,9 +63,15 @@ export class AddExpensesComponent {
     }
     const formValue = this.expenseForm.value;
     const categoryId = Number(formValue.categoryId) || 0;
+    const currentUserId = this.loginService.userId();
+
+    // Debug logging to help identify the issue
+    console.log('Current userId from service:', currentUserId);
+    console.log('Form userId value:', formValue.userId);
+
     const expense: AddExpenseDto = {
       id: 0,
-      userId: formValue.userId ?? 0,
+      userId: currentUserId ?? 0, // Use current userId from service instead of form value
       name: formValue.name ?? '',
       payment: formValue.payment ?? 0,
       totalBalance: formValue.totalBalance ?? 0,
@@ -69,21 +79,27 @@ export class AddExpensesComponent {
       categoryId: categoryId,
       subcategoryId: categoryId === 10 ? null : formValue.subcategoryId ?? 0,
       isPaid: formValue.isPaid ?? false,
+      paycheckId: formValue.paycheckId ?? 0,
     };
-    this.budgetService
-      .addExpenses(this.loginService.userId() ?? 0, expense)
-      .subscribe({
-        next: () => {
-          this.expenseForm.reset();
-          this.isSuccess.set(true);
-          setTimeout(() => this.isSuccess.set(false), 2000);
-        },
-        error: (error) => {
-          console.error('Add expense error:', error);
-          this.isError.set(true);
-          setTimeout(() => this.isError.set(false), 2000);
-        },
-      });
+    this.budgetService.addExpenses(currentUserId ?? 0, expense).subscribe({
+      next: () => {
+        this.expenseForm.reset();
+        // Re-set the userId after reset to ensure it's available for the next expense
+        this.expenseForm.patchValue({
+          userId: this.loginService.userId(),
+        });
+        this.isSuccess.set(true);
+        setTimeout(() => this.isSuccess.set(false), 2000);
+      },
+      error: (error) => {
+        console.error('Add expense error:', error);
+        console.error('Error details:', error.error);
+        console.error('Error status:', error.status);
+        console.error('Error message:', error.message);
+        this.isError.set(true);
+        setTimeout(() => this.isError.set(false), 2000);
+      },
+    });
   }
 
   editExpense(expense: ExpenseResponse) {
@@ -120,6 +136,10 @@ export class AddExpensesComponent {
     this.budgetService.editExpenses(expense.userId, expense).subscribe({
       next: () => {
         this.expenseForm.reset();
+        // Re-set the userId after reset to ensure it's available for the next expense
+        this.expenseForm.patchValue({
+          userId: this.loginService.userId(),
+        });
         this.isSuccess.set(true);
         setTimeout(() => this.isSuccess.set(false), 2000);
       },
@@ -176,4 +196,8 @@ export class AddExpensesComponent {
       0
     );
   }
+  paycheckInfo = resource({
+    loader: () =>
+      this.paycheckService.getPaychecks(this.loginService.userId() ?? 0),
+  });
 }

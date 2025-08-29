@@ -9,10 +9,11 @@ import {
 import { HelpdeskService } from '../services/helpdesk.service';
 import { Router } from '@angular/router';
 import { LookupsService } from '../services/lookups.service';
+import { TranslatePipe } from '../pipes/translate.pipe';
 
 @Component({
   selector: 'app-create-ticket',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, TranslatePipe],
   templateUrl: './create-ticket.component.html',
   styleUrl: './create-ticket.component.css',
 })

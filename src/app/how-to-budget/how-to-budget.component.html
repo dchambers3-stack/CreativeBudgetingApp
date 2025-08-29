@@ -1,60 +1,81 @@
 <div class="container mt-5 mb-5">
   <h1 class="text-center text-success mb-4 fw-bold section-title">
-    How to Budget (Dave Ramsey Style)
+    {{ "howToBudget.title" | translate }}
   </h1>
 
   <p class="lead text-center">
-    Budgeting isn’t about limiting your freedom — it's about gaining control.
+    {{ "howToBudget.subtitle" | translate }}
   </p>
 
   <div class="highlight my-4 strong-text">
-    <strong>Zero-Based Budgeting</strong> means every dollar has a job. Income
-    minus expenses should equal <strong>$0</strong>.
+    <strong>{{ "howToBudget.zeroBased.title" | translate }}</strong>
+    {{ "howToBudget.zeroBased.description" | translate }}
+    <strong>{{ "howToBudget.zeroBased.zero" | translate }}</strong
+    >.
   </div>
 
-  <h3 class="section-title">1. List Your Income</h3>
+  <h3 class="section-title">
+    {{ "howToBudget.steps.step1.title" | translate }}
+  </h3>
   <p>
-    Write down all sources of monthly income: paychecks, side hustles, or any
-    other money coming in.
+    {{ "howToBudget.steps.step1.description" | translate }}
   </p>
 
-  <h3 class="section-title">2. List All Expenses</h3>
+  <h3 class="section-title">
+    {{ "howToBudget.steps.step2.title" | translate }}
+  </h3>
   <p>
-    Include everything — rent, food, entertainment, debt, savings. Organize them
-    into categories to stay clear.
+    {{ "howToBudget.steps.step2.description" | translate }}
   </p>
 
-  <h3 class="section-title">3. Cover the Four Walls</h3>
-  <p>Take care of essentials first:</p>
+  <h3 class="section-title">
+    {{ "howToBudget.steps.step3.title" | translate }}
+  </h3>
+  <p>{{ "howToBudget.steps.step3.description" | translate }}</p>
   <ul>
-    <li><strong>Food</strong></li>
-    <li><strong>Utilities</strong></li>
-    <li><strong>Shelter</strong> (like rent/mortgage)</li>
-    <li><strong>Transportation</strong></li>
+    <li>
+      <strong>{{ "howToBudget.steps.step3.walls.food" | translate }}</strong>
+    </li>
+    <li>
+      <strong>{{
+        "howToBudget.steps.step3.walls.utilities" | translate
+      }}</strong>
+    </li>
+    <li>
+      <strong>{{ "howToBudget.steps.step3.walls.shelter" | translate }}</strong>
+      {{ "howToBudget.steps.step3.walls.shelterDetail" | translate }}
+    </li>
+    <li>
+      <strong>{{
+        "howToBudget.steps.step3.walls.transportation" | translate
+      }}</strong>
+    </li>
   </ul>
 
-  <h3 class="section-title">4. Assign Every Dollar</h3>
+  <h3 class="section-title">
+    {{ "howToBudget.steps.step4.title" | translate }}
+  </h3>
   <p>
-    Subtract each planned expense from your income until you hit zero. That
-    includes saving and debt payments.
+    {{ "howToBudget.steps.step4.description" | translate }}
   </p>
 
-  <h3 class="section-title">5. Track & Adjust</h3>
+  <h3 class="section-title">
+    {{ "howToBudget.steps.step5.title" | translate }}
+  </h3>
   <p>
-    Life isn’t perfect — if something changes mid-month, adjust your budget.
-    Stay flexible and in control.
+    {{ "howToBudget.steps.step5.description" | translate }}
   </p>
 
-  <h3 class="section-title">6. Repeat Monthly</h3>
+  <h3 class="section-title">
+    {{ "howToBudget.steps.step6.title" | translate }}
+  </h3>
   <p>
-    Do a fresh budget before each new month. Each one is different, so your plan
-    should be too.
+    {{ "howToBudget.steps.step6.description" | translate }}
   </p>
 
   <hr class="my-5" />
 
   <p class="footer-quote text-center">
-    “A budget is telling your money where to go instead of wondering where it
-    went.” — Dave Ramsey
+    {{ "howToBudget.quote" | translate }}
   </p>
 </div>

@@ -5,6 +5,8 @@
     "ng": "ng",
     "start": "nx serve",
     "build": "nx build",
+    "build:prod": "nx build --configuration production",
+    "build:netlify": "nx build --configuration production --output-path dist",
     "watch": "nx build --watch --configuration development",
     "test": "nx test"
   },

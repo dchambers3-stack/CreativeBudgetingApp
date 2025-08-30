@@ -3,12 +3,14 @@
 Your Creative Budget App is ready for deployment on Netlify! Follow these steps:
 
 ## Prerequisites
+
 - GitHub repository with your code
 - Netlify account (free at netlify.com)
 
 ## Deployment Steps
 
 ### 1. Push Code to GitHub
+
 ```bash
 git add .
 git commit -m "Prepare for Netlify deployment"
@@ -27,11 +29,14 @@ git push origin main
    - **Publish directory**: `dist/budget-angular-app`
 
 ### 3. Environment Variables (if needed)
+
 If you have environment-specific variables:
+
 1. Go to Site Settings → Environment Variables
 2. Add any production environment variables
 
 ### 4. Custom Domain (Optional)
+
 1. Go to Site Settings → Domain Management
 2. Add your custom domain if you have one
 
@@ -55,6 +60,7 @@ The following files are configured for Netlify:
 ## Post-Deployment
 
 After successful deployment:
+
 1. Test all routes and functionality
 2. Check responsive design on various devices
 3. Verify dark/light theme switching
@@ -63,21 +69,25 @@ After successful deployment:
 ## Troubleshooting
 
 **Build Fails?**
+
 - Check build logs in Netlify dashboard
 - Ensure all dependencies are in package.json
 - Verify Node.js version compatibility
 
 **Routes Don't Work?**
+
 - Confirm `netlify.toml` redirects are configured
 - Check that build output is in correct directory
 
 **Styling Issues?**
+
 - Verify all assets are included in build
 - Check for hardcoded localhost URLs
 
 ## Support
 
 For deployment issues, check:
+
 - [Netlify Documentation](https://docs.netlify.com/)
 - Build logs in Netlify dashboard
 - Angular deployment guides
@@ -86,4 +96,5 @@ Your app should be live at: `https://[random-name].netlify.app`
 (You can change this in Site Settings → Domain Management)
 
 ---
-*Built with Angular 18 + Modern Design System* ⚡
+
+_Built with Angular 18 + Modern Design System_ ⚡

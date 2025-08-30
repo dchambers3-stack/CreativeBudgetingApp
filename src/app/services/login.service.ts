@@ -3,12 +3,13 @@ import { inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom, Observable, single, tap } from 'rxjs';
 import { DashboardDto } from '../../models/dashboard-dto.type';
 import { User } from '../../models/user.type';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  apiUrl = 'https://localhost:5001/api/account';
+  apiUrl = `${environment.apiUrl}/account`;
   private http = inject(HttpClient);
   userId = signal<number | null>(null);
 

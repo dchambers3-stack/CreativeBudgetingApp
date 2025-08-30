@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://your-domain.com/api', // Update this with your actual domain
+  apiUrl: 'https://creativebudgetingapi.onrender.com/api', // Update this with your actual domain
   appName: 'Creative Budget',
-  version: '1.0.0'
+  version: '1.0.0',
 };

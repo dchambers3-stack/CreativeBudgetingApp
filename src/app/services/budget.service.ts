@@ -12,12 +12,13 @@ import { MarkExpenseAsPaidDto } from '../../models/mark-expense-as-paid.type';
 import { RecurringExpenseDto } from '../../models/recurring-expense-dto';
 import { BudgetPeriod } from '../../models/budget-period';
 import { SavingsDto } from '../../models/savings-dto.type';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BudgetService {
-  private apiUrl = 'https://localhost:5001/api/budget';
+  private apiUrl = `${environment.apiUrl}/budget`;
   private http = inject(HttpClient);
   constructor() {}
 

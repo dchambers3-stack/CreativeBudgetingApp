@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Paycheck } from '../../models/paycheck.type';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PaycheckService {
-  private apiUrl = 'https://localhost:5001/api/paychecks';
+  private apiUrl = `${environment.apiUrl}/paychecks`;
 
   constructor(private http: HttpClient) {}
 

@@ -3,12 +3,14 @@
 ## 🚀 Hostinger Git Deployment Setup
 
 ### Prerequisites
+
 - Hostinger hosting account with Git deployment support
 - GitHub repository access
 
 ### Deployment Steps
 
 #### 1. Hostinger Control Panel Setup
+
 1. Login to your Hostinger control panel
 2. Navigate to **Git** section
 3. Click **"Create Repository"**
@@ -17,7 +19,9 @@
 6. Set target folder: `public_html`
 
 #### 2. Build Commands Configuration
+
 In Hostinger Git settings, use these build commands:
+
 ```bash
 npm ci
 npm run build:prod
@@ -26,17 +30,20 @@ cp .htaccess ./
 ```
 
 #### 3. Environment Variables
+
 Update `src/environments/environment.prod.ts` with your production domain:
+
 ```typescript
 export const environment = {
   production: true,
-  apiUrl: 'https://your-domain.com/api',
-  appName: 'Creative Budget',
-  version: '1.0.0'
+  apiUrl: "https://your-domain.com/api",
+  appName: "Creative Budget",
+  version: "1.0.0",
 };
 ```
 
 #### 4. Enable Auto-Deploy
+
 - Enable **"Auto Deploy"** in Hostinger Git settings
 - Every push to `main` branch will automatically trigger deployment
 
@@ -69,6 +76,7 @@ npm test
 ```
 
 ### 📁 Project Structure
+
 ```
 src/
 ├── app/                    # Application components
@@ -84,19 +92,23 @@ deploy.sh                  # Deployment script
 ### 🔧 Troubleshooting
 
 **Build fails:**
+
 - Check Node.js version (recommended: 18+)
 - Verify all dependencies are installed
 - Check for TypeScript errors
 
 **Routes don't work:**
+
 - Ensure `.htaccess` is uploaded to root directory
 - Verify Angular Router configuration
 
 **Styles missing:**
+
 - Check base-href in build command
 - Verify asset paths are correct
 
 ### 🚀 Features Included
+
 - ✅ Modern purple theme design
 - ✅ Dark/Light mode toggle
 - ✅ Responsive mobile design
@@ -106,4 +118,5 @@ deploy.sh                  # Deployment script
 - ✅ Multi-language support (i18n)
 
 ### 📞 Support
+
 For deployment issues, contact your hosting provider or check the GitHub repository for updates.

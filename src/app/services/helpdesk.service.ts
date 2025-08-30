@@ -4,12 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { lastValueFrom, Observable } from 'rxjs';
 import { TicketReplyDto } from '../../models/ticket-reply-dto';
 import { ProfanityFilterService } from './profanity-filter.service';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class HelpdeskService {
-  private apiUrl = 'https://localhost:5001/api/helpdesk';
+  private apiUrl = `${environment.apiUrl}/helpdesk`;
   private http = inject(HttpClient);
   private profanityFilter = inject(ProfanityFilterService);
 

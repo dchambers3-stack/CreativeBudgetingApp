@@ -1,6 +1,6 @@
 export const environment = {
   production: false,
-  apiUrl: 'http://localhost:3000/api',
+  apiUrl: 'https://localhost:5001/api',
   appName: 'Creative Budget',
-  version: '1.0.0'
+  version: '1.0.0',
 };

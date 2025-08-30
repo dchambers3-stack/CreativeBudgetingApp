@@ -59,12 +59,9 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     }
   }
   openProfileModal(): void {
-    // Use Bootstrap's modal API to open the modal
-    const modal = document.getElementById('profilePictureModal');
-    if (modal) {
-      const bootstrapModal = new (window as any).bootstrap.Modal(modal);
-      bootstrapModal.show();
-    }
+    // Emit custom event to trigger modal in app component
+    const event = new CustomEvent('openProfileModal');
+    document.dispatchEvent(event);
   }
 
   async uploadProfilePic(): Promise<void> {

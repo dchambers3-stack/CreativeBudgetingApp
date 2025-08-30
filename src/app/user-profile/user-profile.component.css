@@ -74,7 +74,6 @@
     right: 0 !important;
     bottom: 0 !important;
     z-index: 1055 !important;
-    background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
 #profilePictureModal .modal-dialog {
@@ -92,4 +91,15 @@
     border: none !important;
     border-radius: 15px !important;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Ensure backdrop works properly */
+.modal-backdrop {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 1050 !important;
+    background-color: rgba(0, 0, 0, 0.6) !important;
 }

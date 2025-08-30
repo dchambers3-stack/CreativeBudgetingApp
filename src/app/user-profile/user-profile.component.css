@@ -65,3 +65,22 @@
 .pointer {
     cursor: pointer;
 }
+
+/* Fix modal positioning when inside navbar */
+#profilePictureModal {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 1055 !important;
+}
+
+#profilePictureModal .modal-dialog {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    margin: 0 !important;
+    z-index: 1056 !important;
+}

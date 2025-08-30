@@ -6,7 +6,7 @@
     "start": "nx serve",
     "build": "nx build",
     "build:prod": "nx build --configuration production",
-    "build:netlify": "npm install --legacy-peer-deps && nx build --configuration production --output-path dist",
+    "build:netlify": "nx build --configuration production --output-path dist",
     "watch": "nx build --watch --configuration development",
     "test": "nx test"
   },
@@ -20,9 +20,7 @@
     "@angular/platform-browser": "^19.0.0",
     "@angular/platform-browser-dynamic": "^19.0.0",
     "@angular/router": "^19.0.0",
-    "@fortawesome/angular-fontawesome": "^0.15.0",
     "@fortawesome/fontawesome-free": "^6.7.2",
-    "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "bad-words": "^4.0.0",
     "i18next": "^25.3.4",
     "i18next-browser-languagedetector": "^8.2.0",

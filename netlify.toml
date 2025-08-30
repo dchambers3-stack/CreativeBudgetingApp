@@ -1,6 +1,6 @@
 [build]
   # Build command
-  command = "npm install --legacy-peer-deps && npm run build:netlify"
+  command = "npm run build:netlify"
   
   # Directory with the deployable files
   publish = "dist/browser"

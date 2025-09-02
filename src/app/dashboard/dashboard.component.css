@@ -574,3 +574,9 @@
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
 }
+.banner {
+  width: 100%;
+  height: 100px;
+  background: rgb(127, 247, 157);
+  border-bottom: 1px solid var(--border-color);
+}
